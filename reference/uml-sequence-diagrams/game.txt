@@ -1,0 +1,9 @@
+participant Game
+participant Board
+
+Game->Game: play
+activate Game
+note over Game:- display formatted board\n- loop:\n-    prompt_player\n-    move\n-    promote if promotion?\n-    display formatted board\n-    break if game_over?\n-    swap_active_color\n-    swap_players\n-  end\n-  display result
+
+
+

@@ -1,0 +1,142 @@
+participant SomeObject
+participant Game
+participant Board
+participant Piece
+
+Game->Board:move(source, destination)
+activate Board
+note over Board:- return 'invalid' if source piece \n  does not match active color or if\n  source cell is empty\n- return 'invalid' if destination \n  is not contained in valid_destinations\n- store captured opponent piece if destination \n  contains a piece that doesn't match active \n  color\n- set destination cell = source\n- clear source cell\n- store captured pawn if en_passant? returns true\n- move rook if castling? returns true\n- update history\n- Return 'Moved source:destination' successfully or similar\n
+Board->Piece:valid_destinations?(self)
+activate Piece
+Board<--Piece:valid_destinations
+deactivate Piece
+Game<--Board:result(TBD)
+deactivate Board
+
+
+
+space
+
+Game->Board:promotion?
+activate Board
+note over Board:- return true if most recent move involved\n  a pawn reaching the other side of the \n  board
+Game<--Board:
+deactivate Board
+
+space
+
+Game->Board:promote(selection)
+activate Board
+note over Board:- call create_piece(selection)\n- get pawn position that matches\n  most recent move\n- replace him with result of \n  create_piece\n- possibly return a message 
+Game<--Board:result(TBD)
+deactivate Board
+
+space
+
+Game->Board: checkmate?
+activate Board
+note over Board:- get valid_destinations for all \n  pieces of active color\n- run removes_check? for \n  each\n- return true if removes_check?\n  returns false for all
+Game<--Board:
+deactivate Board
+
+space
+
+Game->Board:stalemate?
+activate Board
+note over Board:- return true if active color is not\n  in check, and if all allied pieces \n  return no valid_destinations. 
+deactivate Board
+Game<--Board:
+
+space
+
+Game->Board:removes_check?(source, destination)
+activate Board
+note over Board:- return nil if active_color_in_check? returns\n  false\n- return nil if source is an empty cell\n- return nil if source cell doesn't contain\n  a piece of the active color\n- result = false\n- store captured opponent piece in temp variable\n  if destination contains an opponent piece\n- move piece from source to destination\n- store captured pawn in temp variable\n  if en_passant? returns true\n- result = true if check? returns false\n- move piece back to source position\n- return captured piece back to destination\n  position, if applicable\n- return result
+Game<--Board:
+deactivate Board
+
+space
+
+Game->Board:swap_active_color
+activate Board
+note over Board:- if white, change to black\n- if black, change to white
+space
+deactivate Board
+
+space
+
+Game->Board:formatted
+activate Board
+note over Board:- return the board formatted\n  as a string
+Game<--Board:
+deactivate Board
+
+space
+
+SomeObject->Board:active_color_in_check?
+activate Board
+note over Board:- returns true if position_under_threat? returns\n  true for the active color's king's position
+SomeObject<--Board:
+deactivate BoardAnalyzer
+deactivate Board
+
+space
+
+SomeObject->Board:position_under_threat?(position)
+activate Board
+note over Board:- returns false if position empty\n- return true if position is contained\n  in any valid_destinations for all\n  enemy pieces
+SomeObject<--Board:
+deactivate Board
+
+space
+
+SomeObject->Board:white_pieces
+activate Board
+note over Board:Returns array of all white\npieces on the board
+SomeObject<--Board:
+deactivate Board
+
+space
+
+SomeObject->Board:black_pieces
+activate Board
+note over Board:Returns array of all black\npieces on the board
+SomeObject<--Board:
+deactivate Board
+
+space
+
+SomeObject->Board:location(piece)
+activate Board
+note over Board:Returns the position on \nthe board for a given\npiece 
+SomeObject<--Board:
+deactivate Board
+
+space
+
+Board->Board:en_passant?(source, destination)
+activate Board
+note over Board:- returns true if this move is \n  a pawn moving diagonally to \n  an empty space
+space 
+deactivate Board
+
+space
+
+Board->Board:castling?
+activate Board
+note over Board:- returns true if most recent move was\n  the king moving more than 1 space 
+space 
+deactivate Board
+
+space
+
+Board->Board:create_piece(selection)
+activate Board
+note over Board:- return new piece object that matches\n  selection and active color
+space 
+deactivate Board
+
+
+
+
+
