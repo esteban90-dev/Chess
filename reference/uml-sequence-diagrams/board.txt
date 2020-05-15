@@ -112,6 +112,12 @@ note over Board:Returns the position on \nthe board for a given\npiece
 SomeObject<--Board:
 deactivate Board
 
+SomeObject->Board:valid_location?(position)
+activate Board
+note over Board:- Returns true if the position \n  exists on the board\n- Returns false if out of \n  bounds
+SomeObject<--Board:
+deactivate Board
+
 space
 
 Board->Board:en_passant?(source, destination)
