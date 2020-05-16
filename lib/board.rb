@@ -24,15 +24,18 @@ class Board
       j = 0
     end
     return nil if result.empty?
-    result
+    result    
   end
 
+  def valid_location?(location)
+    return false if location[0] < 0 || location[0] > grid.length
+    return false if location[1] < 0 || location[1] > grid[0].length
+    true
+  end
 
   private
 
   def default_grid
     Array.new(8){ Array.new(8) }
   end
-
-
 end
