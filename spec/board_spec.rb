@@ -37,7 +37,27 @@ describe Board do
       board1.grid[3][3] = nil
       expect(board1.contents([3,3])).to eql(nil)
     end
+  end
 
+  context "#location" do
+    it "returns the location of an object on the board, if it exists" do
+      board1 = Board.new
+      board1.grid[3][3] = white_piece
+      expect(board1.location(white_piece)).to eql([[3,3]])
+    end
+
+    it "returns all locations of an object on the board, if it exists in multiple places" do
+      board1 = Board.new
+      board1.grid[0][0] = white_piece
+      board1.grid[3][3] = white_piece
+      expect(board1.location(white_piece)).to eql([[0,0],[3,3]])
+    end
+
+    it "returns nil if an object doesn't exist on the board" do
+      board1 = Board.new
+      board1.grid[3][3] = white_piece
+      expect(board1.location(black_piece)).to eql(nil)
+    end
   end
 
 
