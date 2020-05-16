@@ -72,6 +72,19 @@ describe Board do
     end
   end
 
+  context "#active_color, #swap_color" do
+    it "returns 'white' if it's white's turn (white goes first)" do
+      board1 = Board.new
+      expect(board1.active_color).to eql('white')
+    end
+
+    it "returns 'black' if it's black's turn" do
+      board1 = Board.new
+      board1.swap_color
+      expect(board1.active_color).to eql('black')
+    end
+  end
+
 
 
 
