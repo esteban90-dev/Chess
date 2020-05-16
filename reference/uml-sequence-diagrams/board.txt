@@ -82,25 +82,25 @@ deactivate Board
 
 space
 
-SomeObject->Board:position_under_threat?(position)
+SomeObject->Board:under_threat?(position)
 activate Board
-note over Board:- returns false if position empty\n- return true if position is contained\n  in any valid_destinations for all\n  enemy pieces
+note over Board:- return true if position is contained\n  in any of the valid_destinations for all\n  enemy pieces
 SomeObject<--Board:
 deactivate Board
 
 space
 
-SomeObject->Board:white_pieces
+SomeObject->Board:enemy_pieces
 activate Board
-note over Board:Returns array of all white\npieces on the board
+note over Board:Returns array of all pieces\non the board that don't match \nthe active color
 SomeObject<--Board:
 deactivate Board
 
 space
 
-SomeObject->Board:black_pieces
+SomeObject->Board:allied_pieces
 activate Board
-note over Board:Returns array of all black\npieces on the board
+note over Board:Returns array of all pieces\non the board that match \nthe active color
 SomeObject<--Board:
 deactivate Board
 
@@ -115,6 +115,14 @@ deactivate Board
 SomeObject->Board:valid_location?(position)
 activate Board
 note over Board:- Returns true if the position \n  exists on the board\n- Returns false if out of \n  bounds
+SomeObject<--Board:
+deactivate Board
+
+space
+
+SomeObject->Board:contents(position)
+activate Board
+note over Board:- Returns contents of cell
 SomeObject<--Board:
 deactivate Board
 
