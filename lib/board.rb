@@ -5,6 +5,12 @@ class Board
     @grid = input.fetch(:grid, default_grid)
   end
 
+  public
+
+  def contents(input)
+    grid[input[0]][input[1]]
+  end
+
 
   private
 
