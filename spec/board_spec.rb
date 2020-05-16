@@ -2,6 +2,10 @@ require "./lib/board.rb"
 
 describe Board do
 
+  TestPiece = Struct.new(:color)
+  let(:white_piece) { TestPiece.new("white") }
+  let(:black_piece) { TestPiece.new("black") }
+
   context "#initialize" do
     it "Does not raise an exception when initialized with an empty {}" do 
       expect{ Board.new({}) }.not_to raise_error(KeyError)
@@ -18,6 +22,22 @@ describe Board do
         expect(row.size).to eql(8)
       end
     end
+  end
+
+
+  context "#contents" do
+    it "Returns the contents of a filled cell" do
+      board1 = Board.new
+      board1.grid[0][0] = black_piece
+      expect(board1.contents([0,0])).to eql(black_piece)
+    end
+
+    it "Returns nil for an empty cell" do
+      board1 = Board.new
+      board1.grid[3][3] = nil
+      expect(board1.contents([3,3])).to eql(nil)
+    end
+
   end
 
 
