@@ -60,6 +60,18 @@ describe Board do
     end
   end
 
+  context "#valid_location?" do
+    it "returns true if a grid location exists on the board" do 
+      board1 = Board.new
+      expect(board1.valid_location?([1,3])).to eql(true)
+    end
+
+    it "returns false if a grid location doesn't exist on the board (i.e. out of bounds)" do 
+      board1 = Board.new
+      expect(board1.valid_location?([-1,1])).to eql(false)
+    end
+  end
+
 
 
 
