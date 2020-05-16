@@ -1,8 +1,10 @@
 class Board
   attr_reader :grid
+  attr_accessor :active_color
 
   def initialize(input={})
     @grid = input.fetch(:grid, default_grid)
+    @active_color = 'white'
   end
 
   public
@@ -31,6 +33,14 @@ class Board
     return false if location[0] < 0 || location[0] > grid.length
     return false if location[1] < 0 || location[1] > grid[0].length
     true
+  end
+
+  def swap_color
+    if active_color == 'white'
+      self.active_color = 'black' 
+    else
+      self.active_color = 'white'
+    end
   end
 
   private
