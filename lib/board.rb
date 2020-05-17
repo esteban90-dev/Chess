@@ -55,6 +55,12 @@ class Board
     enemy_pieces.any?{ |piece| piece.valid_destinations.include?(location) }
   end
 
+  def active_color_in_check?
+    allied_king = allied_pieces.select{ |element| element.name == 'king' }.first
+    allied_king_location = location(allied_king)
+    return under_threat?(allied_king_location.first)
+  end
+
   private
 
   def default_grid
