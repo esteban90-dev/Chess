@@ -193,6 +193,72 @@ describe Board do
     end
   end
 
+  context "#en_passant?" do
+    it "returns true if a move is an en passant move: white pawn in the +x direction" do
+      white_piece = TestPiece1.new("white","pawn",[])
+      black_piece = TestPiece1.new("black","pawn",[])
+      grid[3][3] = white_piece
+      grid[3][4] = black_piece
+      board1 = Board.new({:grid=>grid})
+      expect(board1.en_passant?([3,3],[2,4])).to eql(true)
+    end
+
+    it "returns true if a move is an en passant move: white pawn in the -x direction" do
+      white_piece = TestPiece1.new("white","pawn",[])
+      black_piece = TestPiece1.new("black","pawn",[])
+      grid[3][3] = white_piece
+      grid[3][2] = black_piece
+      board1 = Board.new({:grid=>grid})
+      expect(board1.en_passant?([3,3],[2,2])).to eql(true)
+    end
+
+    it "returns true if a move is an en passant move: black pawn in the +x direction" do
+      white_piece = TestPiece1.new("white","pawn",[])
+      black_piece = TestPiece1.new("black","pawn",[])
+      grid[4][0] = white_piece
+      grid[4][1] = black_piece
+      board1 = Board.new({:grid=>grid})
+      expect(board1.en_passant?([4,1],[5,0])).to eql(true)
+    end
+
+    it "returns true if a move is an en passant move: black pawn in the -x direction" do
+      white_piece = TestPiece1.new("white","pawn",[])
+      black_piece = TestPiece1.new("black","pawn",[])
+      grid[4][2] = white_piece
+      grid[4][1] = black_piece
+      board1 = Board.new({:grid=>grid})
+      expect(board1.en_passant?([4,1],[5,2])).to eql(true)
+    end
+
+    it "returns false if source position does not contain a pawn" do
+      white_piece = TestPiece1.new("white","king",[])
+      black_piece = TestPiece1.new("black","pawn",[])
+      grid[3][3] = white_piece
+      grid[3][4] = black_piece
+      board1 = Board.new({:grid=>grid})
+      expect(board1.en_passant?([3,3],[2,4])).to eql(false)
+    end
+
+    it "returns false if destination position not empty" do
+      white_piece = TestPiece1.new("white","pawn",[])
+      black_piece = TestPiece1.new("black","pawn",[])
+      grid[3][3] = white_piece
+      grid[2][4] = black_piece
+      board1 = Board.new({:grid=>grid})
+      expect(board1.en_passant?([3,3],[2,4])).to eql(false)
+    end
+  end
+
+  context "#removes_check?" do
+    it "returns true if the active color is in check and the given move removes check" do
+      black_piece = TestPiece1.new("black","queen",[[0,0],[1,1],[3,3]])
+      white_piece = TestPiece1.new("white","king",[[3,4]])
+      grid[0][3] = black_piece
+      grid[3][3] = white_piece
+      board1 = Board.new({:grid=>grid})
+      expect(board1.removes_check?([3,3],[3,4])).to eql(true)
+    end
+  end
 
 
 
