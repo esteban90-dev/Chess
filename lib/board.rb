@@ -51,6 +51,10 @@ class Board
     grid.flatten.reject{ |element| element.nil? }.select{ |element| element.color != active_color }
   end
 
+  def under_threat?(location)
+    enemy_pieces.any?{ |piece| piece.valid_destinations.include?(location) }
+  end
+
   private
 
   def default_grid
