@@ -1,10 +1,11 @@
 class Board
-  #attr_reader :grid
+  attr_reader :history
   attr_accessor :grid, :active_color
 
   def initialize(input={})
     @grid = input.fetch(:grid, default_grid)
     @active_color = 'white'
+    @history = []
   end
 
   public
@@ -59,6 +60,40 @@ class Board
     allied_king = allied_pieces.select{ |element| element.name == 'king' }.first
     allied_king_location = location(allied_king)
     return under_threat?(allied_king_location.first)
+  end
+
+  def move(source, destination)
+    return 'invalid' if contents(source).nil?
+    return 'invalid' if contents(source).color != active_color
+    return 'invalid' unless contents(source).valid_destinations.include?(destination)
+    captured_piece = nil
+
+    #if this was a normal capture move, store captured enemy piece temporarily for history
+    if !contents(destination).nil? && contents(destination).color != active_color
+      captured_piece = contents(destination)
+    end
+
+    #if this was an en_passant move, store captured pawn temporarily for history
+    if en_passant?(source, destination)
+      if en_passant_pos?(source, destination)
+        capture_position = [source[0], source[1] + 1]
+        captured_piece = contents(capture_position)
+        grid[source[0]][source[1] + 1] = nil
+      elsif en_passant_neg?(source, destination)
+        capture_position = [source[0], source[1] - 1]
+        captured_piece = contents(capture_position)
+        grid[source[0]][source[1] - 1] = nil
+      end
+    end
+
+    #move piece to destination
+    grid[destination[0]][destination[1]] = contents(source)
+    grid[source[0]][source[1]] = nil
+
+    #move rook too if this is a king that is castling
+
+    #update history
+    history << [contents(destination), source, destination, captured_piece]
   end
 
   def removes_check?(source, destination)
