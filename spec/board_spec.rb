@@ -5,14 +5,14 @@ describe Board do
   
   let(:grid) { Array.new(8){ Array.new(8) } }
 
-  TestPiece1 = Struct.new(:color, :valid_destinations)
+  TestPiece1 = Struct.new(:color, :name, :valid_destinations)
 
-  let(:white_piece_1) { TestPiece1.new("white",[]) }
-  let(:white_piece_2) { TestPiece1.new("white",[]) }
-  let(:white_piece_3) { TestPiece1.new("white",[]) }
-  let(:black_piece_1) { TestPiece1.new("black",[]) }
-  let(:black_piece_2) { TestPiece1.new("black",[]) }
-  let(:black_piece_3) { TestPiece1.new("black",[]) }
+  let(:white_piece_1) { TestPiece1.new("white","pawn", []) }
+  let(:white_piece_2) { TestPiece1.new("white","pawn", []) }
+  let(:white_piece_3) { TestPiece1.new("white","pawn", []) }
+  let(:black_piece_1) { TestPiece1.new("black","pawn", []) }
+  let(:black_piece_2) { TestPiece1.new("black","pawn", []) }
+  let(:black_piece_3) { TestPiece1.new("black","pawn", []) }
 
   
 
@@ -137,19 +137,59 @@ describe Board do
 
   context "#under_threat?" do
     it "returns true if the given position can be reached by any enemy piece" do
-      black_piece = TestPiece1.new("black",[[0,0],[1,1]])
+      black_piece = TestPiece1.new("black","pawn",[[0,0],[1,1]])
       grid[0][1] = black_piece
       board1 = Board.new({:grid=>grid})
       expect(board1.under_threat?([0,0])).to eql(true)
     end
 
     it "returns false if the given position can't be reached by any enemy piece" do
-      black_piece = TestPiece1.new("black",[[0,0],[1,1]])
-      white_piece = TestPiece1.new("white",[3,3])
+      black_piece = TestPiece1.new("black","pawn",[[0,0],[1,1]])
+      white_piece = TestPiece1.new("white","pawn",[3,3])
       grid[0][1] = black_piece
       grid[2][2] = white_piece
       board1 = Board.new({:grid=>grid})
       expect(board1.under_threat?([3,3])).to eql(false)
+    end
+  end
+
+  context "#active_color_in_check?" do
+    it "returns true if the active color's (white) king position can be reached by any enemy pieces" do
+      black_piece = TestPiece1.new("black","queen",[[0,0],[1,1],[3,3]])
+      white_piece = TestPiece1.new("white","king",[])
+      grid[0][3] = black_piece
+      grid[3][3] = white_piece
+      board1 = Board.new({:grid=>grid})
+      expect(board1.active_color_in_check?).to eql(true)
+    end
+
+    it "returns true if the active color's (black) king position can be reached by any enemy pieces" do
+      white_piece = TestPiece1.new("white","queen",[[0,0],[1,1],[3,3]])
+      black_piece = TestPiece1.new("black","king",[])
+      grid[0][3] = white_piece
+      grid[3][3] = black_piece
+      board1 = Board.new({:grid=>grid})
+      board1.swap_color
+      expect(board1.active_color_in_check?).to eql(true)
+    end
+
+    it "returns false if the active color's (white) king position can't be reached by any enemy pieces" do
+      black_piece = TestPiece1.new("black","queen",[[0,0],[1,1]])
+      white_piece = TestPiece1.new("white","king",[])
+      grid[0][3] = black_piece
+      grid[3][3] = white_piece
+      board1 = Board.new({:grid=>grid})
+      expect(board1.active_color_in_check?).to eql(false)
+    end
+
+    it "returns false if the active color's (black) king position can't be reached by any enemy pieces" do
+      white_piece = TestPiece1.new("white","queen",[[0,0],[1,1]])
+      black_piece = TestPiece1.new("black","king",[])
+      grid[0][3] = white_piece
+      grid[3][3] = black_piece
+      board1 = Board.new({:grid=>grid})
+      board1.swap_color
+      expect(board1.active_color_in_check?).to eql(false)
     end
   end
 
