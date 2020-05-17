@@ -43,6 +43,14 @@ class Board
     end
   end
 
+  def allied_pieces
+    grid.flatten.reject{ |element| element.nil? }.select{ |element| element.color == active_color }
+  end
+
+  def enemy_pieces
+    grid.flatten.reject{ |element| element.nil? }.select{ |element| element.color != active_color }
+  end
+
   private
 
   def default_grid
