@@ -1,6 +1,6 @@
 class Board
-  attr_reader :grid
-  attr_accessor :active_color
+  #attr_reader :grid
+  attr_accessor :grid, :active_color
 
   def initialize(input={})
     @grid = input.fetch(:grid, default_grid)
@@ -68,26 +68,42 @@ class Board
 
     result = false
     temp = nil
+    grid_snapshot = grid.clone
 
-    #store capture enemy piece temporarily if applicable
+    #if this was a normal capture move, store capture enemy piece temporarily
     if !contents(destination).nil? && contents(destination).color != active_color
       temp = contents(destination)
     end
 
-    #move piece
-    grid[source[0]][source[1]] = nil
-    grid[destination[0]][destination[1]] = contents(source) 
-
     #if this was an en_passant move, store captured pawn temporarily
+    if en_passant?(source, destination)
+      if en_passant_pos?(source, destination)
+        capture_position = [source[0], source[0] + 1]
+        temp = contents(capture_position)
+        grid[source[0]][source[0] + 1] = nil
+      elsif en_passant_neg?(source, destination)
+        capture_position = [source[0], source[0] - 1]
+        temp = contents(capture_position)
+        grid[source[0]][source[0] + 1] = nil
+      end
+    end
 
+    #move piece to destination
+    grid[destination[0]][destination[1]] = contents(source)
+    grid[source[0]][source[1]] = nil
     
+    #see if check cleared
+    result = true unless active_color_in_check?
+
+    #put the grid back to where it was
+    self.grid = grid_snapshot
+    
+    result
   end
 
   def en_passant?(source, destination)
-    return false if contents(source).nil?
-    return false if contents(source).name != "pawn"
-    return false if contents(destination)
-    return true if (destination[1] - source[1]).abs == 1 && (destination[0] - source[0]).abs == 1
+    return true if en_passant_pos?(source, destination)
+    return true if en_passant_neg?(source, destination)
     false
   end
 
@@ -96,4 +112,28 @@ class Board
   def default_grid
     Array.new(8){ Array.new(8) }
   end
+
+  def en_passant_pos?(source, destination)
+    return false if contents(source).nil?
+    return false unless contents(destination).nil?
+    return false if contents(source).name != "pawn"
+    return true if destination[0] - source[0] == -1 && destination[1] - source[1] == 1
+    return true if destination[0] - source[0] == 1 && destination[1] - source[1] == 1
+    false 
+  end
+
+  def en_passant_neg?(source, destination)
+    return false if contents(source).nil?
+    return false unless contents(destination).nil?
+    return false if contents(source).name != "pawn"
+    return true if destination[0] - source[0] == -1 && destination[1] - source[1] == -1
+    return true if destination[0] - source[0] == 1 && destination[1] - source[1] == -1
+    false 
+  end
 end
+
+
+
+
+
+
