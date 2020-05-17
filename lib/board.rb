@@ -61,6 +61,36 @@ class Board
     return under_threat?(allied_king_location.first)
   end
 
+  def removes_check?(source, destination)
+    return nil if !active_color_in_check?
+    return nil if contents(source).nil?
+    return nil if contents(source).color != active_color
+
+    result = false
+    temp = nil
+
+    #store capture enemy piece temporarily if applicable
+    if !contents(destination).nil? && contents(destination).color != active_color
+      temp = contents(destination)
+    end
+
+    #move piece
+    grid[source[0]][source[1]] = nil
+    grid[destination[0]][destination[1]] = contents(source) 
+
+    #if this was an en_passant move, store captured pawn temporarily
+
+    
+  end
+
+  def en_passant?(source, destination)
+    return false if contents(source).nil?
+    return false if contents(source).name != "pawn"
+    return false if contents(destination)
+    return true if (destination[1] - source[1]).abs == 1 && (destination[0] - source[0]).abs == 1
+    false
+  end
+
   private
 
   def default_grid
