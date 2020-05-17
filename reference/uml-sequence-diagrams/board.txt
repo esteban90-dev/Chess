@@ -51,7 +51,7 @@ space
 
 Game->Board:removes_check?(source, destination)
 activate Board
-note over Board:- return nil if active_color_in_check? returns\n  false\n- return nil if source is an empty cell\n- return nil if source cell doesn't contain\n  a piece of the active color\n- result = false\n- store captured opponent piece in temp variable\n  if destination contains an opponent piece\n- move piece from source to destination\n- store captured pawn in temp variable\n  if en_passant? returns true\n- result = true if check? returns false\n- move piece back to source position\n- return captured piece back to destination\n  position, if applicable\n- return result
+note over Board:- result = false\n- clone the grid\n- call the move function\n- result = true if active_color_in_check? returns true\n- restore the grid\n- return result
 Game<--Board:
 deactivate Board
 
