@@ -14,8 +14,6 @@ describe Board do
   let(:black_piece_2) { TestPiece1.new("black","pawn", []) }
   let(:black_piece_3) { TestPiece1.new("black","pawn", []) }
 
-  
-
   context "#initialize" do
     it "Does not raise an exception when initialized with an empty {}" do 
       expect{ Board.new({}) }.not_to raise_error(KeyError)
@@ -293,8 +291,85 @@ describe Board do
     end
   end
 
+  context "#move" do
+    it "moves a white piece that makes no capture" do
+      white_piece_1 = TestPiece1.new("white","pawn",[[5,1],[4,1]])
+      grid[6][1] = white_piece_1
+      board1 = Board.new({:grid=>grid})
+      board1.move([6,1],[5,1])
+      expect(board1.history.last).to eql([white_piece_1, [6,1], [5,1], nil])
+    end
 
+    it "moves a white piece to capture a black piece" do
+      white_piece_1 = TestPiece1.new("white","pawn",[[5,1],[5,2],[4,1]])
+      black_piece_1 = TestPiece1.new("black","pawn",[])
+      grid[6][1] = white_piece_1
+      grid[5][2] = black_piece_1
+      board1 = Board.new({:grid=>grid})
+      board1.move([6,1],[5,2])
+      expect(board1.history.last).to eql([white_piece_1, [6,1], [5,2], black_piece_1])
+    end
 
+    it "moves a black piece that makes no capture" do
+      black_piece_1 = TestPiece1.new("black","pawn",[[2,1],[3,1]])
+      grid[1][1] = black_piece_1
+      board1 = Board.new({:grid=>grid})
+      board1.swap_color
+      board1.move([1,1],[3,1])
+      expect(board1.history.last).to eql([black_piece_1, [1,1], [3,1], nil])
+    end
 
+    it "moves a black piece to capture a white piece" do
+      black_piece_1 = TestPiece1.new("black","pawn",[[4,3],[4,4]])
+      white_piece_1 = TestPiece1.new("white","pawn",[])
+      grid[3][3] = black_piece_1
+      grid[4][4] = white_piece_1
+      board1 = Board.new({:grid=>grid})
+      board1.swap_color
+      board1.move([3,3],[4,4])
+      expect(board1.history.last).to eql([black_piece_1, [3,3], [4,4], white_piece_1])
+    end
 
+    it "moves a white pawn en_passant (+x direction) to capture a black piece" do
+      white_piece_1 = TestPiece1.new("white","pawn",[[2,3],[2,4]])
+      black_piece_1 = TestPiece1.new("black","pawn",[])
+      grid[3][3] = white_piece_1
+      grid[3][4] = black_piece_1
+      board1 = Board.new({:grid=>grid})
+      board1.move([3,3],[2,4])
+      expect(board1.history.last).to eql([white_piece_1, [3,3], [2,4], black_piece_1])
+    end
+
+    it "moves a white pawn en_passant (-x direction) to capture a black piece" do
+      white_piece_1 = TestPiece1.new("white","pawn",[[2,3],[2,4]])
+      black_piece_1 = TestPiece1.new("black","pawn",[])
+      grid[3][4] = white_piece_1
+      grid[3][3] = black_piece_1
+      board1 = Board.new({:grid=>grid})
+      board1.move([3,4],[2,3])
+      expect(board1.history.last).to eql([white_piece_1, [3,4], [2,3], black_piece_1])
+    end
+
+    it "moves a black pawn en_passant (+x direction) to capture a white piece" do
+      white_piece_1 = TestPiece1.new("white","pawn",[])
+      black_piece_1 = TestPiece1.new("black","pawn",[[5,1],[5,2]])
+      grid[4][1] = black_piece_1
+      grid[4][2] = white_piece_1
+      board1 = Board.new({:grid=>grid})
+      board1.swap_color
+      board1.move([4,1],[5,2])
+      expect(board1.history.last).to eql([black_piece_1, [4,1], [5,2], white_piece_1])
+    end
+
+    it "moves a black pawn en_passant (-x direction) to capture a white piece" do
+      white_piece_1 = TestPiece1.new("white","pawn",[])
+      black_piece_1 = TestPiece1.new("black","pawn",[[5,2],[5,3]])
+      grid[4][3] = black_piece_1
+      grid[4][2] = white_piece_1
+      board1 = Board.new({:grid=>grid})
+      board1.swap_color
+      board1.move([4,3],[5,2])
+      expect(board1.history.last).to eql([black_piece_1, [4,3], [5,2], white_piece_1])
+    end
+  end
 end
