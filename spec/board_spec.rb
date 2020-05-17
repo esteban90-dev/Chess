@@ -250,13 +250,46 @@ describe Board do
   end
 
   context "#removes_check?" do
-    it "returns true if the active color is in check and the given move removes check" do
+    it "returns true if the active color is in check and the given move removes check - (non-capturing move)" do
       black_piece = TestPiece1.new("black","queen",[[0,0],[1,1],[3,3]])
       white_piece = TestPiece1.new("white","king",[[3,4]])
       grid[0][3] = black_piece
       grid[3][3] = white_piece
       board1 = Board.new({:grid=>grid})
       expect(board1.removes_check?([3,3],[3,4])).to eql(true)
+    end
+
+    it "returns true if the active color is in check and the given move removes check - (capturing move)" do
+      black_piece_1 = TestPiece1.new("black","queen",[[0,0],[1,1],[3,3]])
+      black_piece_2 = TestPiece1.new("black","knight",[])
+      white_piece_1 = TestPiece1.new("white","king",[[3,4]])
+      grid[0][3] = black_piece_1
+      grid[3][4] = black_piece_2
+      grid[3][3] = white_piece_1
+      board1 = Board.new({:grid=>grid})
+      expect(board1.removes_check?([3,3],[3,4])).to eql(true)
+    end
+
+    it "returns true if the active color is in check and the given move removes check - (en_passant move - white capturing black in the +x direction)" do
+      white_piece_1 = TestPiece1.new("white","king",[])
+      white_piece_2 = TestPiece1.new("white","pawn",[])
+      black_piece_1 = TestPiece1.new("black","pawn",[[4,5]])
+      grid[3][3] = white_piece_2
+      grid[4][5] = white_piece_1
+      grid[3][4] = black_piece_1
+      board1 = Board.new({:grid=>grid})
+      expect(board1.removes_check?([3,3],[2,4])).to eql(true)
+    end
+
+    it "returns true if the active color is in check and the given move removes check - (en_passant move - white capturing black in the -x direction)" do
+      white_piece_1 = TestPiece1.new("white","king",[])
+      white_piece_2 = TestPiece1.new("white","pawn",[])
+      black_piece_1 = TestPiece1.new("black","pawn",[[4,5]])
+      grid[3][7] = white_piece_2
+      grid[4][5] = white_piece_1
+      grid[3][4] = black_piece_1
+      board1 = Board.new({:grid=>grid})
+      expect(board1.removes_check?([3,7],[2,6])).to eql(true)
     end
   end
 
