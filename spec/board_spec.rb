@@ -201,6 +201,11 @@ describe Board do
       board1.swap_color
       expect(board1.active_color_in_check?).to eql(false)
     end
+
+    it "returns false if there is no allied king on the board - for testing purposes" do
+      board1 = Board.new({:grid=>grid})
+      expect(board1.active_color_in_check?).to eql(false)
+    end
   end
 
   context "#removes_check?" do
