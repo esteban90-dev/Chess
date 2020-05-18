@@ -1,6 +1,5 @@
 class Board
-  attr_reader :history
-  attr_accessor :grid, :active_color
+  attr_accessor :grid, :active_color, :history
 
   def initialize(input={})
     @grid = input.fetch(:grid, default_grid)
@@ -71,7 +70,7 @@ class Board
   
     captured_piece = nil
 
-    #if this was a normal capture move, store captured enemy piece temporarily for history
+    #if this is a normal capture move, store captured enemy piece for history
     if !contents(destination).nil? && contents(destination).color != active_color
       captured_piece = contents(destination)
     end
@@ -89,7 +88,7 @@ class Board
       end
     end
 
-    #move piece to destination
+    #move piece from source to destination
     grid[destination[0]][destination[1]] = contents(source)
     grid[source[0]][source[1]] = nil
 
@@ -107,36 +106,18 @@ class Board
     return nil if contents(source).color != active_color
 
     result = false
-    temp = nil
     grid_snapshot = grid.clone
-
-    #if this was a normal capture move, store capture enemy piece temporarily
-    if !contents(destination).nil? && contents(destination).color != active_color
-      temp = contents(destination)
-    end
-
-    #if this was an en_passant move, store captured pawn temporarily
-    if en_passant?(source, destination)
-      if en_passant_pos?(source, destination)
-        capture_position = [source[0], source[0] + 1]
-        temp = contents(capture_position)
-        grid[source[0]][source[0] + 1] = nil
-      elsif en_passant_neg?(source, destination)
-        capture_position = [source[0], source[0] - 1]
-        temp = contents(capture_position)
-        grid[source[0]][source[0] + 1] = nil
-      end
-    end
+    history_snapshot = history.clone
 
     #move piece to destination
-    grid[destination[0]][destination[1]] = contents(source)
-    grid[source[0]][source[1]] = nil
+    move(source, destination)
     
     #see if check cleared
     result = true unless active_color_in_check?
 
-    #put the grid back to where it was
+    #return the grid and history back to where it was
     self.grid = grid_snapshot
+    self.history = history_snapshot
     
     result
   end
