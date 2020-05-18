@@ -63,9 +63,12 @@ class Board
   end
 
   def move(source, destination)
-    return 'invalid' if contents(source).nil?
-    return 'invalid' if contents(source).color != active_color
-    return 'invalid' unless contents(source).valid_destinations.include?(destination)
+    result = check_input(source, destination)
+    if result
+      history << result
+      return
+    end
+  
     captured_piece = nil
 
     #if this was a normal capture move, store captured enemy piece temporarily for history
@@ -73,7 +76,7 @@ class Board
       captured_piece = contents(destination)
     end
 
-    #if this was an en_passant move, store captured pawn temporarily for history
+    #if this was an en_passant move, store captured pawn for history
     if en_passant?(source, destination)
       if en_passant_pos?(source, destination)
         capture_position = [source[0], source[1] + 1]
@@ -190,6 +193,14 @@ class Board
     rook_current_position = [history.last[2][0], history.last[2][1] - 1]
     rook_new_position = [history.last[2][0], history.last[2][1] + 1]
     move(rook_current_position, rook_new_position)
+  end
+
+  def check_input(source, destination)
+    return "invalid move - source cell empty" if contents(source).nil?
+    return "invalid move - source cell contains enemy piece" if contents(source).color != active_color
+    return "invalid move - source cell matches destination cell" if source == destination
+    return "invalid move - #{contents(source).color} #{contents(source).name} can't move from #{source} to #{destination}" if !contents(source).valid_destinations.include?(destination)
+    nil
   end
 end
 
