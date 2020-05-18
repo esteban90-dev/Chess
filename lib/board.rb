@@ -93,19 +93,9 @@ class Board
     #update history
     history << [contents(destination), source, destination, captured_piece]
 
-    #move rook too if most recent move was king side castling
-    if king_side_castling?
-      rook_current_position = [history.last[2][0], history.last[2][1] + 1]
-      rook_new_position = [history.last[2][0], history.last[2][1] - 1]
-      move(rook_current_position, rook_new_position)
-    end
-
-    #move rook too if most recent move was queen side castling
-    if queen_side_castling?
-      rook_current_position = [history.last[2][0], history.last[2][1] - 1]
-      rook_new_position = [history.last[2][0], history.last[2][1] + 1]
-      move(rook_current_position, rook_new_position)
-    end
+    #move rook too if most recent move was castling
+    king_side_castle_move if king_side_castling?
+    queen_side_castle_move if queen_side_castling?
   end
 
   def removes_check?(source, destination)
@@ -184,10 +174,22 @@ class Board
     false
   end
 
+  def king_side_castle_move
+    rook_current_position = [history.last[2][0], history.last[2][1] + 1]
+    rook_new_position = [history.last[2][0], history.last[2][1] - 1]
+    move(rook_current_position, rook_new_position)
+  end
+
   def queen_side_castling?
     #returns true if last move was a king moving three spaces to the left
     return true if history.last[0].name == 'king' && history.last[2][1] - history.last[1][1] == -3
     false
+  end
+
+  def queen_side_castle_move
+    rook_current_position = [history.last[2][0], history.last[2][1] - 1]
+    rook_new_position = [history.last[2][0], history.last[2][1] + 1]
+    move(rook_current_position, rook_new_position)
   end
 end
 
