@@ -1,9 +1,10 @@
 class Knight
-  attr_reader :color, :symbol
+  attr_reader :color, :symbol, :name
 
   def initialize(input)
     @color = input.fetch(:color)
     @symbol = input.fetch(:symbol, default_symbol)
+    @name = 'knight'
   end
 
   public
@@ -11,16 +12,16 @@ class Knight
   def valid_destinations(board)
     current_position = board.location(self)
     destinations = all_moves(current_position)
-
+    
     #remove locations not on board
-    destinations.reject!{ |destination| !board.valid_location?(destination) } 
+    destinations.select!{ |destination| board.valid_location?(destination) } 
     
     #remove locations that contain allies
-    destinations.reject!{ |destination| board.contents.nil? ? false : board.contents(destination).color == self.color } 
+    destinations.reject!{ |destination| board.allied_pieces.include?(destination) }
 
-    #If in check, remove any locations that don't result in the removal of check
+    #If in check, select only the locations that result in the removal of check
     if board.active_color_in_check?
-      destinations.reject!{ |destination| !board.removes_check?(current_position, destination) } 
+      destinations.select!{ |destination| board.removes_check?(current_position, destination) } 
     end
 
     destinations
@@ -40,7 +41,7 @@ class Knight
     result = []
     i = 0
     while i < delta_x.length
-      result << [ position[0] + delta_y[i], position[1] + delta_x[i] ]
+      result << [ position.first[0] + delta_y[i], position.first[1] + delta_x[i] ]
       i += 1
     end
     result
@@ -48,3 +49,11 @@ class Knight
 
 
 end
+
+
+require "./lib/board.rb"
+black_knight = Knight.new({:color=>"black"})
+grid = Array.new(8){ Array.new(8) }
+grid[0][0] = black_knight
+board1 = Board.new({:grid=>grid})
+puts black_knight.valid_destinations(board1)
