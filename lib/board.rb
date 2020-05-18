@@ -57,6 +57,7 @@ class Board
 
   def active_color_in_check?
     allied_king = allied_pieces.select{ |element| element.name == 'king' }.first
+    return false if allied_king.nil?
     allied_king_location = location(allied_king)
     return under_threat?(allied_king_location.first)
   end
