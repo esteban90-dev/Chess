@@ -365,5 +365,36 @@ describe Board do
       board1.move([0,4],[0,1])
       expect(board1.history[0..1]).to eql([[black_king, [0,4], [0,1], nil], [black_rook_2, [0,0], [0,2], nil]])
     end
+
+    it "records error message if the source cell is empty" do
+      board1 = Board.new({:grid=>grid})
+      board1.move([0,0],[1,0])
+      expect(board1.history.last).to eql("invalid move - source cell empty")
+    end
+
+    it "records error message if the source cell is an enemy piece" do
+      black_rook_1 = TestPiece1.new("black","rook",[[0,5]])
+      grid[0][4] = black_rook_1
+      board1 = Board.new({:grid=>grid})
+      board1.move([0,4],[0,5])
+      expect(board1.history.last).to eql("invalid move - source cell contains enemy piece")
+    end
+
+    it "records error message if the source cell matches the destination cell" do
+      black_rook_1 = TestPiece1.new("black","rook",[[0,5]])
+      grid[0][4] = black_rook_1
+      board1 = Board.new({:grid=>grid})
+      board1.swap_color
+      board1.move([0,4],[0,4])
+      expect(board1.history.last).to eql("invalid move - source cell matches destination cell")
+    end
+
+    it "records error message if the source piece can't move to the destination" do
+      white_pawn_1 = TestPiece1.new("white","pawn",[[5,1],[4,1]])
+      grid[6][1] = white_pawn_1
+      board1 = Board.new({:grid=>grid})
+      board1.move([6,1],[3,1])
+      expect(board1.history.last).to eql("invalid move - white pawn can't move from [6, 1] to [3, 1]")
+    end
   end
 end
