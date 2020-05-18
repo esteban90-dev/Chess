@@ -72,8 +72,8 @@ deactivate Board
 Board->King:valid_destinations(self)
 activate King
 note over King:- Add all adjacent cells\n- Remove cells that are \n  occupied by allies\n- Remove cells for which \n  under_threat? returns true\n- Remove cells that aren’t \n  on the board
-note over King:If black:\n- Add [-3,0] if not in check, and \n  king nor the rook to the right \n  have moved yet. (castling)
-note over King:If white:\n- Add [2,0] if not in check, and \n  king nor the rook to the right \n  have moved yet. (castling)
+note over King:Queenside castling:\n- Add [-3,0] if not in check, and \n  king nor the queen side \n  rook to the have moved yet
+note over King:Kingside castling:\n- Add [2,0] if not in check, and \n  king nor the king side \n  rook to the have moved yet
 Board<--King:valid_destinations
 deactivate King
 deactivate Board
