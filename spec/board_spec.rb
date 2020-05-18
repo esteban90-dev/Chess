@@ -191,62 +191,6 @@ describe Board do
     end
   end
 
-  context "#en_passant?" do
-    it "returns true if a move is an en passant move: white pawn in the +x direction" do
-      white_piece = TestPiece1.new("white","pawn",[])
-      black_piece = TestPiece1.new("black","pawn",[])
-      grid[3][3] = white_piece
-      grid[3][4] = black_piece
-      board1 = Board.new({:grid=>grid})
-      expect(board1.en_passant?([3,3],[2,4])).to eql(true)
-    end
-
-    it "returns true if a move is an en passant move: white pawn in the -x direction" do
-      white_piece = TestPiece1.new("white","pawn",[])
-      black_piece = TestPiece1.new("black","pawn",[])
-      grid[3][3] = white_piece
-      grid[3][2] = black_piece
-      board1 = Board.new({:grid=>grid})
-      expect(board1.en_passant?([3,3],[2,2])).to eql(true)
-    end
-
-    it "returns true if a move is an en passant move: black pawn in the +x direction" do
-      white_piece = TestPiece1.new("white","pawn",[])
-      black_piece = TestPiece1.new("black","pawn",[])
-      grid[4][0] = white_piece
-      grid[4][1] = black_piece
-      board1 = Board.new({:grid=>grid})
-      expect(board1.en_passant?([4,1],[5,0])).to eql(true)
-    end
-
-    it "returns true if a move is an en passant move: black pawn in the -x direction" do
-      white_piece = TestPiece1.new("white","pawn",[])
-      black_piece = TestPiece1.new("black","pawn",[])
-      grid[4][2] = white_piece
-      grid[4][1] = black_piece
-      board1 = Board.new({:grid=>grid})
-      expect(board1.en_passant?([4,1],[5,2])).to eql(true)
-    end
-
-    it "returns false if source position does not contain a pawn" do
-      white_piece = TestPiece1.new("white","king",[])
-      black_piece = TestPiece1.new("black","pawn",[])
-      grid[3][3] = white_piece
-      grid[3][4] = black_piece
-      board1 = Board.new({:grid=>grid})
-      expect(board1.en_passant?([3,3],[2,4])).to eql(false)
-    end
-
-    it "returns false if destination position not empty" do
-      white_piece = TestPiece1.new("white","pawn",[])
-      black_piece = TestPiece1.new("black","pawn",[])
-      grid[3][3] = white_piece
-      grid[2][4] = black_piece
-      board1 = Board.new({:grid=>grid})
-      expect(board1.en_passant?([3,3],[2,4])).to eql(false)
-    end
-  end
-
   context "#removes_check?" do
     it "returns true if the active color is in check and the given move removes check - (non-capturing move)" do
       black_piece = TestPiece1.new("black","queen",[[0,0],[1,1],[3,3]])
@@ -370,6 +314,56 @@ describe Board do
       board1.swap_color
       board1.move([4,3],[5,2])
       expect(board1.history.last).to eql([black_piece_1, [4,3], [5,2], white_piece_1])
+    end
+
+    it "moves a king and a rook in a king side castling move (white)" do
+      white_king = TestPiece1.new("white","king",[[7,6]])
+      white_rook_1 = TestPiece1.new("white","rook",[[7,5]])
+      white_rook_2 = TestPiece1.new("white","rook",[[7,2]])
+      grid[7][0] = white_rook_2
+      grid[7][4] = white_king
+      grid[7][7] = white_rook_1
+      board1 = Board.new({:grid=>grid})
+      board1.move([7,4],[7,6])
+      expect(board1.history[0..1]).to eql([[white_king, [7,4], [7,6], nil], [white_rook_1, [7,7], [7,5], nil]])
+    end
+
+    it "moves a king and a rook in a king side castling move (black)" do
+      black_king = TestPiece1.new("black","king",[[0,6]])
+      black_rook_1 = TestPiece1.new("black","rook",[[0,5]])
+      black_rook_2 = TestPiece1.new("black","rook",[[0,2]])
+      grid[0][0] = black_rook_2
+      grid[0][4] = black_king
+      grid[0][7] = black_rook_1
+      board1 = Board.new({:grid=>grid})
+      board1.swap_color
+      board1.move([0,4],[0,6])
+      expect(board1.history[0..1]).to eql([[black_king, [0,4], [0,6], nil], [black_rook_1, [0,7], [0,5], nil]])
+    end
+
+    it "moves a king and a rook in a queen side castling move (white)" do
+      white_king = TestPiece1.new("white","king",[[7,1]])
+      white_rook_1 = TestPiece1.new("white","rook",[[7,5]])
+      white_rook_2 = TestPiece1.new("white","rook",[[7,2]])
+      grid[7][0] = white_rook_2
+      grid[7][4] = white_king
+      grid[7][7] = white_rook_1
+      board1 = Board.new({:grid=>grid})
+      board1.move([7,4],[7,1])
+      expect(board1.history[0..1]).to eql([[white_king, [7,4], [7,1], nil], [white_rook_2, [7,0], [7,2], nil]])
+    end
+
+    it "moves a king and a rook in a queen side castling move (black)" do
+      black_king = TestPiece1.new("black","king",[[0,1]])
+      black_rook_1 = TestPiece1.new("black","rook",[[0,5]])
+      black_rook_2 = TestPiece1.new("black","rook",[[0,2]])
+      grid[0][0] = black_rook_2
+      grid[0][4] = black_king
+      grid[0][7] = black_rook_1
+      board1 = Board.new({:grid=>grid})
+      board1.swap_color
+      board1.move([0,4],[0,1])
+      expect(board1.history[0..1]).to eql([[black_king, [0,4], [0,1], nil], [black_rook_2, [0,0], [0,2], nil]])
     end
   end
 end
