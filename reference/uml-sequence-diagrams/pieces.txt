@@ -49,7 +49,7 @@ deactivate Board
 
 Board->Rook:valid_destinations(self)
 activate Rook
-note over Rook:- Add all vertical moves \n  until occupied cell or \n  board limit is found\n- If occupied cell is opponent, \n  add it too\n- If in check: remove cells for \n  which removes_check?\n  returns false
+note over Rook:- Add all horizontal and\n  vertical moves \n  until occupied cell or \n  board limit is found\n- If occupied cell is opponent, \n  add it too\n- If queenside rook - add cell \n  if queenside castling is allowed\n- If kingside rook - add cell\n  if kingside castling is allowed\n- If in check: remove cells for \n  which removes_check?\n  returns false
 Board<--Rook:valid_destinations
 deactivate Rook
 deactivate Board
