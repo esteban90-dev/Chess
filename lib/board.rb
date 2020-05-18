@@ -90,10 +90,22 @@ class Board
     grid[destination[0]][destination[1]] = contents(source)
     grid[source[0]][source[1]] = nil
 
-    #move rook too if this is a king that is castling
-
     #update history
     history << [contents(destination), source, destination, captured_piece]
+
+    #move rook too if most recent move was king side castling
+    if king_side_castling?
+      rook_current_position = [history.last[2][0], history.last[2][1] + 1]
+      rook_new_position = [history.last[2][0], history.last[2][1] - 1]
+      move(rook_current_position, rook_new_position)
+    end
+
+    #move rook too if most recent move was queen side castling
+    if queen_side_castling?
+      rook_current_position = [history.last[2][0], history.last[2][1] - 1]
+      rook_new_position = [history.last[2][0], history.last[2][1] + 1]
+      move(rook_current_position, rook_new_position)
+    end
   end
 
   def removes_check?(source, destination)
@@ -136,16 +148,16 @@ class Board
     result
   end
 
-  def en_passant?(source, destination)
-    return true if en_passant_pos?(source, destination)
-    return true if en_passant_neg?(source, destination)
-    false
-  end
-
   private
 
   def default_grid
     Array.new(8){ Array.new(8) }
+  end
+
+  def en_passant?(source, destination)
+    return true if en_passant_pos?(source, destination)
+    return true if en_passant_neg?(source, destination)
+    false
   end
 
   def en_passant_pos?(source, destination)
@@ -165,7 +177,25 @@ class Board
     return true if destination[0] - source[0] == 1 && destination[1] - source[1] == -1
     false 
   end
+
+  def king_side_castling?
+    #returns true if last move was a king moving two spaces to the right
+    return true if history.last[0].name == 'king' && history.last[2][1] - history.last[1][1] == 2 
+    false
+  end
+
+  def queen_side_castling?
+    #returns true if last move was a king moving three spaces to the left
+    return true if history.last[0].name == 'king' && history.last[2][1] - history.last[1][1] == -3
+    false
+  end
 end
+
+
+
+
+
+
 
 
 
