@@ -1,4 +1,4 @@
-participant SomeObject
+
 participant Game
 participant Board
 participant Piece
@@ -49,10 +49,18 @@ Game<--Board:
 
 space
 
-Game->Board:removes_check?(source, destination)
+Piece->Board:disables_check?(source, destination)
+activate Board
+note over Board:- result = false\n- clone the grid\n- call the move function\n- result = true if active_color_in_check? returns false\n- restore the grid\n- return result
+Piece<--Board:
+deactivate Board
+
+space
+
+Piece->Board:enables_check?(source, destination)
 activate Board
 note over Board:- result = false\n- clone the grid\n- call the move function\n- result = true if active_color_in_check? returns true\n- restore the grid\n- return result
-Game<--Board:
+Piece<--Board:
 deactivate Board
 
 space
@@ -73,81 +81,56 @@ deactivate Board
 
 space
 
-SomeObject->Board:active_color_in_check?
+Piece->Board:active_color_in_check?
 activate Board
 note over Board:- returns true if position_under_threat? returns\n  true for the active color's king's position
-SomeObject<--Board:
-deactivate BoardAnalyzer
+Piece<--Board:
 deactivate Board
 
 space
 
-SomeObject->Board:under_threat?(position)
+Piece->Board:under_threat?(position)
 activate Board
 note over Board:- return true if position is contained\n  in any of the valid_destinations for all\n  enemy pieces
-SomeObject<--Board:
+Piece<--Board:
 deactivate Board
 
 space
 
-SomeObject->Board:enemy_pieces
+Piece->Board:enemy_pieces
 activate Board
 note over Board:Returns array of all pieces\non the board that don't match \nthe active color
-SomeObject<--Board:
+Piece<--Board:
 deactivate Board
 
 space
 
-SomeObject->Board:allied_pieces
+Piece->Board:allied_pieces
 activate Board
 note over Board:Returns array of all pieces\non the board that match \nthe active color
-SomeObject<--Board:
+Piece<--Board:
 deactivate Board
 
 space
 
-SomeObject->Board:location(piece)
+Piece->Board:location(piece)
 activate Board
 note over Board:Returns the position on \nthe board for a given\npiece 
-SomeObject<--Board:
+Piece<--Board:
 deactivate Board
 
-SomeObject->Board:valid_location?(position)
+Piece->Board:valid_location?(position)
 activate Board
 note over Board:- Returns true if the position \n  exists on the board\n- Returns false if out of \n  bounds
-SomeObject<--Board:
+Piece<--Board:
 deactivate Board
 
 space
 
-SomeObject->Board:contents(position)
+Piece->Board:contents(position)
 activate Board
 note over Board:- Returns contents of cell
-SomeObject<--Board:
-deactivate Board
-
-space
-
-Board->Board:en_passant?(source, destination)
-activate Board
-note over Board:- returns true if this move is \n  a pawn moving diagonally to \n  an empty space
-space 
-deactivate Board
-
-space
-
-Board->Board:castling?
-activate Board
-note over Board:- returns true if most recent move was\n  the king moving more than 1 space 
-space 
-deactivate Board
-
-space
-
-Board->Board:create_piece(selection)
-activate Board
-note over Board:- return new piece object that matches\n  selection and active color
-space 
+Piece<--Board:
 deactivate Board
 
 
