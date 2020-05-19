@@ -46,7 +46,7 @@ describe Board do
       white_pawn_1 = TestPiece1.new("white","pawn", [])
       grid[3][3] = white_pawn_1
       board1 = Board.new({:grid=>grid})
-      expect(board1.location(white_pawn_1)).to eql([[3,3]])
+      expect(board1.location(white_pawn_1)).to eql([3,3])
     end
 
     it "returns all locations of an object on the board, if it exists in multiple places" do
