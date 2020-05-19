@@ -25,7 +25,6 @@ describe Board do
     end
   end
 
-
   context "#contents" do
     it "Returns the contents of a filled cell" do
       black_pawn_1 = TestPiece1.new("black","pawn", [])
@@ -68,12 +67,17 @@ describe Board do
   end
 
   context "#valid_location?" do
-    it "returns true if a grid location exists on the board" do 
+    it "[1,3] returns true" do 
       board1 = Board.new({:grid=>grid})
       expect(board1.valid_location?([1,3])).to eql(true)
     end
 
-    it "returns false if a grid location doesn't exist on the board (i.e. out of bounds)" do 
+    it "[8,8] returns false" do 
+      board1 = Board.new({:grid=>grid})
+      expect(board1.valid_location?([8,8])).to eql(false)
+    end
+
+    it "[-1,1] returns false" do 
       board1 = Board.new({:grid=>grid})
       expect(board1.valid_location?([-1,1])).to eql(false)
     end
