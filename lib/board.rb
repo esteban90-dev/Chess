@@ -122,6 +122,26 @@ class Board
     result
   end
 
+  def enables_check?(source, destination)
+    return nil if active_color_in_check?
+
+    result = false
+    grid_snapshot = grid.clone
+    history_snapshot = history.clone
+
+    #move piece to destination
+    move(source, destination)
+    
+    #see if check condition is active
+    result = true if active_color_in_check?
+
+    #return the grid and history back to where it was
+    self.grid = grid_snapshot
+    self.history = history_snapshot
+    
+    result
+  end
+
   private
 
   def default_grid
@@ -184,6 +204,7 @@ class Board
     nil
   end
 end
+
 
 
 
