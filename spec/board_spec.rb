@@ -263,6 +263,36 @@ describe Board do
     end
   end
 
+  context "#enables_check?" do
+    it "returns true if the active color is not check and the given move enables a check condition - white move" do
+      white_king = TestPiece1.new("white","king",[[4,5]])
+      black_rook = TestPiece1.new("black","rook",[[3,5],[4,5]])
+      grid[2][5] = black_rook
+      grid[4][4] = white_king
+      board1 = Board.new({:grid=>grid})
+      expect(board1.enables_check?([4,4],[4,5])).to eql(true)
+    end
+
+    it "returns true if the active color is not check and the given move enables a check condition - black move" do
+      black_king = TestPiece1.new("black","king",[[4,5]])
+      white_rook = TestPiece1.new("white","rook",[[3,5],[4,5]])
+      grid[2][5] = white_rook
+      grid[4][4] = black_king
+      board1 = Board.new({:grid=>grid})
+      board1.swap_color
+      expect(board1.enables_check?([4,4],[4,5])).to eql(true)
+    end
+
+    it "returns nil if the active color is already in check" do 
+      white_king = TestPiece1.new("white","king",[[4,6]])
+      black_rook = TestPiece1.new("black","rook",[[3,5],[4,5]])
+      grid[2][5] = black_rook
+      grid[4][5] = white_king
+      board1 = Board.new({:grid=>grid})
+      expect(board1.enables_check?([4,5],[4,6])).to eql(nil)
+    end
+  end
+
   context "#move" do
     it "moves a white piece that makes no capture" do
       white_pawn = TestPiece1.new("white","pawn",[[5,1],[4,1]])
