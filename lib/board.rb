@@ -31,8 +31,8 @@ class Board
   end
 
   def valid_location?(location)
-    return false if location[0] < 0 || location[0] > grid.length
-    return false if location[1] < 0 || location[1] > grid[0].length
+    return false if location[0] < 0 || location[0] > grid.length - 1
+    return false if location[1] < 0 || location[1] > grid[0].length - 1
     true
   end
 
@@ -124,14 +124,14 @@ class Board
 
   def enables_check?(source, destination)
     return nil if active_color_in_check?
-
+    
     result = false
     grid_snapshot = grid.clone
     history_snapshot = history.clone
 
     #move piece to destination
     move(source, destination)
-    
+
     #see if check condition is active
     result = true if active_color_in_check?
 
