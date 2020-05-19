@@ -26,6 +26,7 @@ class Board
       j = 0
     end
     return nil if result.empty?
+    result = result.first if result.length == 1
     result    
   end
 
@@ -59,7 +60,7 @@ class Board
     allied_king = allied_pieces.select{ |element| element.name == 'king' }.first
     return false if allied_king.nil?
     allied_king_location = location(allied_king)
-    return under_threat?(allied_king_location.first)
+    return under_threat?(allied_king_location)
   end
 
   def move(source, destination)
