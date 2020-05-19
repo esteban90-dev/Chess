@@ -17,7 +17,7 @@ class Knight
     destinations.select!{ |destination| board.valid_location?(destination) } 
     
     #remove locations that contain allies
-    destinations.reject!{ |destination| board.allied_pieces.include?(destination) }
+    destinations.reject!{ |destination| board.allied_pieces.include?(board.contents(destination)) }
 
     #If in check, select only the locations that result in the removal of check
     if board.active_color_in_check?
@@ -46,14 +46,4 @@ class Knight
     end
     result
   end
-
-
 end
-
-
-require "./lib/board.rb"
-black_knight = Knight.new({:color=>"black"})
-grid = Array.new(8){ Array.new(8) }
-grid[0][0] = black_knight
-board1 = Board.new({:grid=>grid})
-puts black_knight.valid_destinations(board1)
