@@ -209,46 +209,13 @@ describe Board do
   end
 
   context "#disables_check?" do
-    it "returns true if the active color is in check and the given move removes check - (non-capturing move)" do
+    it "returns true if the active color is in check and the given move disables a check condition" do
       black_queen = TestPiece1.new("black","queen",[[0,0],[1,1],[3,3]])
       white_king = TestPiece1.new("white","king",[[3,4]])
       grid[0][3] = black_queen
       grid[3][3] = white_king
       board1 = Board.new({:grid=>grid})
       expect(board1.disables_check?([3,3],[3,4])).to eql(true)
-    end
-
-    it "returns true if the active color is in check and the given move removes check - (capturing move)" do
-      black_queen = TestPiece1.new("black","queen",[[0,0],[1,1],[3,3]])
-      black_knight = TestPiece1.new("black","knight",[])
-      white_king = TestPiece1.new("white","king",[[3,4]])
-      grid[0][3] = black_queen
-      grid[3][4] = black_knight
-      grid[3][3] = white_king
-      board1 = Board.new({:grid=>grid})
-      expect(board1.disables_check?([3,3],[3,4])).to eql(true)
-    end
-
-    it "returns true if the active color is in check and the given move removes check - (en_passant move - white capturing black in the +x direction)" do
-      white_king = TestPiece1.new("white","king",[])
-      white_pawn = TestPiece1.new("white","pawn",[[2,4]])
-      black_pawn = TestPiece1.new("black","pawn",[[4,5]])
-      grid[3][3] = white_pawn
-      grid[4][5] = white_king
-      grid[3][4] = black_pawn
-      board1 = Board.new({:grid=>grid})
-      expect(board1.disables_check?([3,3],[2,4])).to eql(true)
-    end
-
-    it "returns true if the active color is in check and the given move removes check - (en_passant move - white capturing black in the -x direction)" do
-      white_king = TestPiece1.new("white","king",[])
-      white_pawn = TestPiece1.new("white","pawn",[[2,6]])
-      black_pawn = TestPiece1.new("black","pawn",[[4,5]])
-      grid[3][7] = white_pawn
-      grid[4][5] = white_king
-      grid[3][6] = black_pawn
-      board1 = Board.new({:grid=>grid})
-      expect(board1.disables_check?([3,7],[2,6])).to eql(true)
     end
 
     it "returns nil if the active color is not in check" do 
@@ -264,16 +231,7 @@ describe Board do
   end
 
   context "#enables_check?" do
-    it "returns true if the active color is not check and the given move enables a check condition - white move" do
-      white_king = TestPiece1.new("white","king",[[4,5]])
-      black_rook = TestPiece1.new("black","rook",[[3,5],[4,5]])
-      grid[2][5] = black_rook
-      grid[4][4] = white_king
-      board1 = Board.new({:grid=>grid})
-      expect(board1.enables_check?([4,4],[4,5])).to eql(true)
-    end
-
-    it "returns true if the active color is not check and the given move enables a check condition - black move" do
+    it "returns true if the active color is not check and the given move enables a check condition" do
       black_king = TestPiece1.new("black","king",[[4,5]])
       white_rook = TestPiece1.new("white","rook",[[3,5],[4,5]])
       grid[2][5] = white_rook
