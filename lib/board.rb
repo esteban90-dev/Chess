@@ -102,10 +102,8 @@ class Board
     queen_side_castle_move if queen_side_castling?
   end
 
-  def removes_check?(source, destination)
+  def enables_check?(source, destination)
     return nil if !active_color_in_check?
-    return nil if contents(source).nil?
-    return nil if contents(source).color != active_color
 
     result = false
     grid_snapshot = grid.clone
