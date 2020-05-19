@@ -64,7 +64,13 @@ class Board
   end
 
   def move(source, destination)
-    result = check_input(source, destination)
+    #allow the usage of a block if you want custom guard logic
+    if block_given?
+      result = yield(source, destination)
+    else
+      result = check_move_input(source, destination)
+    end
+    
     if result
       history << result
       return
@@ -110,7 +116,7 @@ class Board
     history_snapshot = history.clone
 
     #move piece to destination
-    move(source, destination)
+    move(source, destination){ check_test_move_input(source, destination) }
     
     #see if check cleared
     result = true unless active_color_in_check?
@@ -130,7 +136,7 @@ class Board
     history_snapshot = history.clone
 
     #move piece to destination
-    move(source, destination)
+    move(source, destination){ check_test_move_input(source, destination) }
 
     #see if check condition is active
     result = true if active_color_in_check?
@@ -196,11 +202,19 @@ class Board
     move(rook_current_position, rook_new_position)
   end
 
-  def check_input(source, destination)
+  def check_move_input(source, destination)
     return "invalid move - source cell empty" if contents(source).nil?
     return "invalid move - source cell contains enemy piece" if contents(source).color != active_color
     return "invalid move - source cell matches destination cell" if source == destination
     return "invalid move - #{contents(source).color} #{contents(source).name} can't move from #{source} to #{destination}" if !contents(source).valid_destinations.include?(destination)
+    nil
+  end
+
+  def check_test_move_input(source, destination)
+    #if we are doing a test move as part of #enables_check? or #disables_check, then don't check valid_destinations
+    return "invalid move - source cell empty" if contents(source).nil?
+    return "invalid move - source cell contains enemy piece" if contents(source).color != active_color
+    return "invalid move - source cell matches destination cell" if source == destination
     nil
   end
 end
