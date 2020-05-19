@@ -102,7 +102,7 @@ class Board
     queen_side_castle_move if queen_side_castling?
   end
 
-  def enables_check?(source, destination)
+  def disables_check?(source, destination)
     return nil if !active_color_in_check?
 
     result = false
