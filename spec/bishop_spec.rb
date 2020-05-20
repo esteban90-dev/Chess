@@ -65,6 +65,20 @@ describe Bishop do
       correct_destinations = [[5, 3], [6, 4], [3, 3], [2, 4], [3,1]]
       expect(white_bishop.valid_destinations(board1)).to eql(correct_destinations)
     end
+
+    it "Returns the proper destination(s) if in check" do
+      black_bishop = Bishop.new({:color=>"black"})
+      white_pawn = TestPiece1.new("white","pawn",[],"1")
+      white_rook = TestPiece1.new("white","rook",[[3,7]],"1")
+      black_king = TestPiece1.new("black","king",[],"1")
+      empty_grid[0][5] = black_bishop
+      empty_grid[2][3] = white_pawn
+      empty_grid[2][7] = white_rook
+      empty_grid[3][7] = black_king
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      expect(black_bishop.valid_destinations(board1)).to eql([[2, 7]])
+    end
   end
 
 end
