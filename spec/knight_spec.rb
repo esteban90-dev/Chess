@@ -1,6 +1,6 @@
 require "./lib/knight.rb"
 require "./lib/board.rb"
-require "./lib/build_initial_grid.rb"
+require "./spec/reference/build_initial_grid.rb"
 
 describe Knight do
 
