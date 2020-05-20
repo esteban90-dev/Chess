@@ -49,6 +49,22 @@ describe Bishop do
       correct_destinations = [[4, 4], [5, 5], [6, 6], [7, 7], [4, 2], [5, 1], [6, 0], [2, 4], [1, 5], [0, 6], [2, 2], [1, 1], [0, 0]]
       expect(black_bishop.valid_destinations(board1)).to eql(correct_destinations)
     end
+
+    it "Returns the proper destination(s) if located at [2,4] and the board is also populated with allies and enemies" do
+      white_bishop = Bishop.new({:color=>"white"})
+      white_pawn_1 = TestPiece1.new("white","pawn",[],"1")
+      white_pawn_2 = TestPiece1.new("white","pawn",[],"2")
+      black_pawn_1 = TestPiece1.new("black","pawn",[],"1")
+      black_pawn_2 = TestPiece1.new("black","pawn",[],"2")
+      empty_grid[2][0] = white_pawn_1
+      empty_grid[5][1] = white_pawn_2 
+      empty_grid[4][2] = white_bishop
+      empty_grid[2][4] = black_pawn_1
+      empty_grid[6][4] = black_pawn_2
+      board1 = Board.new({:grid=>empty_grid})
+      correct_destinations = [[5, 3], [6, 4], [3, 3], [2, 4], [3,1]]
+      expect(white_bishop.valid_destinations(board1)).to eql(correct_destinations)
+    end
   end
 
 end
