@@ -31,7 +31,24 @@ describe Bishop do
       bishop1 = Bishop.new({:color=>'white'})
       expect(bishop1.symbol).to eql("\u2657")
     end
+  end
 
+  context "#valid_destinations" do
+    it "Returns the proper destination(s) if located at [0,0] on an empty board" do
+      white_bishop = Bishop.new({:color=>"white"})
+      empty_grid[0][0] = white_bishop
+      board1 = Board.new({:grid=>empty_grid})
+      expect(white_bishop.valid_destinations(board1)).to eql([[1,1],[2,2],[3,3],[4,4],[5,5],[6,6],[7,7]])
+    end
+
+    it "Returns the proper destination(s) if located at [3,3] on an empty board" do
+      black_bishop = Bishop.new({:color=>"black"})
+      empty_grid[3][3] = black_bishop
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      correct_destinations = [[4, 4], [5, 5], [6, 6], [7, 7], [4, 2], [5, 1], [6, 0], [2, 4], [1, 5], [0, 6], [2, 2], [1, 1], [0, 0]]
+      expect(black_bishop.valid_destinations(board1)).to eql(correct_destinations)
+    end
   end
 
 end
