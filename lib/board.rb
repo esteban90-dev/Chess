@@ -110,14 +110,15 @@ class Board
 
   def disables_check?(source, destination)
     return nil if !active_color_in_check?
-
     result = false
-    grid_snapshot = grid.clone
-    history_snapshot = history.clone
 
-    #move piece to destination
+    #backup grid and history
+    grid_snapshot = Marshal.load(Marshal.dump(grid))
+    history_snapshot = Marshal.load(Marshal.dump(history))
+
+    #make the move
     move(source, destination){ check_test_move_input(source, destination) }
-    
+
     #see if check cleared
     result = true unless active_color_in_check?
 
@@ -130,10 +131,11 @@ class Board
 
   def enables_check?(source, destination)
     return nil if active_color_in_check?
-    
     result = false
-    grid_snapshot = grid.clone
-    history_snapshot = history.clone
+
+    #backup grid and history
+    grid_snapshot = Marshal.load(Marshal.dump(grid))
+    history_snapshot = Marshal.load(Marshal.dump(history))
 
     #move piece to destination
     move(source, destination){ check_test_move_input(source, destination) }
