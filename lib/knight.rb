@@ -11,17 +11,25 @@ class Knight
 
   def valid_destinations(board)
     current_position = board.location(self)
+
+    #get all moves
     destinations = all_moves(current_position)
-    
+
     #remove locations not on board
     destinations.select!{ |destination| board.valid_location?(destination) } 
     
     #remove locations that contain allies
-    destinations.reject!{ |destination| board.allied_pieces.include?(board.contents(destination)) }
+    allied_locations = board.allied_pieces.map{ |ally| board.location(ally) }
+    destinations.reject!{ |destination| allied_locations.include?(destination) }
 
     #If in check, select only the locations that result in the removal of check
     if board.active_color_in_check?
-      destinations.select!{ |destination| board.removes_check?(current_position, destination) } 
+      destinations.select!{ |destination| board.disables_check?(current_position, destination) } 
+    end
+
+    #If not in check, reject locations that would result in check
+    if !board.active_color_in_check?
+      destinations.each{ |destination| board.enables_check?(current_position, destination) }
     end
 
     destinations
@@ -41,9 +49,10 @@ class Knight
     result = []
     i = 0
     while i < delta_x.length
-      result << [ position.first[0] + delta_y[i], position.first[1] + delta_x[i] ]
+      result << [ position[0] + delta_y[i], position[1] + delta_x[i] ]
       i += 1
     end
     result
   end
 end
+
