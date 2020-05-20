@@ -43,7 +43,7 @@ class Bishop
 
       #if last position is on the board and contains an enemy piece, add it too
       if board.valid_location?(current_position) && board.contents(current_position)
-        result << current_position if board.contents(current_position).color == board.active_color
+        result << current_position if board.contents(current_position).color != board.active_color
       end
 
       current_position = position
