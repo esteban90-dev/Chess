@@ -9,8 +9,8 @@ participant King
 ----------------------------------------------------------
 Board->Pawn:valid_destinations(self)
 activate Pawn
-note over Pawn:If black:\n- Add [0,-1] if empty\n- Add [0,-2] if empty and first move\n- Add [1,-1] if opponent is there\n- Add [1,-1] if empty and en_passant_pos_allowed?\n- Add [-1,-1] if opponent is there\n- Add [-1,-1] if empty and en_passant_neg_allowed?\n- Remove cells that aren't on the board\n- If in check: remove cells for which removes_check?\n  returns false 
-note over Pawn:If white:\n- Add [0,1] if empty\n- Add [0,2] if empty and first move\n- Add [1,1] if opponent is there\n- Add [1,1] if empty and en_passant_pos_allowed?\n- Add [-1,1] if opponent is there\n- Add [-1,1] if empty and en_passant_neg_allowed?\n- Remove cells that aren't on the board\n- If in check: remove cells for which removes_check?\n  returns false 
+note over Pawn:If black:\n- Add [0,-1] if empty\n- Add [0,-2] if empty and first move\n- Add [1,-1] if opponent is there\n- Add [1,-1] if empty and en_passant_pos_allowed?\n- Add [-1,-1] if opponent is there\n- Add [-1,-1] if empty and en_passant_neg_allowed?\n- Remove cells that aren't on the board\n- If in check: remove destinations for \n  which disables_check? returns false \n- If not in check: removes destinations for \n  which enables_check? returns true
+note over Pawn:If white:\n- Add [0,1] if empty\n- Add [0,2] if empty and first move\n- Add [1,1] if opponent is there\n- Add [1,1] if empty and en_passant_pos_allowed?\n- Add [-1,1] if opponent is there\n- Add [-1,1] if empty and en_passant_neg_allowed?\n- Remove cells that aren't on the board\n- If in check: remove destinations for \n  which disables_check? returns false \n- If not in check: removes destinations for \n  which enables_check? returns true
 Board<--Pawn:valid_destinations
 deactivate Pawn
 
@@ -31,7 +31,7 @@ deactivate Board
 
 Board->Knight:valid_destinations(self)
 activate Knight
-note over Knight:- Add [1,2], [2,1], [2,-1],\n  [1,-2], [-1,-2], [-2,-1], \n  [-2,1], [-1,2]\n- Remove any moves that \n  contain an ally piece\n- Remove any moves that aren’t\n  on the board\n- If in check: remove cells \n  for which removes_check?\n  returns false
+note over Knight:- Add [1,2], [2,1], [2,-1],\n  [1,-2], [-1,-2], [-2,-1], \n  [-2,1], [-1,2]\n- Remove any moves that \n  contain an ally piece\n- Remove any moves that aren’t\n  on the board\n- If in check: remove destinations for \n  which disables_check? returns false \n- If not in check: removes destinations for \n  which enables_check? returns true
 Board<--Knight:valid_destinations
 deactivate Knight
 deactivate Board
@@ -40,7 +40,7 @@ deactivate Board
 
 Board->Bishop:valid_destinations(self)
 activate Bishop
-note over Bishop:- Add diagonal moves in all \n  directions until occupied \n  cell or board limit is found \n- If occupied cell is opponent, \n  add it too\n- If in check: remove cells for \n  which removes_check?\n  returns false
+note over Bishop:- Add diagonal moves in all \n  directions until occupied \n  cell or board limit is found \n- If occupied cell is opponent, \n  add it too\n- If in check: remove destinations for \n  which disables_check? returns false \n- If not in check: removes destinations for \n  which enables_check? returns true
 Board<--Bishop:valid_destinations
 deactivate Bishop
 deactivate Board
@@ -49,7 +49,7 @@ deactivate Board
 
 Board->Rook:valid_destinations(self)
 activate Rook
-note over Rook:- Add all horizontal and\n  vertical moves \n  until occupied cell or \n  board limit is found\n- If occupied cell is opponent, \n  add it too\n- If queenside rook - add cell \n  if queenside castling is allowed\n- If kingside rook - add cell\n  if kingside castling is allowed\n- If in check: remove cells for \n  which removes_check?\n  returns false
+note over Rook:- Add all horizontal and\n  vertical moves \n  until occupied cell or \n  board limit is found\n- If occupied cell is opponent, \n  add it too\n- If queenside rook - add cell \n  if queenside castling is allowed\n- If kingside rook - add cell\n  if kingside castling is allowed\n- If in check: remove destinations for \n  which disables_check? returns false \n- If not in check: removes destinations for \n  which enables_check? returns true
 Board<--Rook:valid_destinations
 deactivate Rook
 deactivate Board
@@ -58,7 +58,7 @@ deactivate Board
 
 Board->Queen:valid_destinations(self)
 activate Queen
-note over Queen:- Add all vertical and diagonal \n  moves until occupied cell or \n  board limit is found\n- If occupied cell is opponent, \n  add it too\n- If in check: remove cells for \n  which removes_check?\n  returns false
+note over Queen:- Add all vertical and diagonal \n  moves until occupied cell or \n  board limit is found\n- If occupied cell is opponent, \n  add it too\n- If in check: remove destinations for \n  which disables_check? returns false \n- If not in check: removes destinations for \n  which enables_check? returns true
 direction until occupied cell or 
 board limit is found
 - If occupied cell is opponent, add it too
@@ -71,7 +71,7 @@ deactivate Board
 
 Board->King:valid_destinations(self)
 activate King
-note over King:- Add all adjacent cells\n- Remove cells that are \n  occupied by allies\n- Remove cells for which \n  under_threat? returns true\n- Remove cells that aren’t \n  on the board
+note over King:- Add all adjacent cells\n- Remove cells that are \n  occupied by allies\n- Remove cells that aren’t \n  on the board\n- If in check: remove destinations for \n  which disables_check? returns false \n- If not in check: removes destinations for \n  which enables_check? returns true\n
 note over King:Queenside castling:\n- Add [-3,0] if not in check, and \n  king nor the queen side \n  rook to the have moved yet
 note over King:Kingside castling:\n- Add [2,0] if not in check, and \n  king nor the king side \n  rook to the have moved yet
 Board<--King:valid_destinations
