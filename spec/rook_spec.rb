@@ -33,4 +33,16 @@ describe Rook do
     end
   end
 
+  context "#valid_destinations" do
+    it "Returns the proper destination(s) if located at [0,0] on an empty board" do
+      rook1 = Rook.new({:color=>'black'})
+      empty_grid[0][0] = rook1
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      correct_destinations = [[1, 0], [2, 0], [3, 0], [4, 0], [5, 0], [6, 0], 
+              [7, 0], [0, 1], [0, 2], [0, 3], [0, 4], [0, 5], [0, 6], [0, 7]]
+      expect(rook1.valid_destinations(board1)).to eql(correct_destinations)
+    end
+  end
+
 end
