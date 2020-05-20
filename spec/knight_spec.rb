@@ -1,5 +1,6 @@
 require "./lib/knight.rb"
 require "./lib/board.rb"
+require "./lib/build_initial_grid.rb"
 
 describe Knight do
 
@@ -60,7 +61,7 @@ describe Knight do
     end  
 
     it "Returns the proper destination(s) if surrounded by allies and enemies" do
-      white_knight = Knight.new({:color=>"black"})
+      white_knight = Knight.new({:color=>"white"})
       white_pawn_1 = TestPiece1.new("white", "pawn", [], 1)
       white_pawn_2 = TestPiece1.new("white", "pawn", [], 2)
       white_pawn_3 = TestPiece1.new("white", "pawn", [], 3)
@@ -81,78 +82,19 @@ describe Knight do
       board1 = Board.new({:grid=>empty_grid})
       expect(white_knight.valid_destinations(board1)).to eql([[5,5],[1,5],[2,2],[4,2]])
     end
+
+    it "Returns the proper destination(s) if in check" do
+      white_knight = Knight.new({:color=>"white"})
+      white_king = TestPiece1.new("white", "king", [], 1)
+      black_pawn = TestPiece1.new("black", "pawn", [[3,4]], 1)
+      empty_grid[3][4] = white_king
+      empty_grid[2][3] = black_pawn
+      empty_grid[4][2] = white_knight
+      board1 = Board.new({:grid=>empty_grid})
+      expect(white_knight.valid_destinations(board1)).to eql([[2,3]])
+    end
   end
 end
 
 
 
-def build_initial_grid
-  initial_grid = Array.new(8){ Array.new(8) }
-  black_rook_1 = TestPiece1.new("black", "rook", [], 1)
-  black_rook_2 = TestPiece1.new("black", "rook", [], 2)
-  black_knight_1 = TestPiece1.new("black", "knight", [], 1)
-  black_knight_2 = TestPiece1.new("black", "knight", [], 2)
-  black_bishop_1 = TestPiece1.new("black", "bishop", [], 1)
-  black_bishop_2 = TestPiece1.new("black", "bishop", [], 2)
-  black_queen = TestPiece1.new("black", "queen", [], 1)
-  black_king = TestPiece1.new("black", "king", [], 1)
-  black_pawn_1 = TestPiece1.new("black", "pawn", [], 1)
-  black_pawn_2 = TestPiece1.new("black", "pawn", [], 2)
-  black_pawn_3 = TestPiece1.new("black", "pawn", [], 3)
-  black_pawn_4 = TestPiece1.new("black", "pawn", [], 4)
-  black_pawn_5 = TestPiece1.new("black", "pawn", [], 5)
-  black_pawn_6 = TestPiece1.new("black", "pawn", [], 6)
-  black_pawn_7 = TestPiece1.new("black", "pawn", [], 7)
-  black_pawn_8 = TestPiece1.new("black", "pawn", [], 8)
-  initial_grid[0][0] = black_rook_1
-  initial_grid[0][1] = black_knight_1
-  initial_grid[0][2] = black_bishop_1
-  initial_grid[0][3] = black_queen
-  initial_grid[0][4] = black_king
-  initial_grid[0][5] = black_bishop_2  
-  initial_grid[0][6] = black_knight_2
-  initial_grid[0][7] = black_rook_2 
-  initial_grid[1][0] = black_pawn_1
-  initial_grid[1][1] = black_pawn_2 
-  initial_grid[1][2] = black_pawn_3 
-  initial_grid[1][3] = black_pawn_4 
-  initial_grid[1][4] = black_pawn_5 
-  initial_grid[1][5] = black_pawn_6 
-  initial_grid[1][6] = black_pawn_7 
-  initial_grid[1][7] = black_pawn_8 
-
-  white_rook_1 = TestPiece1.new("white", "rook", [], 1)
-  white_rook_2 = TestPiece1.new("white", "rook", [], 2)
-  white_knight_1 = TestPiece1.new("white", "knight", [], 1)
-  white_knight_2 = TestPiece1.new("white", "knight", [], 2)
-  white_bishop_1 = TestPiece1.new("white", "bishop", [], 1)
-  white_bishop_2 = TestPiece1.new("white", "bishop", [], 2)
-  white_queen = TestPiece1.new("white", "queen", [], 1)
-  white_king = TestPiece1.new("white", "king", [], 1)
-  white_pawn_1 = TestPiece1.new("white", "pawn", [], 1)
-  white_pawn_2 = TestPiece1.new("white", "pawn", [], 2)
-  white_pawn_3 = TestPiece1.new("white", "pawn", [], 3)
-  white_pawn_4 = TestPiece1.new("white", "pawn", [], 4)
-  white_pawn_5 = TestPiece1.new("white", "pawn", [], 5)
-  white_pawn_6 = TestPiece1.new("white", "pawn", [], 6)
-  white_pawn_7 = TestPiece1.new("white", "pawn", [], 7)
-  white_pawn_8 = TestPiece1.new("white", "pawn", [], 8)
-  initial_grid[7][0] = white_rook_1
-  initial_grid[7][1] = white_knight_1
-  initial_grid[7][2] = white_bishop_1
-  initial_grid[7][3] = white_queen
-  initial_grid[7][4] = white_king
-  initial_grid[7][5] = white_bishop_2  
-  initial_grid[7][6] = white_knight_2
-  initial_grid[7][7] = white_rook_2 
-  initial_grid[6][0] = white_pawn_1
-  initial_grid[6][1] = white_pawn_2 
-  initial_grid[6][2] = white_pawn_3 
-  initial_grid[6][3] = white_pawn_4 
-  initial_grid[6][4] = white_pawn_5 
-  initial_grid[6][5] = white_pawn_6 
-  initial_grid[6][6] = white_pawn_7 
-  initial_grid[6][7] = white_pawn_8 
-
-  initial_grid
-end
