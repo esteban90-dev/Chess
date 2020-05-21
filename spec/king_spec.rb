@@ -42,4 +42,27 @@ describe King do
     end
   end
 
+  it "Returns the proper destination(s) if located at [4,4] on an empty board" do
+    black_king = King.new({:color=>"black"})
+    empty_grid[4][4] = black_king
+    board1 = Board.new({:grid=>empty_grid})
+    board1.swap_color
+    expected = [[5, 4], [5, 3], [4, 3], [3, 3], [3, 4], [3, 5], [4, 5], [5, 5]]
+    expect(black_king.valid_destinations(board1)).to eql(expected)
+  end
+
+  it "Returns the proper destination(s) if located at [4,5] and the board is also populated with allies and enemies" do
+    white_king = King.new({:color=>"white"})
+    white_pawn_1 = TestPiece1.new("white","pawn",[],"1")
+    white_pawn_2 = TestPiece1.new("white","pawn",[],"2")
+    black_pawn_1 = TestPiece1.new("black","pawn",[],"1")
+    empty_grid[3][7] = white_king 
+    empty_grid[2][7] = white_pawn_1
+    empty_grid[4][6] = white_pawn_2
+    empty_grid[4][7] = black_pawn_1
+    board1 = Board.new({:grid=>empty_grid})
+    expected = [[4,7],[3,6],[2,6]]
+    expect(white_king.valid_destinations(board1)).to eql(expected)
+  end
+
 end
