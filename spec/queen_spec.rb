@@ -57,7 +57,7 @@ describe Queen do
     end
 
     it "Returns the proper destination(s) if located at [4,5] and the board is also populated with allies and enemies" do
-      black_queen = Queen.new({:color=>"queen"})
+      black_queen = Queen.new({:color=>"black"})
       black_pawn = TestPiece1.new("black","pawn",[],"1")
       white_pawn = TestPiece1.new("white","pawn",[],"1")
       white_knight_1 = TestPiece1.new("white","knight",[],"1")
@@ -73,6 +73,31 @@ describe Queen do
                   [5,6],[5,4],[6,3],[7,2],[3,6],[2,7],[3,4],
                   [2,3],[1,2],[0,1]]
       expect(black_queen.valid_destinations(board1)).to eql(expected)
+    end
+
+    it "Returns the proper destination(s) if in check" do
+      black_queen = Queen.new({:color=>"black"})
+      white_queen = TestPiece1.new("white","queen",[[2,2]],"1")
+      black_king = TestPiece1.new("black","king",[],"1")
+      empty_grid[4][5] = black_queen
+      empty_grid[4][2] = white_queen
+      empty_grid[2][2] = black_king
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      expect(black_queen.valid_destinations(board1)).to eql([[4,2]])
+    end
+
+    it "Returns [] if there are no valid destinations" do
+      white_queen = Queen.new({:color=>"white"})
+      white_pawn_1 = TestPiece1.new("white","pawn",[],"1")
+      white_pawn_2 = TestPiece1.new("white","pawn",[],"2")
+      white_pawn_3 = TestPiece1.new("white","pawn",[],"3")
+      empty_grid[0][0] = white_queen
+      empty_grid[0][1] = white_pawn_1
+      empty_grid[1][0] = white_pawn_2
+      empty_grid[1][1] = white_pawn_3
+      board1 = Board.new({:grid=>empty_grid})
+      expect(white_queen.valid_destinations(board1)).to eql([])
     end
   end
 
