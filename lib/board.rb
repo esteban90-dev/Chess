@@ -70,7 +70,7 @@ class Board
     else
       result = check_move_input(source, destination)
     end
-    
+
     if result
       history << result
       return
@@ -189,7 +189,7 @@ class Board
   def king_side_castle_move
     rook_current_position = [history.last[2][0], history.last[2][1] + 1]
     rook_new_position = [history.last[2][0], history.last[2][1] - 1]
-    move(rook_current_position, rook_new_position)
+    move(rook_current_position, rook_new_position){ check_test_move_input(rook_current_position, rook_new_position) }
   end
 
   def queen_side_castling?
@@ -201,7 +201,7 @@ class Board
   def queen_side_castle_move
     rook_current_position = [history.last[2][0], history.last[2][1] - 1]
     rook_new_position = [history.last[2][0], history.last[2][1] + 1]
-    move(rook_current_position, rook_new_position)
+    move(rook_current_position, rook_new_position){ check_test_move_input(rook_current_position, rook_new_position) }
   end
 
   def check_move_input(source, destination)
@@ -213,7 +213,8 @@ class Board
   end
 
   def check_test_move_input(source, destination)
-    #if we are doing a test move as part of #enables_check? or #disables_check, then don't check valid_destinations
+    #if we are doing a test move as part of #enables_check?, #disables_check, or the automatic rook movement with castling,
+    #then don't check valid_destinations
     return "invalid move - source cell empty" if contents(source).nil?
     return "invalid move - source cell contains enemy piece" if contents(source).color != active_color
     return "invalid move - source cell matches destination cell" if source == destination
