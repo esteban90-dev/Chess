@@ -79,6 +79,17 @@ describe Bishop do
       board1.swap_color
       expect(black_bishop.valid_destinations(board1)).to eql([[2, 7]])
     end
+
+    it "Returns [] if there are no valid destinations" do
+      white_bishop = Bishop.new({:color=>"white"})
+      white_pawn_1 = TestPiece1.new("white","pawn",[],"1")
+      white_pawn_2 = TestPiece1.new("white","pawn",[],"2")
+      empty_grid[7][5] = white_bishop
+      empty_grid[6][4] = white_pawn_1
+      empty_grid[6][6] = white_pawn_2
+      board1 = Board.new({:grid=>empty_grid})
+      expect(white_bishop.valid_destinations(board1)).to eql([])
+    end
   end
 
 end
