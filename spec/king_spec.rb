@@ -33,4 +33,13 @@ describe King do
     end
   end
 
+  context "#valid_destinations" do
+    it "Returns the proper destination(s) if located at [0,0] on an empty board" do
+      white_king = King.new({:color=>"white"})
+      empty_grid[0][0] = white_king
+      board1 = Board.new({:grid=>empty_grid})
+      expect(white_king.valid_destinations(board1)).to eql([[1, 0], [0, 1], [1, 1]])
+    end
+  end
+
 end
