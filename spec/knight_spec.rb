@@ -93,6 +93,20 @@ describe Knight do
       board1 = Board.new({:grid=>empty_grid})
       expect(white_knight.valid_destinations(board1)).to eql([[2,3]])
     end
+
+    it "Returns [] if there are no valid destinations" do
+      black_knight = Knight.new({:color=>"black"})
+      black_pawn_1 = TestPiece1.new("black","pawn",[],"1")
+      black_pawn_2 = TestPiece1.new("black","pawn",[],"2")
+      black_pawn_3 = TestPiece1.new("black","pawn",[],"3")
+      empty_grid[0][1] = black_knight
+      empty_grid[2][0] = black_pawn_1
+      empty_grid[2][2] = black_pawn_2
+      empty_grid[1][3] = black_pawn_3
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      expect(black_knight.valid_destinations(board1)).to eql([])
+    end
   end
 end
 
