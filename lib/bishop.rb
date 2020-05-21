@@ -10,10 +10,10 @@ class Bishop
   public
 
   def valid_destinations(board)
-    #get all moves
     current_position = board.location(self)
-    destinations = []
-    destinations = diagonals(board, current_position)
+
+    #get all possible destinations
+    destinations = all_destinations(board, current_position)
 
     #If in check, select only the locations that result in the removal of check
     if board.active_color_in_check?
@@ -35,32 +35,28 @@ class Bishop
     "\u2657"
   end
 
-  def diagonals(board, position)
-    #return all diagonal positions until 
-    #board limit or another piece is reached.  
-    current_position = position
-    result = []
-    i = 0
+  def all_destinations(board, current_position)
+    destinations = []
     y_direction = [1,1,-1,-1]
     x_direction = [1,-1,1,-1]
+    i = 0
     
     while i < y_direction.length
+      new_position = current_position 
       loop do
-        current_position = [current_position[0] + y_direction[i], current_position[1] + x_direction[i]]
-        break unless board.valid_location?(current_position)
-        break unless board.contents(current_position).nil?
-        result << current_position
+        new_position = [new_position[0] + y_direction[i], new_position[1] + x_direction[i]]
+        break unless board.valid_location?(new_position)
+        break unless board.contents(new_position).nil?
+        destinations << new_position
       end
 
       #if last position is on the board and contains an enemy piece, add it too
-      if board.valid_location?(current_position) && board.contents(current_position)
-        result << current_position if board.contents(current_position).color != board.active_color
+      if board.valid_location?(new_position) && board.contents(new_position)
+        destinations << new_position if board.contents(new_position).color != board.active_color
       end
-
-      current_position = position
       i += 1
     end
-    result
+    destinations
   end
 
 end
