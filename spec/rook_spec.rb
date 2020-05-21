@@ -81,6 +81,17 @@ describe Rook do
       board1.swap_color
       expect(black_rook.valid_destinations(board1)).to eql([[1, 1]])
     end
+
+    it "Returns [] if there are no valid destinations" do
+      white_rook = Rook.new({:color=>"white"})
+      white_pawn = TestPiece1.new("white","pawn",[],"1")
+      white_knight = TestPiece1.new("white","knight",[],"1")
+      empty_grid[7][7] = white_rook
+      empty_grid[7][6] = white_knight
+      empty_grid[6][7] = white_pawn
+      board1 = Board.new({:grid=>empty_grid})
+      expect(white_rook.valid_destinations(board1)).to eql([])
+    end
   end
 
 end
