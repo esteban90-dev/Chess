@@ -33,4 +33,13 @@ describe Pawn do
     end
   end
 
+  context "#valid_destinations" do
+    it "Returns the proper destination(s) if located at [2,0] on an empty board" do
+      pawn_1 = Pawn.new({:color=>'white'})
+      empty_grid[2][0] = pawn_1
+      board1 = Board.new({:grid=>empty_grid})
+      expect(pawn_1.valid_destinations(board1)).to eql([[3,0],[4,0]])
+    end
+  end
+
 end
