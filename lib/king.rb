@@ -61,16 +61,41 @@ class King
   end
 
   def kingside_castling_allowed?(board, current_position)
-    #return false if the king or the kingside rook have moved before
     return false if board.history.any?{ |entry| entry[0] == self }
-    rook_location = [current_position[0], current_position[1] + 3]
-    return false if board.contents(rook_location).nil?
-    return false if board.contents(rook_location).name != "rook"
-    return false if board.history.any?{ |entry| entry[0] == board.contents(rook_location) }
-    #return false if there are other pieces in between
-    return false unless board.contents([current_position[0], current_position[1] + 1]).nil?
-    return false unless board.contents([current_position[0], current_position[1] + 2]).nil?
+    rook_position = [current_position[0], current_position[1] + 3]
+    return false unless castling_rook?(board, rook_position)
+    return false unless row_space_between?(board, current_position, rook_position)
     true
+  end
+
+  def castling_rook?(board, rook_position)
+    return false if board.contents(rook_position).nil?
+    return false if board.contents(rook_position).name != "rook"
+    return false if board.history.any?{ |entry| entry[0] == board.contents(rook_position) }
+    true
+  end
+
+  def row_space_between?(board, position_1, position_2)
+    return false if position_1 == position_2
+    result = 0
+    if position_1[1] < position_2[1]
+      current_position = position_1
+      direction = 1
+      until current_position == position_2
+        result = true
+        result = false if board.contents(current_position)
+        current_position = [current_position[0],current_position[1] + direction]
+      end
+    else
+      current_position = position_2
+      direction = -1
+      until current_position == position_2
+        result = true
+        result = false if board.contents(current_position)
+        current_position = [current_position[0],current_position[1] + direction]
+      end
+    end
+    result
   end
 
 end
