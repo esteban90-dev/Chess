@@ -50,6 +50,9 @@ class King
     #add location if kingside castling is allowed
     destinations << [current_position[0], current_position[1] + 2] if kingside_castling_allowed?(board, current_position)
 
+    #add location if queenside castling is allowed
+    destinations << [current_position[0], current_position[1] - 3] if queenside_castling_allowed?(board, current_position)
+
     #remove locations not on board
     destinations.select!{ |destinations| board.valid_location?(destinations) } 
 
@@ -63,6 +66,14 @@ class King
   def kingside_castling_allowed?(board, current_position)
     return false if board.history.any?{ |entry| entry[0] == self }
     rook_position = [current_position[0], current_position[1] + 3]
+    return false unless castling_rook?(board, rook_position)
+    return false unless row_space_between?(board, current_position, rook_position)
+    true
+  end
+
+  def queenside_castling_allowed?(board, current_position)
+    return false if board.history.any?{ |entry| entry[0] == self }
+    rook_position = [current_position[0], current_position[1] - 4]
     return false unless castling_rook?(board, rook_position)
     return false unless row_space_between?(board, current_position, rook_position)
     true
