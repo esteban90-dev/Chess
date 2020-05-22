@@ -47,6 +47,9 @@ class King
       i += 1
     end
 
+    #add location if kingside castling is allowed
+    destinations << [current_position[0], current_position[1] + 2] if kingside_castling_allowed?(board, current_position)
+
     #remove locations not on board
     destinations.select!{ |destinations| board.valid_location?(destinations) } 
 
@@ -55,6 +58,19 @@ class King
     destinations.reject!{ |move| allied_locations.include?(move) }
 
     destinations
+  end
+
+  def kingside_castling_allowed?(board, current_position)
+    #return false if the king or the kingside rook have moved before
+    return false if board.history.any?{ |entry| entry[0] == self }
+    rook_location = [current_position[0], current_position[1] + 3]
+    return false if board.contents(rook_location).nil?
+    return false if board.contents(rook_location).name != "rook"
+    return false if board.history.any?{ |entry| entry[0] == board.contents(rook_location) }
+    #return false if there are other pieces in between
+    return false unless board.contents([current_position[0], current_position[1] + 1]).nil?
+    return false unless board.contents([current_position[0], current_position[1] + 2]).nil?
+    true
   end
 
 end
