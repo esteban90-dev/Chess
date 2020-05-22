@@ -22,7 +22,7 @@ class Rook
 
     #If not in check, reject locations that would result in check
     if !board.active_color_in_check?
-      destinations.each{ |destination| board.enables_check?(current_position, destination) }
+      destinations.reject!{ |destination| board.enables_check?(current_position, destination) }
     end
 
     destinations
