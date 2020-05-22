@@ -86,6 +86,63 @@ describe King do
       expect(black_king.valid_destinations(board1)).to eql(expected)
     end
 
+    it "Returns the proper destination(s) if kingside castling is allowed - white" do
+      white_king = King.new({:color=>"white"})
+      white_rook = TestPiece1.new("white","rook",[],"1")
+      empty_grid[7][4] = white_king
+      empty_grid[7][7] = white_rook
+      board1 = Board.new({:grid=>empty_grid})
+      expected = [[7,3],[6,3],[6,4],[6,5],[7,5],[7,6]]
+      expect(white_king.valid_destinations(board1)).to eql(expected)
+    end
+
+    it "Returns the proper destination(s) if kingside castling is allowed - black" do
+      black_king = King.new({:color=>"black"})
+      black_rook = TestPiece1.new("black","rook",[],"1")
+      empty_grid[0][4] = black_king
+      empty_grid[0][7] = black_rook
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      expected = [[1,4],[1,3],[0,3],[0,5],[1,5],[0,6]]
+      expect(black_king.valid_destinations(board1)).to eql(expected)
+    end
+
+    it "Returns the proper destination(s) if kingside castling is NOT allowed - king already moved" do
+      white_king = King.new({:color=>"white"})
+      white_rook = TestPiece1.new("white","rook",[],"1")
+      empty_grid[7][4] = white_king
+      empty_grid[7][7] = white_rook
+      board1 = Board.new({:grid=>empty_grid})
+      board1.history << [white_king,[7,4],[7,5],nil]
+      board1.history << [white_king,[7,5],[7,4],nil]
+      expected = [[7,3],[6,3],[6,4],[6,5],[7,5]]
+      expect(white_king.valid_destinations(board1)).to eql(expected)
+    end
+
+    it "Returns the proper destination(s) if kingside castling is NOT allowed - rook already moved" do
+      white_king = King.new({:color=>"white"})
+      white_rook = TestPiece1.new("white","rook",[],"1")
+      empty_grid[7][4] = white_king
+      empty_grid[7][7] = white_rook
+      board1 = Board.new({:grid=>empty_grid})
+      board1.history << [white_rook,[7,7],[7,6],nil]
+      board1.history << [white_king,[7,6],[7,7],nil]
+      expected = [[7,3],[6,3],[6,4],[6,5],[7,5]]
+      expect(white_king.valid_destinations(board1)).to eql(expected)
+    end
+
+    it "Returns the proper destination(s) if kingside castling is NOT allowed - piece in the way" do
+      white_king = King.new({:color=>"white"})
+      white_rook = TestPiece1.new("white","rook",[],"1")
+      white_knight = TestPiece1.new("white","knight",[],"1")
+      empty_grid[7][4] = white_king
+      empty_grid[7][6] = white_knight
+      empty_grid[7][7] = white_rook
+      board1 = Board.new({:grid=>empty_grid})
+      expected = [[7,3],[6,3],[6,4],[6,5],[7,5]]
+      expect(white_king.valid_destinations(board1)).to eql(expected)
+    end
+
     it "Returns [] if there are no valid destinations" do
       black_king = King.new({:color=>"black"})
       initial_grid[0][4] = black_king
