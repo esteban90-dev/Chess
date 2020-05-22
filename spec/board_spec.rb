@@ -255,6 +255,7 @@ describe Board do
     end
   end
 
+=begin  
   context "#move" do
     it "moves a white piece that makes no capture" do
       white_pawn = TestPiece1.new("white","pawn",[[5,1],[4,1]])
@@ -417,4 +418,5 @@ describe Board do
       expect(board1.history.last).to eql("invalid move - white pawn can't move from [6, 1] to [3, 1]")
     end
   end
+=end
 end
