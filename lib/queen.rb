@@ -1,4 +1,7 @@
-class Queen
+require "./lib/piece.rb"
+
+class Queen < Piece
+=begin  
   attr_reader :color, :symbol, :name
 
   def initialize(input)
@@ -27,6 +30,8 @@ class Queen
 
     destinations
   end
+
+=end  
 
   private
 
