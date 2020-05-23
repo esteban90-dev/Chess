@@ -36,6 +36,34 @@ class Pawn
   end
 
   def all_destinations(board, current_position)
-    
+    destinations = []
+
+    #set direction: + if white, - if black
+    direction = 1  if self.color == 'white'
+    direction = -1 if self.color == 'black'
+
+    #add cell in the +1 forward direction if empty
+    forward_cell_position_1 = [current_position[0] + direction, current_position[1]]
+    destinations << forward_cell_position_1 if board.contents(forward_cell_position_1).nil?
+
+    #if pawn hasn't moved yet, and forward_cell_position_1 is empty - add cell in the +2 forward direction if empty
+    if board.history.none?{ |entry| entry[0] == self }
+      forward_cell_position_2 = [current_position[0] + (direction*2), current_position[1]]
+      destinations << forward_cell_position_2 unless destinations.empty?
+    end
+
+    #add diagonal cell (+x direction) if it is a valid location and contains an enemy
+    diagonal_cell_pos_position = [current_position[0] + direction, current_position[1] + 1]
+    if board.valid_location?(diagonal_cell_pos_position) && board.contents(diagonal_cell_pos_position)
+      destinations << diagonal_cell_pos_position if board.contents(diagonal_cell_pos_position).color != self.color
+    end
+
+    #add diagonal cell (-x direction) if it is a valid location and contains an enemy
+    diagonal_cell_neg_position = [current_position[0] + direction, current_position[1] - 1]
+    if board.valid_location?(diagonal_cell_neg_position) && board.contents(diagonal_cell_neg_position)
+      destinations << diagonal_cell_neg_position if board.contents(diagonal_cell_neg_position).color != self.color
+    end
+
+    destinations
   end
 end
