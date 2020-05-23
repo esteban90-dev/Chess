@@ -39,8 +39,8 @@ class Pawn
     destinations = []
 
     #set direction: + if white, - if black
-    direction = 1  if self.color == 'white'
-    direction = -1 if self.color == 'black'
+    direction = -1  if self.color == 'white'
+    direction = 1 if self.color == 'black'
 
     #add cell in the +1 forward direction if empty
     forward_cell_position_1 = [current_position[0] + direction, current_position[1]]
