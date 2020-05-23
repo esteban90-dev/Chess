@@ -143,9 +143,81 @@ describe Pawn do
       empty_grid[3][2] = white_pawn_1
       empty_grid[3][1] = black_pawn_1
       board1 = Board.new({:grid=>empty_grid})
+      board1.history << [white_pawn_1, [4,2], [3,2], nil]
       board1.history << [black_pawn_1, [1,1], [3,1], nil]
       expect(white_pawn_1.valid_destinations(board1)).to eql([[2,2],[2,1]])
     end
-  end
 
+    it "Returns the proper destination(s) if black pawn is located at [4,4] and en passant to [5,3] is allowed" do
+      black_pawn_1 = Pawn.new({:color=>'black'})
+      white_pawn_1 = TestPiece1.new("white","pawn",[],"1")
+      empty_grid[4][4] = black_pawn_1
+      empty_grid[4][3] = white_pawn_1
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      board1.history << [black_pawn_1, [3,4], [4,4], nil]
+      board1.history << [white_pawn_1, [6,3], [4,3], nil]
+      expect(black_pawn_1.valid_destinations(board1)).to eql([[5,4],[5,3]])
+    end
+
+    it "Returns the proper destination(s) if white pawn is located at [3,2] and en passant to [2,3] is allowed" do
+      white_pawn_1 = Pawn.new({:color=>'white'})
+      black_pawn_1 = TestPiece1.new("black","pawn",[],"1")
+      empty_grid[3][2] = white_pawn_1
+      empty_grid[3][3] = black_pawn_1
+      board1 = Board.new({:grid=>empty_grid})
+      board1.history << [white_pawn_1, [4,2], [3,2], nil]
+      board1.history << [black_pawn_1, [1,1], [3,3], nil]
+      expect(white_pawn_1.valid_destinations(board1)).to eql([[2,2],[2,3]])
+    end
+
+    it "Returns the proper destination(s) if black pawn is located at [4,4] and en passant to [5,5] is allowed" do
+      black_pawn_1 = Pawn.new({:color=>'black'})
+      white_pawn_1 = TestPiece1.new("white","pawn",[],"1")
+      empty_grid[4][4] = black_pawn_1
+      empty_grid[4][5] = white_pawn_1
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      board1.history << [black_pawn_1, [3,4], [4,4], nil]
+      board1.history << [white_pawn_1, [6,5], [4,5], nil]
+      expect(black_pawn_1.valid_destinations(board1)).to eql([[5,4],[5,5]])
+    end
+
+    it "Returns the proper destination(s) if white pawn is located at [3,2] and en passant to [2,1] is not allowed (enemy pawn move not most recent)" do
+      white_pawn_1 = Pawn.new({:color=>'white'})
+      black_pawn_1 = TestPiece1.new("black","pawn",[],"1")
+      black_pawn_2 = TestPiece1.new("black","pawn",[],"2")
+      empty_grid[3][2] = white_pawn_1
+      empty_grid[3][1] = black_pawn_1
+      empty_grid[6][2] = black_pawn_2
+      board1 = Board.new({:grid=>empty_grid})
+      board1.history << [white_pawn_1, [4,2], [3,2], nil]
+      board1.history << [black_pawn_1, [1,1], [3,1], nil]
+      board1.history << [black_pawn_2, [6,1], [6,2], nil]
+      expect(white_pawn_1.valid_destinations(board1)).to eql([[2,2]])
+    end
+
+    it "Returns the proper destination(s) if white pawn is located at [3,2] and en passant to [2,1] is not allowed (enemy pawn moved more than once)" do
+      white_pawn_1 = Pawn.new({:color=>'white'})
+      black_pawn_1 = TestPiece1.new("black","pawn",[],"1")
+      empty_grid[3][2] = white_pawn_1
+      empty_grid[3][1] = black_pawn_1
+      board1 = Board.new({:grid=>empty_grid})
+      board1.history << [white_pawn_1, [4,2], [3,2], nil]
+      board1.history << [black_pawn_1, [1,1], [2,1], nil]
+      board1.history << [black_pawn_1, [2,1], [3,1], nil]
+      expect(white_pawn_1.valid_destinations(board1)).to eql([[2,2]])
+    end
+
+    it "Returns the proper destination(s) if white pawn is located at [4,2] and en passant to [3,1] is not allowed (this pawn is not on his 5th rank)" do
+      white_pawn_1 = Pawn.new({:color=>'white'})
+      black_pawn_1 = TestPiece1.new("black","pawn",[],"1")
+      empty_grid[4][2] = white_pawn_1
+      empty_grid[4][1] = black_pawn_1
+      board1 = Board.new({:grid=>empty_grid})
+      board1.history << [white_pawn_1, [5,2], [4,2], nil]
+      board1.history << [black_pawn_1, [3,1], [4,1], nil]
+      expect(white_pawn_1.valid_destinations(board1)).to eql([[3,2]])
+    end
+  end
 end
