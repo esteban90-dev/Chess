@@ -34,106 +34,117 @@ describe Pawn do
   end
 
   context "#valid_destinations" do
-    it "Returns the proper destination(s) if white pawn is located at [2,0] on an empty board" do
-      white_pawn_1 = Pawn.new({:color=>'white'})
-      empty_grid[2][0] = white_pawn_1
-      board1 = Board.new({:grid=>empty_grid})
-      expect(white_pawn_1.valid_destinations(board1)).to eql([[3,0],[4,0]])
-    end
-
-    it "Returns the proper destination(s) if black pawn is located at [6,3] on an empty board" do
+    it "Returns the proper destination(s) if black pawn is located at [2,0] on an empty board" do
       black_pawn_1 = Pawn.new({:color=>'black'})
-      empty_grid[6][3] = black_pawn_1
-      board1 = Board.new({:grid=>empty_grid})
-      board1.swap_color
-      expect(black_pawn_1.valid_destinations(board1)).to eql([[5,3],[4,3]])
-    end
-
-    it "Returns the proper destination(s) if white pawn is located at [3,0] on an empty board and has already moved" do
-      white_pawn_1 = Pawn.new({:color=>'white'})
-      empty_grid[3][0] = white_pawn_1
-      board1 = Board.new({:grid=>empty_grid})
-      board1.history << [white_pawn_1, [2,0], [3,0], nil]
-      expect(white_pawn_1.valid_destinations(board1)).to eql([[4,0]])
-    end
-
-    it "Returns the proper destination(s) if black pawn is located at [5,3] on an empty board and has already moved" do
-      black_pawn_1 = Pawn.new({:color=>'black'})
-      empty_grid[5][3] = black_pawn_1
-      board1 = Board.new({:grid=>empty_grid})
-      board1.swap_color
-      board1.history << [black_pawn_1, [6,3], [5,3], nil]
-      expect(black_pawn_1.valid_destinations(board1)).to eql([[4,3]])
-    end
-
-    it "Returns [] if white pawn is located at [3,1] and there is an enemy at [4,1]" do
-      white_pawn_1 = Pawn.new({:color=>'white'})
-      black_pawn_1 = TestPiece1.new("black","pawn",[],"1")
-      empty_grid[3][1] = white_pawn_1
-      empty_grid[4][1] = black_pawn_1
-      board1 = Board.new({:grid=>empty_grid})
-      expect(white_pawn_1.valid_destinations(board1)).to eql([])
-    end
-
-    it "Returns the proper destination(s) if white pawn is located at [1,1] and there is an enemy at [2,2]" do
-      white_pawn_1 = Pawn.new({:color=>'white'})
-      black_pawn_1 = TestPiece1.new("black","pawn",[],"1")
-      empty_grid[1][1] = white_pawn_1
-      empty_grid[2][2] = black_pawn_1
-      board1 = Board.new({:grid=>empty_grid})
-      expect(white_pawn_1.valid_destinations(board1)).to eql([[2,1],[3,1],[2,2]])
-    end
-
-    it "Returns the proper destination(s) if black pawn is located at [6,4] and there is an enemy at [5,5]" do
-      black_pawn_1 = Pawn.new({:color=>'black'})
-      white_pawn_1 = TestPiece1.new("white","pawn",[],"1")
-      empty_grid[6][4] = black_pawn_1
-      empty_grid[5][5] = white_pawn_1
-      board1 = Board.new({:grid=>empty_grid})
-      board1.swap_color
-      expect(black_pawn_1.valid_destinations(board1)).to eql([[5,4],[4,4],[5,5]])
-    end
-
-    it "Returns the proper destination(s) if white pawn is located at [1,1] and there is an enemy at [2,0]" do
-      white_pawn_1 = Pawn.new({:color=>'white'})
-      black_pawn_1 = TestPiece1.new("black","pawn",[],"1")
-      empty_grid[1][1] = white_pawn_1
       empty_grid[2][0] = black_pawn_1
       board1 = Board.new({:grid=>empty_grid})
-      expect(white_pawn_1.valid_destinations(board1)).to eql([[2,1],[3,1],[2,0]])
+      board1.swap_color
+      expect(black_pawn_1.valid_destinations(board1)).to eql([[3,0],[4,0]])
     end
 
-    it "Returns the proper destination(s) if black pawn is located at [6,4] and there is an enemy at [5,3]" do
+    it "Returns the proper destination(s) if white pawn is located at [6,3] on an empty board" do
+      white_pawn_1 = Pawn.new({:color=>'white'})
+      empty_grid[6][3] = white_pawn_1
+      board1 = Board.new({:grid=>empty_grid})
+      expect(white_pawn_1.valid_destinations(board1)).to eql([[5,3],[4,3]])
+    end
+
+    it "Returns the proper destination(s) if black pawn is located at [3,0] on an empty board and has already moved" do
       black_pawn_1 = Pawn.new({:color=>'black'})
-      white_pawn_1 = TestPiece1.new("white","pawn",[],"1")
-      empty_grid[6][4] = black_pawn_1
+      empty_grid[3][0] = black_pawn_1
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      board1.history << [black_pawn_1, [2,0], [3,0], nil]
+      expect(black_pawn_1.valid_destinations(board1)).to eql([[4,0]])
+    end
+
+    it "Returns the proper destination(s) if white pawn is located at [5,3] on an empty board and has already moved" do
+      white_pawn_1 = Pawn.new({:color=>'white'})
       empty_grid[5][3] = white_pawn_1
       board1 = Board.new({:grid=>empty_grid})
-      board1.swap_color
-      expect(black_pawn_1.valid_destinations(board1)).to eql([[5,4],[4,4],[5,3]])
+      board1.history << [white_pawn_1, [6,3], [5,3], nil]
+      expect(white_pawn_1.valid_destinations(board1)).to eql([[4,3]])
     end
 
-    it "Returns the proper destination(s) if white pawn located at [1,1] and there are enemies at [2,0] and [2,2]" do
+    it "Returns [] if black pawn is located at [3,1] and there is an enemy at [4,1]" do
+      black_pawn_1 = Pawn.new({:color=>'black'})
+      white_pawn_1 = TestPiece1.new("white","pawn",[],"1")
+      empty_grid[3][1] = black_pawn_1
+      empty_grid[4][1] = white_pawn_1
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      expect(black_pawn_1.valid_destinations(board1)).to eql([])
+    end
+
+    it "Returns the proper destination(s) if black pawn is located at [1,1] and there is an enemy at [2,2]" do
+      black_pawn_1 = Pawn.new({:color=>'black'})
+      white_pawn_1 = TestPiece1.new("white","pawn",[],"1")
+      empty_grid[1][1] = black_pawn_1
+      empty_grid[2][2] = white_pawn_1
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      expect(black_pawn_1.valid_destinations(board1)).to eql([[2,1],[3,1],[2,2]])
+    end
+
+    it "Returns the proper destination(s) if white pawn is located at [6,4] and there is an enemy at [5,5]" do
       white_pawn_1 = Pawn.new({:color=>'white'})
       black_pawn_1 = TestPiece1.new("black","pawn",[],"1")
-      black_pawn_2 = TestPiece1.new("black","pawn",[],"1")
-      empty_grid[1][1] = white_pawn_1
-      empty_grid[2][0] = black_pawn_1
-      empty_grid[2][2] = black_pawn_2
+      empty_grid[6][4] = white_pawn_1
+      empty_grid[5][5] = black_pawn_1
       board1 = Board.new({:grid=>empty_grid})
-      expect(white_pawn_1.valid_destinations(board1)).to eql([[2,1],[3,1],[2,2],[2,0]])
+      expect(white_pawn_1.valid_destinations(board1)).to eql([[5,4],[4,4],[5,5]])
     end
 
-    it "Returns the proper destination(s) if black pawn is located at [6,4] and there is are enemies at [5,3] and [5,5]" do
+    it "Returns the proper destination(s) if black pawn is located at [1,1] and there is an enemy at [2,0]" do
+      black_pawn_1 = Pawn.new({:color=>'black'})
+      white_pawn_1 = TestPiece1.new("white","pawn",[],"1")
+      empty_grid[1][1] = black_pawn_1
+      empty_grid[2][0] = white_pawn_1
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      expect(black_pawn_1.valid_destinations(board1)).to eql([[2,1],[3,1],[2,0]])
+    end
+
+    it "Returns the proper destination(s) if white pawn is located at [6,4] and there is an enemy at [5,3]" do
+      white_pawn_1 = Pawn.new({:color=>'white'})
+      black_pawn_1 = TestPiece1.new("black","pawn",[],"1")
+      empty_grid[6][4] = white_pawn_1
+      empty_grid[5][3] = black_pawn_1
+      board1 = Board.new({:grid=>empty_grid})
+      expect(white_pawn_1.valid_destinations(board1)).to eql([[5,4],[4,4],[5,3]])
+    end
+
+    it "Returns the proper destination(s) if black pawn located at [1,1] and there are enemies at [2,0] and [2,2]" do
       black_pawn_1 = Pawn.new({:color=>'black'})
       white_pawn_1 = TestPiece1.new("white","pawn",[],"1")
       white_pawn_2 = TestPiece1.new("white","pawn",[],"2")
-      empty_grid[6][4] = black_pawn_1
-      empty_grid[5][3] = white_pawn_1
-      empty_grid[5][5] = white_pawn_2
+      empty_grid[1][1] = black_pawn_1
+      empty_grid[2][0] = white_pawn_1
+      empty_grid[2][2] = white_pawn_2
       board1 = Board.new({:grid=>empty_grid})
       board1.swap_color
-      expect(black_pawn_1.valid_destinations(board1)).to eql([[5,4],[4,4],[5,5],[5,3]])
+      expect(black_pawn_1.valid_destinations(board1)).to eql([[2,1],[3,1],[2,2],[2,0]])
+    end
+
+    it "Returns the proper destination(s) if white pawn is located at [6,4] and there is are enemies at [5,3] and [5,5]" do
+      white_pawn_1 = Pawn.new({:color=>'white'})
+      black_pawn_1 = TestPiece1.new("black","pawn",[],"1")
+      black_pawn_2 = TestPiece1.new("black","pawn",[],"2")
+      empty_grid[6][4] = white_pawn_1
+      empty_grid[5][3] = black_pawn_1
+      empty_grid[5][5] = black_pawn_2
+      board1 = Board.new({:grid=>empty_grid})
+      expect(white_pawn_1.valid_destinations(board1)).to eql([[5,4],[4,4],[5,5],[5,3]])
+    end
+
+    it "Returns the proper destination(s) if white pawn is located at [3,2] and en passant to [2,1] is allowed" do
+      white_pawn_1 = Pawn.new({:color=>'white'})
+      black_pawn_1 = TestPiece1.new("black","pawn",[],"1")
+      empty_grid[3][2] = white_pawn_1
+      empty_grid[3][1] = black_pawn_1
+      board1 = Board.new({:grid=>empty_grid})
+      board1.history << [black_pawn_1, [1,1], [3,1], nil]
+      expect(white_pawn_1.valid_destinations(board1)).to eql([[2,2],[2,1]])
     end
   end
 
