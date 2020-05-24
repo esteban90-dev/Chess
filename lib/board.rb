@@ -77,21 +77,23 @@ class Board
     end
   
     captured_piece = nil
+    captured_position = nil
 
     #if this is a normal capture move, store captured enemy piece for history
     if !contents(destination).nil? && contents(destination).color != active_color
       captured_piece = contents(destination)
+      captured_position = location(captured_piece)
     end
 
     #if this was an en_passant move, store captured pawn for history
     if en_passant?(source, destination)
       if en_passant_pos?(source, destination)
-        capture_position = [source[0], source[1] + 1]
-        captured_piece = contents(capture_position)
+        captured_position = [source[0], source[1] + 1]
+        captured_piece = contents(captured_position)
         grid[source[0]][source[1] + 1] = nil
       elsif en_passant_neg?(source, destination)
-        capture_position = [source[0], source[1] - 1]
-        captured_piece = contents(capture_position)
+        captured_position = [source[0], source[1] - 1]
+        captured_piece = contents(captured_position)
         grid[source[0]][source[1] - 1] = nil
       end
     end
@@ -101,7 +103,7 @@ class Board
     grid[source[0]][source[1]] = nil
 
     #update history
-    history << [contents(destination), source, destination, captured_piece]
+    history << [contents(destination), source, destination, captured_piece, captured_position]
 
     #move rook too if most recent move was castling
     king_side_castle_move if king_side_castling?
@@ -219,6 +221,21 @@ class Board
     return "invalid move - source cell contains enemy piece" if contents(source).color != active_color
     return "invalid move - source cell matches destination cell" if source == destination
     nil
+  end
+
+  def undo_last_move
+    #move source piece back to original location
+    source_piece = history.last[0]
+    original_source_location = history.last[1]
+    grid[original_source_location[0]][original_source_location[1]] = source_piece
+
+    #return captured piece back to original location, if applicable
+    captured_piece = history.last[3]
+    original_captured_location = history.last[4]
+    grid[original_captured_location[0]][original_captured_location[1]] = captured_piece unless captured_piece.nil?
+    
+    #delete most recent entry from history
+    history.pop
   end
 end
 
