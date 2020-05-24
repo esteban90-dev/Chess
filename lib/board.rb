@@ -208,13 +208,13 @@ class Board
     return "invalid move - source cell empty" if contents(source).nil?
     return "invalid move - source cell contains enemy piece" if contents(source).color != active_color
     return "invalid move - source cell matches destination cell" if source == destination
-    return "invalid move - #{contents(source).color} #{contents(source).name} can't move from #{source} to #{destination}" if !contents(source).valid_destinations(self).include?(destination)
+    return "invalid move - #{contents(source).color} #{contents(source).name} can't move from #{source} to #{destination}" if !contents(source).moveable_destinations(self).include?(destination)
     nil
   end
 
   def check_test_move_input(source, destination)
     #if we are doing a test move as part of #enables_check?, #disables_check, or the automatic rook movement with castling,
-    #then don't check valid_destinations
+    #then don't check moveable_destinations
     return "invalid move - source cell empty" if contents(source).nil?
     return "invalid move - source cell contains enemy piece" if contents(source).color != active_color
     return "invalid move - source cell matches destination cell" if source == destination
