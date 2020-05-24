@@ -149,24 +149,6 @@ describe Board do
     end
   end
 
-  context "#under_threat?" do
-    it "returns true if the given position can be reached by any enemy piece" do
-      black_pawn = TestPiece1.new("black","pawn",[[0,0],[1,1]])
-      grid[0][1] = black_pawn
-      board1 = Board.new({:grid=>grid})
-      expect(board1.under_threat?([0,0])).to eql(true)
-    end
-
-    it "returns false if the given position can't be reached by any enemy piece" do
-      black_pawn = TestPiece1.new("black","pawn",[[0,0],[1,1]])
-      white_pawn = TestPiece1.new("white","pawn",[3,3])
-      grid[0][1] = black_pawn
-      grid[2][2] = white_pawn
-      board1 = Board.new({:grid=>grid})
-      expect(board1.under_threat?([3,3])).to eql(false)
-    end
-  end
-
   context "#active_color_in_check?" do
     it "returns true if the active color's (white) king position can be reached by any enemy pieces" do
       black_queen = TestPiece1.new("black","queen",[[0,0],[1,1],[3,3]])
