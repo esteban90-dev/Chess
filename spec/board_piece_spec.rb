@@ -1,6 +1,10 @@
 require "./lib/board.rb"
 require "./lib/piece.rb"
 require "./lib/pawn.rb" 
+require "./lib/knight.rb"
+require "./lib/king.rb"
+require "./lib/bishop.rb"
+require "./lib/queen.rb"
 require "./lib/rook.rb"
 
  
@@ -23,6 +27,51 @@ describe "Board-Piece integration" do
       empty_grid[2][2] = white_pawn
       board1 = Board.new({:grid=>empty_grid})
       expect(board1.under_threat?([3,3])).to eql(false)
+    end
+  end
+
+  context "Board#active_color_in_check?" do
+    it "returns true if the active color's (white) king position can be reached by any enemy pieces" do
+      black_queen = Queen.new({:color=>'black'})
+      white_king = King.new({:color=>'white'})
+      empty_grid[0][3] = black_queen
+      empty_grid[3][3] = white_king
+      board1 = Board.new({:grid=>empty_grid})
+      expect(board1.active_color_in_check?).to eql(true)
+    end
+
+    it "returns true if the active color's (black) king position can be reached by any enemy pieces" do
+      white_queen = Queen.new({:color=>'white'})
+      black_king = King.new({:color=>'black'})
+      empty_grid[0][3] = white_queen
+      empty_grid[3][3] = black_king
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      expect(board1.active_color_in_check?).to eql(true)
+    end
+
+    it "returns false if the active color's (white) king position can't be reached by any enemy pieces" do
+      black_queen = Queen.new({:color=>'black'})
+      white_king = King.new({:color=>'white'})
+      empty_grid[0][3] = black_queen
+      empty_grid[3][2] = white_king
+      board1 = Board.new({:grid=>empty_grid})
+      expect(board1.active_color_in_check?).to eql(false)
+    end
+
+    it "returns false if the active color's (black) king position can't be reached by any enemy pieces" do
+      white_queen = Queen.new({:color=>'white'})
+      black_king = King.new({:color=>'black'})
+      empty_grid[0][3] = white_queen
+      empty_grid[3][2] = black_king
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      expect(board1.active_color_in_check?).to eql(false)
+    end
+
+    it "returns false if there is no allied king on the board - for testing purposes" do
+      board1 = Board.new({:grid=>empty_grid})
+      expect(board1.active_color_in_check?).to eql(false)
     end
   end
 end

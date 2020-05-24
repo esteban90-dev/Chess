@@ -149,51 +149,6 @@ describe Board do
     end
   end
 
-  context "#active_color_in_check?" do
-    it "returns true if the active color's (white) king position can be reached by any enemy pieces" do
-      black_queen = TestPiece1.new("black","queen",[[0,0],[1,1],[3,3]])
-      white_king = TestPiece1.new("white","king",[])
-      grid[0][3] = black_queen
-      grid[3][3] = white_king
-      board1 = Board.new({:grid=>grid})
-      expect(board1.active_color_in_check?).to eql(true)
-    end
-
-    it "returns true if the active color's (black) king position can be reached by any enemy pieces" do
-      white_queen = TestPiece1.new("white","queen",[[0,0],[1,1],[3,3]])
-      black_king = TestPiece1.new("black","king",[])
-      grid[0][3] = white_queen
-      grid[3][3] = black_king
-      board1 = Board.new({:grid=>grid})
-      board1.swap_color
-      expect(board1.active_color_in_check?).to eql(true)
-    end
-
-    it "returns false if the active color's (white) king position can't be reached by any enemy pieces" do
-      black_queen = TestPiece1.new("black","queen",[[0,0],[1,1]])
-      white_king = TestPiece1.new("white","king",[])
-      grid[0][3] = black_queen
-      grid[3][3] = white_king
-      board1 = Board.new({:grid=>grid})
-      expect(board1.active_color_in_check?).to eql(false)
-    end
-
-    it "returns false if the active color's (black) king position can't be reached by any enemy pieces" do
-      white_queen = TestPiece1.new("white","queen",[[0,0],[1,1]])
-      black_king = TestPiece1.new("black","king",[])
-      grid[0][3] = white_queen
-      grid[3][3] = black_king
-      board1 = Board.new({:grid=>grid})
-      board1.swap_color
-      expect(board1.active_color_in_check?).to eql(false)
-    end
-
-    it "returns false if there is no allied king on the board - for testing purposes" do
-      board1 = Board.new({:grid=>grid})
-      expect(board1.active_color_in_check?).to eql(false)
-    end
-  end
-
   context "#disables_check?" do
     it "returns true if the active color is in check and the given move disables a check condition" do
       black_queen = TestPiece1.new("black","queen",[[0,0],[1,1],[3,3]])
