@@ -52,15 +52,12 @@ class Board
     grid.flatten.reject{ |element| element.nil? }.select{ |element| element.color != active_color }
   end
 
-  def under_threat?(location)
-    enemy_pieces.any?{ |piece| piece.reachable_destinations(self).include?(location) }
-  end
-
   def active_color_in_check?
+    #returns true if any enemy piece can reach the allied king's position
     allied_king = allied_pieces.select{ |element| element.name == 'king' }.first
     return false if allied_king.nil?
     allied_king_location = location(allied_king)
-    return under_threat?(allied_king_location)
+    return enemy_pieces.any?{ |piece| piece.reachable_destinations(self).include?(allied_king_location) }
   end
 
   def move(source, destination)
