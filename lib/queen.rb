@@ -1,14 +1,9 @@
 require "./lib/piece.rb"
 
 class Queen < Piece 
-  private
+  public
 
-  def default_symbol
-    return "\u265b" if color == 'black'
-    "\u2655"
-  end
-
-  def all_destinations(board, current_position)
+  def reachable_destinations(board, current_position)
     y_direction = [1,0,-1, 0]
     x_direction = [0,1, 0,-1]
     destinations = []
@@ -51,6 +46,13 @@ class Queen < Piece
     end
     
     destinations
+  end
+
+  private
+
+  def default_symbol
+    return "\u265b" if color == 'black'
+    "\u2655"
   end
 
 end

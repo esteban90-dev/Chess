@@ -1,14 +1,9 @@
 require "./lib/piece.rb"
 
 class King < Piece
-  private
+  public
 
-  def default_symbol
-    return "\u265a" if color == 'black'
-    "\u2654"
-  end
-
-  def all_destinations(board, current_position)
+  def reachable_destinations(board, current_position)
     delta_y = [1, 1, 0,-1,-1,-1,0,1]
     delta_x = [0,-1,-1,-1, 0, 1,1,1]
     destinations = []
@@ -34,6 +29,13 @@ class King < Piece
     destinations.reject!{ |move| allied_locations.include?(move) }
 
     destinations
+  end
+
+  private
+
+  def default_symbol
+    return "\u265a" if color == 'black'
+    "\u2654"
   end
 
   def kingside_castling_allowed?(board, current_position)

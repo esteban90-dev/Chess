@@ -1,14 +1,9 @@
 require "./lib/piece.rb"
 
 class Bishop < Piece 
-  private
+  public
 
-  def default_symbol
-    return "\u265d" if color == 'black'
-    "\u2657"
-  end
-
-  def all_destinations(board, current_position)
+  def reachable_destinations(board, current_position)
     destinations = []
     y_direction = [1,1,-1,-1]
     x_direction = [1,-1,1,-1]
@@ -32,4 +27,10 @@ class Bishop < Piece
     destinations
   end
 
+  private
+
+  def default_symbol
+    return "\u265d" if color == 'black'
+    "\u2657"
+  end
 end

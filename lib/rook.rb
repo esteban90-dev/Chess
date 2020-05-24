@@ -1,14 +1,9 @@
 require "./lib/piece.rb"
 
 class Rook < Piece 
-  private
+  public 
 
-  def default_symbol
-    return "\u265c" if color == 'black'
-    "\u2656"
-  end
-
-  def all_destinations(board, current_position)
+  def reachable_destinations(board, current_position)
     y_direction = [1,0,-1, 0]
     x_direction = [0,1, 0,-1]
     destinations = []
@@ -30,5 +25,12 @@ class Rook < Piece
       i += 1
     end
     destinations
+  end
+
+  private
+
+  def default_symbol
+    return "\u265c" if color == 'black'
+    "\u2656"
   end
 end

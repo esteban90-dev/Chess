@@ -1,14 +1,9 @@
 require "./lib/piece.rb"
 
 class Pawn < Piece 
-  private
+  public
 
-  def default_symbol
-    return "\u265f" if color == 'black'
-    "\u2659"
-  end
-
-  def all_destinations(board, current_position)
+  def reachable_destinations(board, current_position)
     destinations = []
 
     #set direction: + if white, - if black
@@ -42,6 +37,13 @@ class Pawn < Piece
     end
 
     destinations
+  end
+
+  private
+
+  def default_symbol
+    return "\u265f" if color == 'black'
+    "\u2659"
   end
 
   def en_passant_allowed?(board, current_position, x_direction)

@@ -1,14 +1,9 @@
 require "./lib/piece.rb"
 
 class Knight < Piece
-  private
+  public
 
-  def default_symbol
-    return "\u265e" if color == 'black'
-    "\u2658"
-  end
-
-  def all_destinations(board, current_position)
+  def reachable_destinations(board, current_position)
     delta_x = [1,2,2,1,-1,-2,-2,-1]
     delta_y = [2,1,-1,-2,-2,-1,1,2]
     destinations = []
@@ -27,6 +22,13 @@ class Knight < Piece
     destinations.reject!{ |destination| allied_locations.include?(destination) }
 
     destinations
+  end
+  
+  private
+
+  def default_symbol
+    return "\u265e" if color == 'black'
+    "\u2658"
   end
 end
 
