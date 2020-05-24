@@ -313,6 +313,17 @@ describe "Board-Piece integration" do
       expect(black_bishop.moveable_destinations(board1)).to eql([[2, 7]])
     end
 
+    it "Removes destinations that would result in check" do
+      white_bishop = Bishop.new({:color=>"white"})
+      white_king = King.new({:color=>"white"})
+      black_queen = Queen.new({:color=>"black"})
+      empty_grid[7][4] = white_king
+      empty_grid[6][5] = white_bishop
+      empty_grid[4][7] = black_queen
+      board1 = Board.new({:grid=>empty_grid})
+      expect(white_bishop.moveable_destinations(board1)).to eql([[5,6],[4,7]])
+    end
+
     it "Returns [] if there are no valid destinations" do
       white_bishop = Bishop.new({:color=>"white"})
       white_pawn_1 = Pawn.new({:color=>"white"})
