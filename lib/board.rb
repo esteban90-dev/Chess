@@ -53,7 +53,7 @@ class Board
   end
 
   def under_threat?(location)
-    enemy_pieces.any?{ |piece| piece.valid_destinations.include?(location) }
+    enemy_pieces.any?{ |piece| piece.reachable_destinations(self).include?(location) }
   end
 
   def active_color_in_check?
