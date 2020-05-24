@@ -17,7 +17,7 @@ attr_reader :color, :symbol, :name
     current_position = board.location(self)
 
     #get all possible destinations
-    destinations = all_destinations(board, current_position)
+    destinations = reachable_destinations(board)
 
     #If in check, select only the locations that result in the removal of check
     if board.active_color_in_check?
