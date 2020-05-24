@@ -3,7 +3,8 @@ require "./lib/piece.rb"
 class Bishop < Piece 
   public
 
-  def reachable_destinations(board, current_position)
+  def reachable_destinations(board)
+    current_position = board.location(self)
     destinations = []
     y_direction = [1,1,-1,-1]
     x_direction = [1,-1,1,-1]

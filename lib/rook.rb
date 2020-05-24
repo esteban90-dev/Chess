@@ -3,7 +3,8 @@ require "./lib/piece.rb"
 class Rook < Piece 
   public 
 
-  def reachable_destinations(board, current_position)
+  def reachable_destinations(board)
+    current_position = board.location(self)
     y_direction = [1,0,-1, 0]
     x_direction = [0,1, 0,-1]
     destinations = []

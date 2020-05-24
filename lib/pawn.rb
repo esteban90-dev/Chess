@@ -3,7 +3,8 @@ require "./lib/piece.rb"
 class Pawn < Piece 
   public
 
-  def reachable_destinations(board, current_position)
+  def reachable_destinations(board)
+    current_position = board.location(self)
     destinations = []
 
     #set direction: + if white, - if black

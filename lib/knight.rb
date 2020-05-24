@@ -3,7 +3,8 @@ require "./lib/piece.rb"
 class Knight < Piece
   public
 
-  def reachable_destinations(board, current_position)
+  def reachable_destinations(board)
+    current_position = board.location(self)
     delta_x = [1,2,2,1,-1,-2,-2,-1]
     delta_y = [2,1,-1,-2,-2,-1,1,2]
     destinations = []
