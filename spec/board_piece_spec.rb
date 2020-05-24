@@ -75,7 +75,7 @@ describe "Board-Piece integration" do
     end
   end
 
-  context "#disables_check?" do
+  context "Board#disables_check?" do
     it "returns true if the active color is in check and the given move disables a check condition" do
       black_queen = Queen.new({:color=>'black'})
       white_king = King.new({:color=>'white'})
@@ -97,7 +97,7 @@ describe "Board-Piece integration" do
     end
   end
 
-  context "#enables_check?" do
+  context "Board#enables_check?" do
     it "returns true if the active color is not check and the given move enables a check condition" do
       black_king = King.new({:color=>'black'})
       white_rook = Rook.new({:color=>'white'})
