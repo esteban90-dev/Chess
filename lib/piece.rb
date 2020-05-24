@@ -9,7 +9,11 @@ attr_reader :color, :symbol, :name
 
   public
 
-  def valid_destinations(board)
+  def reachable_destinations(board, current_position)
+    raise NotImplementedError.new('You must implement #reachable_destinations')
+  end
+
+  def moveable_destinations(board)
     current_position = board.location(self)
 
     #get all possible destinations
@@ -32,10 +36,6 @@ attr_reader :color, :symbol, :name
 
   def default_symbol
     raise NotImplementedError.new('You must implement #default_symbol')
-  end
-
-  def all_destinations(board, current_position)
-    raise NotImplementedError.new('You must implement #all_destinations')
   end
 end
 
