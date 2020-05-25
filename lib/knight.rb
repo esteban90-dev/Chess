@@ -19,7 +19,7 @@ class Knight < Piece
     destinations.select!{ |destination| board.valid_location?(destination) } 
     
     #remove locations that contain allies
-    allied_locations = board.allied_pieces.map{ |ally| board.location(ally) }
+    allied_locations = board.allied_pieces(self.color).map{ |ally| board.location(ally) }
     destinations.reject!{ |destination| allied_locations.include?(destination) }
 
     destinations
