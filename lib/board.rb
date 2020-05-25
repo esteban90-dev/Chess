@@ -156,6 +156,71 @@ class Board
     result.join("\n")
   end
 
+  def undo_last_move
+    return nil if history.empty?
+
+    if last_moves_castling?
+      #move rook back to original position
+      rook_piece = history.last[0]    
+      rook_new_location = history.last[2]
+      rook_old_location = history.last[1]
+      grid[rook_new_location[0]][rook_new_location[1]] = nil
+      grid[rook_old_location[0]][rook_old_location[1]] = rook_piece
+
+      #move king back to original position
+      king_piece = history[-2][0]
+      king_new_location = history[-2][2]
+      king_old_location = history[-2][1]
+      grid[king_new_location[0]][king_new_location[1]] = nil
+      grid[king_old_location[0]][king_old_location[1]] = king_piece
+
+      #clear two history entries since castling spans two entries
+      history.pop
+      history.pop
+
+    elsif last_move_en_passant?
+      #move source piece back to original location
+      piece = history.last[0]
+      piece_new_location = history.last[2]
+      piece_old_location = history.last[1]
+      grid[piece_new_location[0]][piece_new_location[1]] = nil
+      grid[piece_old_location[0]][piece_old_location[1]] = piece
+
+      #replace captured pawn
+      pawn = history.last[3]
+      pawn_old_location = history.last[4]
+      grid[pawn_old_location[0]][pawn_old_location[1]] = pawn
+
+      #clear recent history entry
+      history.pop
+
+    else
+      #this was a normal move
+      #move source piece back to original location
+      piece = history.last[0]
+      piece_new_location = history.last[2]
+      piece_old_location = history.last[1]
+      grid[piece_new_location[0]][piece_new_location[1]] = nil
+      grid[piece_old_location[0]][piece_old_location[1]] = piece
+
+      #return captured piece (if applicable) back to original location
+      captured_piece = history.last[3]
+      if captured_piece
+        captured_piece_old_location = history.last[4]
+        grid[captured_piece_old_location[0]][captured_piece_old_location[1]] = captured_piece
+      end
+
+      #if no piece was captured, clear destination cell
+      destination = history.last[2]
+      if captured_piece.nil?
+        grid[destination[0]][destination[1]] = nil
+      end
+
+      #clear recent history entry
+      history.pop
+    end
+  end
+
   private
 
   def default_grid
@@ -243,73 +308,8 @@ class Board
     nil
   end
 
-  def undo_last_move
-    return nil if history.empty?
-
-    if last_moves_castling?
-      #move rook back to original position
-      rook_piece = history.last[0]    
-      rook_new_location = history.last[2]
-      rook_old_location = history.last[1]
-      grid[rook_new_location[0]][rook_new_location[1]] = nil
-      grid[rook_old_location[0]][rook_old_location[1]] = rook_piece
-
-      #move king back to original position
-      king_piece = history[-2][0]
-      king_new_location = history[-2][2]
-      king_old_location = history[-2][1]
-      grid[king_new_location[0]][king_new_location[1]] = nil
-      grid[king_old_location[0]][king_old_location[1]] = king_piece
-
-      #clear two history entries since castling spans two entries
-      history.pop
-      history.pop
-
-    elsif last_move_en_passant?
-      #move source piece back to original location
-      piece = history.last[0]
-      piece_new_location = history.last[2]
-      piece_old_location = history.last[1]
-      grid[piece_new_location[0]][piece_new_location[1]] = nil
-      grid[piece_old_location[0]][piece_old_location[1]] = piece
-
-      #replace captured pawn
-      pawn = history.last[3]
-      pawn_old_location = history.last[4]
-      grid[pawn_old_location[0]][pawn_old_location[1]] = pawn
-
-      #clear recent history entry
-      history.pop
-
-    else
-      #this was a normal move
-      #move source piece back to original location
-      piece = history.last[0]
-      piece_new_location = history.last[2]
-      piece_old_location = history.last[1]
-      grid[piece_new_location[0]][piece_new_location[1]] = nil
-      grid[piece_old_location[0]][piece_old_location[1]] = piece
-
-      #return captured piece (if applicable) back to original location
-      captured_piece = history.last[3]
-      if captured_piece
-        captured_piece_old_location = history.last[4]
-        grid[captured_piece_old_location[0]][captured_piece_old_location[1]] = captured_piece
-      end
-
-      #if no piece was captured, clear destination cell
-      destination = history.last[2]
-      if captured_piece.nil?
-        grid[destination[0]][destination[1]] = nil
-      end
-
-      #clear recent history entry
-      history.pop
-    end
-
-    def formatted_symbol(symbol)
-      symbol.length > 1 ? symbol : " " + "#{symbol}"
-    end
+  def formatted_symbol(symbol)
+    symbol.length > 1 ? symbol : " " + "#{symbol}"
   end
 end
 
