@@ -1,12 +1,6 @@
 require "./lib/queen.rb"
-require "./lib/board.rb"
-require "./spec/reference/build_initial_grid.rb"
 
 describe Queen do
-
-  let(:empty_grid) { Array.new(8){ Array.new(8) } }
-  let(:initial_grid) { build_initial_grid }
-  TestPiece1 = Struct.new(:color, :name, :valid_destinations, :id)
 
   context "#initialize" do
     it "Raises an exception when initialized with an empty {}" do 
