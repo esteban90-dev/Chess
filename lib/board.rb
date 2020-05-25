@@ -221,6 +221,13 @@ class Board
     end
   end
 
+  def checkmate?
+    #returns true if the active color is in check and all allied pieces have no valid moves
+    return false unless active_color_in_check?
+    return true unless allied_pieces(active_color).any?{ |piece| piece.moveable_destinations(self).length > 0 }
+    false
+  end
+
   private
 
   def default_grid
