@@ -130,7 +130,6 @@ class Board
     #move piece to destination
     move(source, destination){ check_test_move_input(source, destination) }
     
-
     #see if check condition is active
     result = true if active_color_in_check?
   
@@ -138,6 +137,23 @@ class Board
     undo_last_move
     
     result
+  end
+
+  def formatted
+    i = 0
+    result = []
+    letter_line = "  " + "   A    B    C    D    E    F    G    H   "
+    border_line = "   " + "+----+----+----+----+----+----+----+----+"
+    result << letter_line
+    while i < grid.length
+      result << border_line
+      result << " #{grid.length - i} " + "| " + "#{grid[i].map{ |cell| cell.nil? ? "  " : formatted_symbol(cell.symbol) }.join(" | ")}" + 
+        " |" + " #{grid.length - i} "
+      i += 1
+    end
+    result << border_line
+    result << letter_line
+    result.join("\n")
   end
 
   private
@@ -289,6 +305,10 @@ class Board
 
       #clear recent history entry
       history.pop
+    end
+
+    def formatted_symbol(symbol)
+      symbol.length > 1 ? symbol : " " + "#{symbol}"
     end
   end
 end
