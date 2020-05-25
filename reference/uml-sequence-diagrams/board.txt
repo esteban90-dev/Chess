@@ -5,10 +5,10 @@ participant Piece
 
 Game->Board:move(source, destination)
 activate Board
-note over Board:- return 'invalid' if source piece \n  does not match active color or if\n  source cell is empty\n- return 'invalid' if destination \n  is not contained in valid_destinations\n- store captured opponent piece if destination \n  contains a piece that doesn't match active \n  color\n- set destination cell = source\n- clear source cell\n- store captured pawn if en_passant? returns true\n- move rook if castling? returns true\n- update history\n- Return 'Moved source:destination' successfully or similar\n
-Board->Piece:valid_destinations?(self)
+note over Board:- return 'invalid' if source piece \n  does not match active color or if\n  source cell is empty\n- return 'invalid' if destination \n  is not contained in moveable_destinations\n- store captured opponent piece if destination \n  contains a piece that doesn't match active \n  color\n- set destination cell = source\n- clear source cell\n- store captured pawn if en_passant? returns true\n- move rook if castling? returns true\n- update history\n- Return 'Moved source:destination' successfully or similar\n
+Board->Piece:moveable_destinations?(self)
 activate Piece
-Board<--Piece:valid_destinations
+Board<--Piece:moveable_destinations
 deactivate Piece
 Game<--Board:result(TBD)
 deactivate Board
@@ -35,7 +35,7 @@ space
 
 Game->Board: checkmate?
 activate Board
-note over Board:- get valid_destinations for all \n  pieces of active color\n- run removes_check? for \n  each\n- return true if removes_check?\n  returns false for all
+note over Board:- get moveable_destinations for all \n  pieces of active color\n- run removes_check? for \n  each\n- return true if removes_check?\n  returns false for all
 Game<--Board:
 deactivate Board
 
@@ -43,7 +43,7 @@ space
 
 Game->Board:stalemate?
 activate Board
-note over Board:- return true if active color is not\n  in check, and if all allied pieces \n  return no valid_destinations. 
+note over Board:- return true if active color is not\n  in check, and if all allied pieces \n  return no moveable_destinations. 
 deactivate Board
 Game<--Board:
 
@@ -83,31 +83,23 @@ space
 
 Piece->Board:active_color_in_check?
 activate Board
-note over Board:- returns true if position_under_threat? returns\n  true for the active color's king's position
+note over Board:- returns true if the active color's king's \n  position can be reached by any enemy pieces
 Piece<--Board:
 deactivate Board
 
 space
 
-Piece->Board:under_threat?(position)
+Piece->Board:enemy_pieces(color)
 activate Board
-note over Board:- return true if position is contained\n  in any of the valid_destinations for all\n  enemy pieces
+note over Board:Returns array of all pieces\non the board that don't match \nthe given color
 Piece<--Board:
 deactivate Board
 
 space
 
-Piece->Board:enemy_pieces
+Piece->Board:allied_pieces(color)
 activate Board
-note over Board:Returns array of all pieces\non the board that don't match \nthe active color
-Piece<--Board:
-deactivate Board
-
-space
-
-Piece->Board:allied_pieces
-activate Board
-note over Board:Returns array of all pieces\non the board that match \nthe active color
+note over Board:Returns array of all pieces\non the board that match \nthe given color
 Piece<--Board:
 deactivate Board
 
