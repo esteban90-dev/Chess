@@ -853,6 +853,28 @@ describe "Board-Piece integration" do
       board1.history << [black_pawn_1, [3,1], [4,1], nil]
       expect(white_pawn_1.moveable_destinations(board1)).to eql([[3,2]])
     end
+
+    it "Removes destinations that would result in check" do
+      black_pawn = Pawn.new({:color=>'black'})
+      black_king = King.new({:color=>'black'})
+      white_bishop = Bishop.new({:color=>'white'})
+      empty_grid[0][4] = black_king
+      empty_grid[1][5] = black_pawn
+      empty_grid[3][7] = white_bishop
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      expect(black_pawn.moveable_destinations(board1)).to eql([])
+    end
+
+    it "Returns [] if there are no valid destinations" do
+      black_pawn = Pawn.new({:color=>'black'})
+      white_pawn = Pawn.new({:color=>'white'})
+      empty_grid[2][1] = white_pawn
+      empty_grid[1][1] = black_pawn
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      expect(black_pawn.moveable_destinations(board1)).to eql([])
+    end
   end
 
   context "Queen#moveable_destinations" do
