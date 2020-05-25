@@ -58,6 +58,7 @@ class King < Piece
   def castling_rook?(board, rook_position)
     return false if board.contents(rook_position).nil?
     return false if board.contents(rook_position).name != "rook"
+    return false if board.contents(rook_position).color != self.color
     return false if board.history.any?{ |entry| entry[0] == board.contents(rook_position) }
     true
   end
