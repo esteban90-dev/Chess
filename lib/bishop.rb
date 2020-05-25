@@ -25,6 +25,7 @@ class Bishop < Piece
       end
       i += 1
     end
+  
     destinations
   end
 

@@ -18,7 +18,7 @@ attr_reader :color, :symbol, :name
 
     #get all possible destinations
     destinations = reachable_destinations(board)
-
+  
     #If in check, select only the locations that result in the removal of check
     if board.active_color_in_check?
       destinations.select!{ |destination| board.disables_check?(current_position, destination) } 
