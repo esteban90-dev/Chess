@@ -26,7 +26,7 @@ class King < Piece
     destinations.select!{ |destinations| board.valid_location?(destinations) } 
 
     #remove locations that contain allies
-    allied_locations = board.allied_pieces.map{ |ally| board.location(ally) }
+    allied_locations = board.allied_pieces(self.color).map{ |ally| board.location(ally) }
     destinations.reject!{ |move| allied_locations.include?(move) }
 
     destinations
