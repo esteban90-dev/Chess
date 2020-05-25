@@ -97,7 +97,7 @@ describe Board do
   end
 
   context "#allied_pieces" do
-    it "returns an array of the pieces on the board that match the active color" do
+    it "returns an array of the pieces on the board that match the supplied color" do
       white_pawn_1 = TestPiece1.new("white","pawn", [])
       white_pawn_2 = TestPiece1.new("white","pawn", [])
       white_pawn_3 = TestPiece1.new("white","pawn", []) 
@@ -107,10 +107,10 @@ describe Board do
       grid[7][7] = white_pawn_3
       grid[2][2] = black_pawn_1
       board1 = Board.new({:grid=>grid})
-      expect(board1.allied_pieces).to eql([white_pawn_1, white_pawn_2, white_pawn_3])
+      expect(board1.allied_pieces(board1.active_color)).to eql([white_pawn_1, white_pawn_2, white_pawn_3])
     end
 
-    it "returns [] if no pieces are on the board that match the active color" do
+    it "returns [] if no pieces are on the board that match the supplied color" do
       white_pawn_1 = TestPiece1.new("white","pawn", [])
       white_pawn_2 = TestPiece1.new("white","pawn", [])
       white_pawn_3 = TestPiece1.new("white","pawn", []) 
@@ -119,12 +119,12 @@ describe Board do
       grid[7][7] = white_pawn_3
       board1 = Board.new({:grid=>grid})
       board1.swap_color
-      expect(board1.allied_pieces).to eql([])
+      expect(board1.allied_pieces(board1.active_color)).to eql([])
     end
   end
 
   context "#enemy_pieces" do
-    it "returns an array of the pieces on the board that don't match the active color" do
+    it "returns an array of the pieces on the board that don't match the supplied color" do
       white_pawn_1 = TestPiece1.new("white","pawn", [])
       white_pawn_2 = TestPiece1.new("white","pawn", [])
       white_pawn_3 = TestPiece1.new("white","pawn", [])
@@ -136,7 +136,7 @@ describe Board do
       grid[2][2] = black_pawn_1
       grid[2][3] = black_pawn_2
       board1 = Board.new({:grid=>grid})
-      expect(board1.enemy_pieces).to eql([black_pawn_1, black_pawn_2])
+      expect(board1.enemy_pieces(board1.active_color)).to eql([black_pawn_1, black_pawn_2])
     end
 
     it "returns [] if there are no pieces on the board that don't match the active color" do
@@ -145,7 +145,7 @@ describe Board do
       grid[4][5] = white_pawn
       grid[7][7] = white_pawn
       board1 = Board.new({:grid=>grid})
-      expect(board1.enemy_pieces).to eql([])
+      expect(board1.enemy_pieces(board1.active_color)).to eql([])
     end
   end
 end
