@@ -266,6 +266,92 @@ describe "Board-Piece integration" do
     end
   end
 
+  context "Board#undo_last_move" do 
+    it "undoes the previous move - regular move, no capture" do
+      white_bishop = Bishop.new({:color=>"white"})
+      empty_grid[7][2] = white_bishop
+      board1 = Board.new({:grid=>empty_grid})
+      original_board = board1.formatted
+      board1.move([7,2],[5,4])
+      board1.undo_last_move
+      expect(board1.formatted).to eql(original_board)
+    end
+
+    it "undoes the previous move - regular move, with capture" do
+      black_rook = Rook.new({:color=>"black"})
+      white_pawn = Pawn.new({:color=>"white"})
+      empty_grid[0][0] = black_rook
+      empty_grid[6][0] = white_pawn
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      original_board = board1.formatted
+      board1.move([0,0],[6,0])
+      board1.undo_last_move
+      expect(board1.formatted).to eql(original_board)
+    end
+
+    it "undoes the previous move - en_passant +x direction" do
+      black_pawn = Pawn.new({:color=>"black"})
+      white_pawn = Pawn.new({:color=>"white"})
+      empty_grid[3][1] = black_pawn
+      empty_grid[3][0] = white_pawn
+      board1 = Board.new({:grid=>empty_grid})
+      board1.history << [black_pawn, [1,1], [3,1], nil, nil]
+      original_board = board1.formatted
+      board1.move([3,0],[2,1])
+      board1.undo_last_move
+      expect(board1.formatted).to eql(original_board)
+    end
+
+    it "undoes the previous move - en_passant +x direction" do
+      black_pawn = Pawn.new({:color=>"black"})
+      white_pawn = Pawn.new({:color=>"white"})
+      empty_grid[4][6] = black_pawn
+      empty_grid[4][5] = white_pawn
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      board1.history << [white_pawn, [6,5], [4,5], nil, nil]
+      original_board = board1.formatted
+      board1.move([4,6],[5,5])
+      board1.undo_last_move
+      expect(board1.formatted).to eql(original_board)
+    end
+
+    it "undoes the previous move - kingside castling" do
+      white_king = King.new({:color=>"white"})
+      white_rook_1 = Rook.new({:color=>"white"})
+      white_rook_2 = Rook.new({:color=>"white"})
+      empty_grid[0][0] = white_rook_1
+      empty_grid[0][4] = white_king
+      empty_grid[0][7] = white_rook_2
+      board1 = Board.new({:grid=>empty_grid})
+      original_board = board1.formatted
+      board1.move([0,4],[0,6])
+      board1.undo_last_move
+      expect(board1.formatted).to eql(original_board)
+    end
+
+    it "undoes the previous move - queenside castling" do
+      black_king = King.new({:color=>"black"})
+      black_rook_1 = Rook.new({:color=>"black"})
+      black_rook_2 = Rook.new({:color=>"black"})
+      empty_grid[7][0] = black_rook_1
+      empty_grid[7][4] = black_king
+      empty_grid[7][7] = black_rook_2
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      original_board = board1.formatted
+      board1.move([7,4],[7,1])
+      board1.undo_last_move
+      expect(board1.formatted).to eql(original_board)
+    end
+
+    it "returns nil if the board history is empty" do
+      board1 = Board.new({:grid=>empty_grid})
+      expect(board1.undo_last_move).to eql(nil)
+    end
+  end
+
   context "Bishop#moveable_destinations" do
     it "Returns the proper destination(s) if located at [0,0] on an empty board" do
       white_bishop = Bishop.new({:color=>"white"})
