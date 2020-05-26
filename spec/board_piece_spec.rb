@@ -379,6 +379,23 @@ describe "Board-Piece integration" do
     end
   end
 
+  context "Board#stalemate" do
+    it "returns true if neither sides are in check, but also have no moves that can be made" do
+      white_king = King.new({:color=>"white"})
+      black_king = King.new({:color=>"black"})
+      white_knight = Knight.new({:color=>"white"})
+      white_rook = Rook.new({:color=>"white"})
+      black_rook = Rook.new({:color=>"black"})
+      empty_grid[0][0] = white_king
+      empty_grid[0][2] = black_king
+      empty_grid[3][1] = white_knight
+      empty_grid[3][3] = white_rook
+      empty_grid[1][7] = black_rook
+      board1 = Board.new({:grid=>empty_grid})
+      expect(board1.stalemate?).to eql(true)
+    end
+  end
+
   context "Bishop#moveable_destinations" do
     it "Returns the proper destination(s) if located at [0,0] on an empty board" do
       white_bishop = Bishop.new({:color=>"white"})
