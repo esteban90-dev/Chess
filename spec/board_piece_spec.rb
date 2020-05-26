@@ -364,6 +364,19 @@ describe "Board-Piece integration" do
       board1.swap_color
       expect(board1.checkmate?).to eql(true)
     end
+
+    it "returns true if white is in check and there are no moves that can be made to remove check" do
+      white_king = King.new({:color=>"white"})
+      black_queen = Queen.new({:color=>"black"})
+      black_knight = Knight.new({:color=>"black"})
+      black_pawn = Pawn.new({:color=>"black"})
+      empty_grid[5][0] = black_queen
+      empty_grid[5][2] = black_knight
+      empty_grid[5][3] = black_pawn
+      empty_grid[7][1] = white_king
+      board1 = Board.new({:grid=>empty_grid})
+      expect(board1.checkmate?).to eql(true)
+    end
   end
 
   context "Bishop#moveable_destinations" do
