@@ -228,6 +228,10 @@ class Board
     false
   end
 
+  def stalemate?
+    #returns true if neither color is in check and no pieces have valid moves
+  end
+
   private
 
   def default_grid
