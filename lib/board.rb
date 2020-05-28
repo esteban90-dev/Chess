@@ -229,7 +229,10 @@ class Board
   end
 
   def stalemate?
-    #returns true if neither color is in check and no pieces have valid moves
+    #returns true if the active color is not in check and all allied pieces have no valid moves
+    return false if active_color_in_check?
+    return false if allied_pieces(active_color).any?{ |piece| piece.moveable_destinations(self).length > 0 }
+    true
   end
 
   private
