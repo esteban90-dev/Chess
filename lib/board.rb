@@ -62,6 +62,11 @@ class Board
     return enemy_pieces(active_color).any?{ |piece| piece.reachable_destinations(self).include?(allied_king_location) }
   end
 
+  def move_an(input)
+    source, destination = translate_coordinates(input)
+    move(source, destination)
+  end
+
   def move(source, destination)
     #allow the usage of a block if you want custom guard logic
     if block_given?
@@ -382,6 +387,15 @@ class Board
     return promotable_white_pawn_location unless promotable_white_pawn.nil?
     return promotable_black_pawn_location unless promotable_black_pawn.nil?
     nil
+  end
+
+  def translate_coordinates(input)
+    result = []
+    source = an_to_yx(input[0..1])
+    destination = an_to_yx(input[3..4])
+    result << source
+    result << destination
+    result
   end
 end
 
