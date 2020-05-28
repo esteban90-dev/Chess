@@ -235,6 +235,13 @@ class Board
     true
   end
 
+  def promotion?
+    #returns true if a pawn reaches the other side of the board
+    return true if grid[0].any?{ |element| element.nil? ? false : element.color == 'white' && element.name == 'pawn' }
+    return true if grid[7].any?{ |element| element.nil? ? false : element.color == 'black' && element.name == 'pawn' }
+    false
+  end
+
   private
 
   def default_grid
