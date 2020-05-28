@@ -420,6 +420,27 @@ describe "Board-Piece integration" do
     end
   end
 
+  context "Board#promote" do
+    it "replaces a white pawn that reaches the other side of the board with a new piece of the player's choice" do
+      white_pawn = Pawn.new({:color=>"white"})
+      empty_grid[0][4] = white_pawn
+      board1 = Board.new({:grid=>empty_grid})
+      board1.promote('queen')
+      expect(board1.contents([0,4]).name).to eql('queen')
+      expect(board1.contents([0,4]).color).to eql('white')
+    end
+
+    it "replaces a white pawn that reaches the other side of the board with a new piece of the player's choice" do
+      black_pawn = Pawn.new({:color=>"black"})
+      empty_grid[7][7] = black_pawn
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      board1.promote('rook')
+      expect(board1.contents([7,7]).name).to eql('rook')
+      expect(board1.contents([7,7]).color).to eql('black')
+    end
+  end
+
   context "Bishop#moveable_destinations" do
     it "Returns the proper destination(s) if located at [0,0] on an empty board" do
       white_bishop = Bishop.new({:color=>"white"})
