@@ -380,17 +380,25 @@ describe "Board-Piece integration" do
   end
 
   context "Board#stalemate" do
-    it "returns true if neither sides are in check, but also have no moves that can be made" do
+    it "returns true if black is not in check but there are no legal moves that can be made" do
       white_king = King.new({:color=>"white"})
       black_king = King.new({:color=>"black"})
-      white_knight = Knight.new({:color=>"white"})
-      white_rook = Rook.new({:color=>"white"})
-      black_rook = Rook.new({:color=>"black"})
-      empty_grid[0][0] = white_king
-      empty_grid[0][2] = black_king
-      empty_grid[3][1] = white_knight
-      empty_grid[3][3] = white_rook
-      empty_grid[1][7] = black_rook
+      white_bishop = Bishop.new({:color=>"white"})
+      empty_grid[3][0] = black_king
+      empty_grid[3][1] = white_bishop
+      empty_grid[3][2] = white_king
+      board1 = Board.new({:grid=>empty_grid})
+      board1.swap_color
+      expect(board1.stalemate?).to eql(true)
+    end
+
+    it "returns true if white is not in check but there are no legal moves that can be made" do
+      white_king = King.new({:color=>"white"})
+      black_queen = Queen.new({:color=>"black"})
+      black_knight = Knight.new({:color=>"black"})
+      empty_grid[5][4] = black_knight
+      empty_grid[7][4] = white_king
+      empty_grid[6][6] = black_queen
       board1 = Board.new({:grid=>empty_grid})
       expect(board1.stalemate?).to eql(true)
     end
