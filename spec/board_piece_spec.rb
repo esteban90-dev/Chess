@@ -404,6 +404,22 @@ describe "Board-Piece integration" do
     end
   end
 
+  context "Board#promotion?" do
+    it "returns true if a white pawn reaches the other side of the board" do
+      white_pawn = Pawn.new({:color=>"white"})
+      empty_grid[0][4] = white_pawn
+      board1 = Board.new({:grid=>empty_grid})
+      expect(board1.promotion?).to eql(true)
+    end
+
+    it "returns true if a black pawn reaches the other side of the board" do
+      black_pawn = Pawn.new({:color=>"black"})
+      empty_grid[7][4] = black_pawn
+      board1 = Board.new({:grid=>empty_grid})
+      expect(board1.promotion?).to eql(true)
+    end
+  end
+
   context "Bishop#moveable_destinations" do
     it "Returns the proper destination(s) if located at [0,0] on an empty board" do
       white_bishop = Bishop.new({:color=>"white"})
