@@ -155,4 +155,17 @@ describe Board do
       expect(board1.formatted).to be_a(String)
     end
   end
+
+  context "#place" do 
+    it "updates the board at the given location with the given item" do
+      board1 = Board.new
+      board1.place([0,0],'test')
+      expect(board1.contents([0,0])).to eql('test')
+    end
+
+    it "returns nil if the given location is not on the board" do
+      board1 = Board.new
+      expect(board1.place([-1,0],'test')).to eql(nil)
+    end
+  end
 end
