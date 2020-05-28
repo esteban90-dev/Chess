@@ -1,3 +1,5 @@
+require "./lib/board_extras.rb"
+
 class Board
   attr_accessor :grid, :active_color, :history
 
@@ -251,6 +253,10 @@ class Board
   def place(location, input)
     return nil unless valid_location?(location)
     grid[location[0]][location[1]] = input
+  end
+
+  def an_to_yx(input)
+    grid_map(input)
   end
 
   private
