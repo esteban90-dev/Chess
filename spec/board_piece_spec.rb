@@ -266,6 +266,16 @@ describe "Board-Piece integration" do
     end
   end
 
+  context "Board#move_an" do
+    it "makes a move when the source/destination is supplied in algebraic notation" do
+      white_pawn = Pawn.new({:color=>'white'})
+      empty_grid[6][1] = white_pawn
+      board1 = Board.new({:grid=>empty_grid})
+      board1.move_an('b2:b4')
+      expect(board1.grid[4][1]).to eql(white_pawn)
+    end
+  end
+
   context "Board#undo_last_move" do 
     it "undoes the previous move - regular move, no capture" do
       white_bishop = Bishop.new({:color=>"white"})
