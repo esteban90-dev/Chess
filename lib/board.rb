@@ -87,17 +87,17 @@ class Board
       if en_passant_pos?(source, destination)
         captured_position = [source[0], source[1] + 1]
         captured_piece = contents(captured_position)
-        grid[source[0]][source[1] + 1] = nil
+        place(captured_position, nil)
       elsif en_passant_neg?(source, destination)
         captured_position = [source[0], source[1] - 1]
         captured_piece = contents(captured_position)
-        grid[source[0]][source[1] - 1] = nil
+        place(captured_position, nil)
       end
     end
 
     #move piece from source to destination
-    grid[destination[0]][destination[1]] = contents(source)
-    grid[source[0]][source[1]] = nil
+    place(destination, contents(source))
+    place(source, nil)
 
     #update history
     history << [contents(destination), source, destination, captured_piece, captured_position]
@@ -164,15 +164,15 @@ class Board
       rook_piece = history.last[0]    
       rook_new_location = history.last[2]
       rook_old_location = history.last[1]
-      grid[rook_new_location[0]][rook_new_location[1]] = nil
-      grid[rook_old_location[0]][rook_old_location[1]] = rook_piece
+      place(rook_new_location, nil)
+      place(rook_old_location, rook_piece)
 
       #move king back to original position
       king_piece = history[-2][0]
       king_new_location = history[-2][2]
       king_old_location = history[-2][1]
-      grid[king_new_location[0]][king_new_location[1]] = nil
-      grid[king_old_location[0]][king_old_location[1]] = king_piece
+      place(king_new_location, nil)
+      place(king_old_location, king_piece)
 
       #clear two history entries since castling spans two entries
       history.pop
@@ -183,13 +183,14 @@ class Board
       piece = history.last[0]
       piece_new_location = history.last[2]
       piece_old_location = history.last[1]
-      grid[piece_new_location[0]][piece_new_location[1]] = nil
-      grid[piece_old_location[0]][piece_old_location[1]] = piece
+      place(piece_new_location, nil)
+      place(piece_old_location, piece)
 
       #replace captured pawn
       pawn = history.last[3]
       pawn_old_location = history.last[4]
-      grid[pawn_old_location[0]][pawn_old_location[1]] = pawn
+      #grid[pawn_old_location[0]][pawn_old_location[1]] = pawn
+      place(pawn_old_location, pawn)
 
       #clear recent history entry
       history.pop
@@ -200,20 +201,20 @@ class Board
       piece = history.last[0]
       piece_new_location = history.last[2]
       piece_old_location = history.last[1]
-      grid[piece_new_location[0]][piece_new_location[1]] = nil
-      grid[piece_old_location[0]][piece_old_location[1]] = piece
+      place(piece_new_location, nil)
+      place(piece_old_location, piece)
 
       #return captured piece (if applicable) back to original location
       captured_piece = history.last[3]
       if captured_piece
         captured_piece_old_location = history.last[4]
-        grid[captured_piece_old_location[0]][captured_piece_old_location[1]] = captured_piece
+        place(captured_piece_old_location, captured_piece)
       end
 
       #if no piece was captured, clear destination cell
       destination = history.last[2]
       if captured_piece.nil?
-        grid[destination[0]][destination[1]] = nil
+        place(destination, nil)
       end
 
       #clear recent history entry
@@ -240,6 +241,11 @@ class Board
     return true if grid[0].any?{ |element| element.nil? ? false : element.color == 'white' && element.name == 'pawn' }
     return true if grid[7].any?{ |element| element.nil? ? false : element.color == 'black' && element.name == 'pawn' }
     false
+  end
+
+  def place(location, input)
+    return nil unless valid_location?(location)
+    grid[location[0]][location[1]] = input
   end
 
   private
@@ -331,6 +337,20 @@ class Board
 
   def formatted_symbol(symbol)
     symbol.length > 1 ? symbol : " " + "#{symbol}"
+  end
+
+  def create_piece(selection, color)
+    case selection
+    when 'rook'
+      new_piece = Rook.new({:color=>"#{active_color}"})
+    when 'knight'
+      new_piece = Knight.new({:color=>"#{active_color}"})
+    when 'bishop'
+      new_piece = Bishop.new({:color=>"#{active_color}"})
+    when 'queen'
+      new_piece = Queen.new({:color=>"#{active_color}"})
+    end
+
   end
 end
 
