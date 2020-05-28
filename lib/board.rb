@@ -243,6 +243,11 @@ class Board
     false
   end
 
+  def promote(selection)
+    return nil unless promotion?
+    place(promotion_location, create_piece(selection))
+  end
+
   def place(location, input)
     return nil unless valid_location?(location)
     grid[location[0]][location[1]] = input
@@ -339,18 +344,38 @@ class Board
     symbol.length > 1 ? symbol : " " + "#{symbol}"
   end
 
-  def create_piece(selection, color)
+  def create_piece(selection, color=active_color)
     case selection
+    when 'pawn'
+      return Pawn.new({:color=>color})
     when 'rook'
-      new_piece = Rook.new({:color=>"#{active_color}"})
+      return Rook.new({:color=>color})
     when 'knight'
-      new_piece = Knight.new({:color=>"#{active_color}"})
+      return Knight.new({:color=>color})
     when 'bishop'
-      new_piece = Bishop.new({:color=>"#{active_color}"})
+      return Bishop.new({:color=>color})
     when 'queen'
-      new_piece = Queen.new({:color=>"#{active_color}"})
+      return Queen.new({:color=>color})
     end
+  end
 
+  def promotion_location
+    #returns the location of the first pawn found that has reached the other side of the board
+    return nil unless promotion?
+
+    promotable_white_pawn = nil
+    promotable_white_pawn_location = nil
+    promotable_white_pawn = grid[0].select{ |element| element.nil? ? false : element.name == 'pawn' && element.color == 'white' }.first
+    promotable_white_pawn_location = location(promotable_white_pawn) unless promotable_white_pawn.nil?
+
+    promotable_black_pawn = nil
+    promotable_black_pawn_location = nil
+    promotable_black_pawn = grid[7].select{ |element| element.nil? ? false : element.name == 'pawn' && element.color == 'black' }.first
+    promotable_black_pawn_location = location(promotable_black_pawn) unless promotable_black_pawn.nil?
+
+    return promotable_white_pawn_location unless promotable_white_pawn.nil?
+    return promotable_black_pawn_location unless promotable_black_pawn.nil?
+    nil
   end
 end
 
