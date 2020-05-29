@@ -80,6 +80,14 @@ deactivate Board
 
 space
 
+Game->Board:formatted_history
+activate Board
+note over Board:- return the board history formatted\n  as a string
+Game<--Board:
+deactivate Board
+
+space
+
 Piece->Board:active_color_in_check?
 activate Board
 note over Board:- returns true if the active color's king's \n  position can be reached by any enemy pieces
