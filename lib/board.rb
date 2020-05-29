@@ -4,7 +4,7 @@ class Board
   attr_accessor :grid, :active_color, :history
 
   def initialize(input={})
-    @grid = input.fetch(:grid, default_grid)
+    @grid = input.fetch(:grid, build_grid)
     @active_color = 'white'
     @history = []
   end
@@ -266,8 +266,8 @@ class Board
 
   private
 
-  def default_grid
-    Array.new(8){ Array.new(8) }
+  def build_grid
+    default_grid
   end
 
   def en_passant?(source, destination)
