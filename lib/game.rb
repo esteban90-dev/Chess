@@ -26,6 +26,13 @@ class Game
     false
   end
 
+  def result
+    return nil unless game_over?
+    return "Checkmate! Black wins!" if board.checkmate? && board.active_color == "white"
+    return "Checkmate! White wins!" if board.checkmate? && board.active_color == "black"
+    return "Stalemate! Game is a draw." if board.stalemate? 
+  end
+
   private
 
 end
