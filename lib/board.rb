@@ -252,6 +252,7 @@ class Board
 
   def promote(selection)
     return nil unless promotion?
+    promotion_location = location(history.last[0])
     place(promotion_location, create_piece(selection))
   end
 
@@ -368,25 +369,6 @@ class Board
     when 'queen'
       return Queen.new({:color=>color})
     end
-  end
-
-  def promotion_location
-    #returns the location of the first pawn found that has reached the other side of the board
-    return nil unless promotion?
-
-    promotable_white_pawn = nil
-    promotable_white_pawn_location = nil
-    promotable_white_pawn = grid[0].select{ |element| element.nil? ? false : element.name == 'pawn' && element.color == 'white' }.first
-    promotable_white_pawn_location = location(promotable_white_pawn) unless promotable_white_pawn.nil?
-
-    promotable_black_pawn = nil
-    promotable_black_pawn_location = nil
-    promotable_black_pawn = grid[7].select{ |element| element.nil? ? false : element.name == 'pawn' && element.color == 'black' }.first
-    promotable_black_pawn_location = location(promotable_black_pawn) unless promotable_black_pawn.nil?
-
-    return promotable_white_pawn_location unless promotable_white_pawn.nil?
-    return promotable_black_pawn_location unless promotable_black_pawn.nil?
-    nil
   end
 
   def translate_coordinates(input)
