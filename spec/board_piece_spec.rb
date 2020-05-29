@@ -99,12 +99,12 @@ describe "Board-Piece integration" do
     end
   end
 
-  context "Board#move" do
+  context "Board#move_yx" do
     it "moves a white piece that makes no capture" do
       white_pawn = Pawn.new({:color=>'white'})
       empty_grid[6][1] = white_pawn
       board1 = Board.new({:grid=>empty_grid})
-      board1.move([6,1],[5,1])
+      board1.move_yx([6,1],[5,1])
       expect(board1.history.last).to eql([white_pawn, [6,1], [5,1], nil, nil])
     end
 
@@ -114,7 +114,7 @@ describe "Board-Piece integration" do
       empty_grid[6][1] = white_pawn
       empty_grid[5][2] = black_pawn
       board1 = Board.new({:grid=>empty_grid})
-      board1.move([6,1],[5,2])
+      board1.move_yx([6,1],[5,2])
       expect(board1.history.last).to eql([white_pawn, [6,1], [5,2], black_pawn, [5,2]])
     end
 
@@ -123,7 +123,7 @@ describe "Board-Piece integration" do
       empty_grid[1][1] = black_pawn
       board1 = Board.new({:grid=>empty_grid})
       board1.swap_color
-      board1.move([1,1],[3,1])
+      board1.move_yx([1,1],[3,1])
       expect(board1.history.last).to eql([black_pawn, [1,1], [3,1], nil, nil])
     end
 
@@ -134,7 +134,7 @@ describe "Board-Piece integration" do
       empty_grid[4][4] = white_pawn
       board1 = Board.new({:grid=>empty_grid})
       board1.swap_color
-      board1.move([3,3],[4,4])
+      board1.move_yx([3,3],[4,4])
       expect(board1.history.last).to eql([black_pawn, [3,3], [4,4], white_pawn, [4,4]])
     end
 
@@ -145,7 +145,7 @@ describe "Board-Piece integration" do
       empty_grid[3][4] = black_pawn
       board1 = Board.new({:grid=>empty_grid})
       board1.history << [black_pawn, [4,1], [4,3], nil, nil]
-      board1.move([3,3],[2,4])
+      board1.move_yx([3,3],[2,4])
       expect(board1.history.last).to eql([white_pawn, [3,3], [2,4], black_pawn, [3,4]])
     end
 
@@ -156,7 +156,7 @@ describe "Board-Piece integration" do
       empty_grid[3][3] = black_pawn
       board1 = Board.new({:grid=>empty_grid})
       board1.history << [black_pawn, [3,1], [3,3], nil, nil]
-      board1.move([3,4],[2,3])
+      board1.move_yx([3,4],[2,3])
       expect(board1.history.last).to eql([white_pawn, [3,4], [2,3], black_pawn, [3,3]])
     end
 
@@ -168,7 +168,7 @@ describe "Board-Piece integration" do
       board1 = Board.new({:grid=>empty_grid})
       board1.history << [white_pawn, [6,2], [6,4], nil, nil]
       board1.swap_color
-      board1.move([4,1],[5,2])
+      board1.move_yx([4,1],[5,2])
       expect(board1.history.last).to eql([black_pawn, [4,1], [5,2], white_pawn, [4,2]])
     end
 
@@ -180,7 +180,7 @@ describe "Board-Piece integration" do
       board1 = Board.new({:grid=>empty_grid})
       board1.history << [white_pawn, [6,2], [6,4], nil, nil]
       board1.swap_color
-      board1.move([4,3],[5,2])
+      board1.move_yx([4,3],[5,2])
       expect(board1.history.last).to eql([black_pawn, [4,3], [5,2], white_pawn, [4,2]])
     end
 
@@ -192,7 +192,7 @@ describe "Board-Piece integration" do
       empty_grid[7][4] = white_king
       empty_grid[7][7] = white_rook_1
       board1 = Board.new({:grid=>empty_grid})
-      board1.move([7,4],[7,6])
+      board1.move_yx([7,4],[7,6])
       expect(board1.history[0..1]).to eql([[white_king, [7,4], [7,6], nil, nil], [white_rook_1, [7,7], [7,5], nil, nil]])
     end
 
@@ -205,7 +205,7 @@ describe "Board-Piece integration" do
       empty_grid[0][7] = black_rook_1
       board1 = Board.new({:grid=>empty_grid})
       board1.swap_color
-      board1.move([0,4],[0,6])
+      board1.move_yx([0,4],[0,6])
       expect(board1.history[0..1]).to eql([[black_king, [0,4], [0,6], nil, nil], [black_rook_1, [0,7], [0,5], nil, nil]])
     end
 
@@ -217,7 +217,7 @@ describe "Board-Piece integration" do
       empty_grid[7][4] = white_king
       empty_grid[7][7] = white_rook_1
       board1 = Board.new({:grid=>empty_grid})
-      board1.move([7,4],[7,1])
+      board1.move_yx([7,4],[7,1])
       expect(board1.history[0..1]).to eql([[white_king, [7,4], [7,1], nil, nil], [white_rook_2, [7,0], [7,2], nil, nil]])
     end
 
@@ -230,13 +230,13 @@ describe "Board-Piece integration" do
       empty_grid[0][7] = black_rook_1
       board1 = Board.new({:grid=>empty_grid})
       board1.swap_color
-      board1.move([0,4],[0,1])
+      board1.move_yx([0,4],[0,1])
       expect(board1.history[0..1]).to eql([[black_king, [0,4], [0,1], nil, nil], [black_rook_2, [0,0], [0,2], nil, nil]])
     end
 
     it "records error message if the source cell is empty" do
       board1 = Board.new({:grid=>empty_grid})
-      board1.move([0,0],[1,0])
+      board1.move_yx([0,0],[1,0])
       expect(board1.history.last).to eql("invalid move - source cell empty")
     end
 
@@ -244,7 +244,7 @@ describe "Board-Piece integration" do
       black_rook = Rook.new({:color=>'black'})
       empty_grid[0][4] = black_rook
       board1 = Board.new({:grid=>empty_grid})
-      board1.move([0,4],[0,5])
+      board1.move_yx([0,4],[0,5])
       expect(board1.history.last).to eql("invalid move - source cell contains enemy piece")
     end
 
@@ -253,7 +253,7 @@ describe "Board-Piece integration" do
       empty_grid[0][4] = black_rook
       board1 = Board.new({:grid=>empty_grid})
       board1.swap_color
-      board1.move([0,4],[0,4])
+      board1.move_yx([0,4],[0,4])
       expect(board1.history.last).to eql("invalid move - source cell matches destination cell")
     end
 
@@ -261,7 +261,7 @@ describe "Board-Piece integration" do
       white_pawn = Pawn.new({:color=>'white'})
       empty_grid[6][1] = white_pawn
       board1 = Board.new({:grid=>empty_grid})
-      board1.move([6,1],[3,1])
+      board1.move_yx([6,1],[3,1])
       expect(board1.history.last).to eql("invalid move - white pawn can't move from [6, 1] to [3, 1]")
     end
   end
@@ -282,7 +282,7 @@ describe "Board-Piece integration" do
       empty_grid[7][2] = white_bishop
       board1 = Board.new({:grid=>empty_grid})
       original_board = board1.formatted
-      board1.move([7,2],[5,4])
+      board1.move_yx([7,2],[5,4])
       board1.undo_last_move
       expect(board1.formatted).to eql(original_board)
     end
@@ -295,7 +295,7 @@ describe "Board-Piece integration" do
       board1 = Board.new({:grid=>empty_grid})
       board1.swap_color
       original_board = board1.formatted
-      board1.move([0,0],[6,0])
+      board1.move_yx([0,0],[6,0])
       board1.undo_last_move
       expect(board1.formatted).to eql(original_board)
     end
@@ -308,7 +308,7 @@ describe "Board-Piece integration" do
       board1 = Board.new({:grid=>empty_grid})
       board1.history << [black_pawn, [1,1], [3,1], nil, nil]
       original_board = board1.formatted
-      board1.move([3,0],[2,1])
+      board1.move_yx([3,0],[2,1])
       board1.undo_last_move
       expect(board1.formatted).to eql(original_board)
     end
@@ -322,7 +322,7 @@ describe "Board-Piece integration" do
       board1.swap_color
       board1.history << [white_pawn, [6,5], [4,5], nil, nil]
       original_board = board1.formatted
-      board1.move([4,6],[5,5])
+      board1.move_yx([4,6],[5,5])
       board1.undo_last_move
       expect(board1.formatted).to eql(original_board)
     end
@@ -336,7 +336,7 @@ describe "Board-Piece integration" do
       empty_grid[0][7] = white_rook_2
       board1 = Board.new({:grid=>empty_grid})
       original_board = board1.formatted
-      board1.move([0,4],[0,6])
+      board1.move_yx([0,4],[0,6])
       board1.undo_last_move
       expect(board1.formatted).to eql(original_board)
     end
@@ -351,7 +351,7 @@ describe "Board-Piece integration" do
       board1 = Board.new({:grid=>empty_grid})
       board1.swap_color
       original_board = board1.formatted
-      board1.move([7,4],[7,1])
+      board1.move_yx([7,4],[7,1])
       board1.undo_last_move
       expect(board1.formatted).to eql(original_board)
     end
