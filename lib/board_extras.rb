@@ -67,3 +67,78 @@ def grid_map(input)
   }
   map[input]
 end
+
+
+def default_grid
+  grid = Array.new(8){ Array.new(8) }
+
+  black_pawn_1 = Pawn.new({:color=>'black', :symbol=>'P*'})
+  black_pawn_2 = Pawn.new({:color=>'black', :symbol=>'P*'})
+  black_pawn_3 = Pawn.new({:color=>'black', :symbol=>'P*'})
+  black_pawn_4 = Pawn.new({:color=>'black', :symbol=>'P*'})
+  black_pawn_5 = Pawn.new({:color=>'black', :symbol=>'P*'})
+  black_pawn_6 = Pawn.new({:color=>'black', :symbol=>'P*'})
+  black_pawn_7 = Pawn.new({:color=>'black', :symbol=>'P*'})
+  black_pawn_8 = Pawn.new({:color=>'black', :symbol=>'P*'})
+  black_rook_1 = Rook.new({:color=>'black', :symbol=>'R*'})
+  black_rook_2 = Rook.new({:color=>'black', :symbol=>'R*'})
+  black_knight_1 = Knight.new({:color=>'black', :symbol=>'N*'})
+  black_knight_2 = Knight.new({:color=>'black', :symbol=>'N*'})
+  black_bishop_1 = Bishop.new({:color=>'black', :symbol=>'B*'})
+  black_bishop_2 = Bishop.new({:color=>'black', :symbol=>'B*'})
+  black_king = King.new({:color=>'black', :symbol=>'K*'})
+  black_queen = Queen.new({:color=>'black', :symbol=>'Q*'})
+
+  grid[0][0] = black_rook_1
+  grid[0][1] = black_knight_1
+  grid[0][2] = black_bishop_1
+  grid[0][3] = black_queen
+  grid[0][4] = black_king
+  grid[0][5] = black_bishop_2
+  grid[0][6] = black_knight_2
+  grid[0][7] = black_rook_2
+  grid[1][0] = black_pawn_1
+  grid[1][1] = black_pawn_2
+  grid[1][2] = black_pawn_3
+  grid[1][3] = black_pawn_4
+  grid[1][4] = black_pawn_5
+  grid[1][5] = black_pawn_6
+  grid[1][6] = black_pawn_7
+  grid[1][7] = black_pawn_8
+
+  white_pawn_1 = Pawn.new({:color=>'white', :symbol=>'P'})
+  white_pawn_2 = Pawn.new({:color=>'white', :symbol=>'P'})
+  white_pawn_3 = Pawn.new({:color=>'white', :symbol=>'P'})
+  white_pawn_4 = Pawn.new({:color=>'white', :symbol=>'P'})
+  white_pawn_5 = Pawn.new({:color=>'white', :symbol=>'P'})
+  white_pawn_6 = Pawn.new({:color=>'white', :symbol=>'P'})
+  white_pawn_7 = Pawn.new({:color=>'white', :symbol=>'P'})
+  white_pawn_8 = Pawn.new({:color=>'white', :symbol=>'P'})
+  white_rook_1 = Rook.new({:color=>'white', :symbol=>'R'})
+  white_rook_2 = Rook.new({:color=>'white', :symbol=>'R'})
+  white_knight_1 = Knight.new({:color=>'white', :symbol=>'N'})
+  white_knight_2 = Knight.new({:color=>'white', :symbol=>'N'})
+  white_bishop_1 = Bishop.new({:color=>'white', :symbol=>'B'})
+  white_bishop_2 = Bishop.new({:color=>'white', :symbol=>'B'})
+  white_king = King.new({:color=>'white', :symbol=>'K'})
+  white_queen = Queen.new({:color=>'white', :symbol=>'Q'})
+
+  grid[7][0] = white_rook_1
+  grid[7][1] = white_knight_1
+  grid[7][2] = white_bishop_1
+  grid[7][3] = white_queen
+  grid[7][4] = white_king
+  grid[7][5] = white_bishop_2
+  grid[7][6] = white_knight_2
+  grid[7][7] = white_rook_2
+  grid[6][0] = white_pawn_1
+  grid[6][1] = white_pawn_2
+  grid[6][2] = white_pawn_3
+  grid[6][3] = white_pawn_4
+  grid[6][4] = white_pawn_5
+  grid[6][5] = white_pawn_6
+  grid[6][6] = white_pawn_7
+  grid[6][7] = white_pawn_8
+
+  grid
+end
