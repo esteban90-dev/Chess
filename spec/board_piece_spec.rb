@@ -264,6 +264,20 @@ describe "Board-Piece integration" do
       board1.move_yx([6,1],[3,1])
       expect(board1.history.last).to eql("invalid move - white pawn can't move from [6, 1] to [3, 1]")
     end
+
+    it "returns 1 if the move was successful" do
+      white_pawn = Pawn.new({:color=>'white'})
+      empty_grid[6][1] = white_pawn
+      board1 = Board.new({:grid=>empty_grid})
+      expect(board1.move_yx([6,1],[5,1])).to eql(1)
+    end
+
+    it "returns nil if the move was unsuccessful" do
+      white_pawn = Pawn.new({:color=>'white'})
+      empty_grid[6][1] = white_pawn
+      board1 = Board.new({:grid=>empty_grid})
+      expect(board1.move_yx([6,1],[3,1])).to eql(nil)
+    end
   end
 
   context "Board#move_an" do
@@ -273,6 +287,20 @@ describe "Board-Piece integration" do
       board1 = Board.new({:grid=>empty_grid})
       board1.move_an('b2:b4')
       expect(board1.grid[4][1]).to eql(white_pawn)
+    end
+
+    it "returns 1 if the move was successful" do
+      white_pawn = Pawn.new({:color=>'white'})
+      empty_grid[6][1] = white_pawn
+      board1 = Board.new({:grid=>empty_grid})
+      expect(board1.move_an('b2:b4')).to eql(1)
+    end
+
+    it "returns nil if the move was unsuccessful" do
+      white_pawn = Pawn.new({:color=>'white'})
+      empty_grid[6][1] = white_pawn
+      board1 = Board.new({:grid=>empty_grid})
+      expect(board1.move_an('b2:b2')).to eql(nil)
     end
   end
 
