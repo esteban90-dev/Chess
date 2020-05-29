@@ -455,6 +455,16 @@ describe "Board-Piece integration" do
     end
   end
 
+  context "Board#formatted_history" do
+    it "returns the most recent history entry formatted as a string" do
+      white_pawn = Pawn.new({:color=>"white"})
+      empty_grid[1][4] = white_pawn
+      board1 = Board.new({:grid=>empty_grid})
+      board1.history << [white_pawn, [2,4], [1,4], nil, nil]
+      expect(board1.formatted_history).to be_a(String)
+    end
+  end
+
   context "Bishop#moveable_destinations" do
     it "Returns the proper destination(s) if located at [0,0] on an empty board" do
       white_bishop = Bishop.new({:color=>"white"})
