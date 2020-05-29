@@ -1,4 +1,4 @@
-def grid_map(input)
+def grid_map 
   map = {
   "a1" => [7,0],
   "a2" => [6,0],
@@ -65,7 +65,6 @@ def grid_map(input)
   "h7" => [1,7],
   "h8" => [0,7]
   }
-  map[input]
 end
 
 
