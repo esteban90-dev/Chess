@@ -33,6 +33,11 @@ class Game
     return "Stalemate! Game is a draw." if board.stalemate? 
   end
 
+  def valid_move_input?(input)
+    #returns true if input matches the algebraic notation format 'a2:b3'
+    input.match?(/^[A-Ha-h][1-8][:][A-Ha-h][1-8]$/)
+  end
+
   private
 
 end
