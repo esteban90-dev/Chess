@@ -433,8 +433,10 @@ describe "Board-Piece integration" do
   context "Board#promote" do
     it "replaces a white pawn that reaches the other side of the board with a new piece of the player's choice" do
       white_pawn = Pawn.new({:color=>"white"})
-      empty_grid[0][4] = white_pawn
+      empty_grid[1][4] = white_pawn
       board1 = Board.new({:grid=>empty_grid})
+      board1.history << [white_pawn, [2,4], [1,4], nil, nil]
+      board1.move_yx([1,4],[0,4])
       board1.promote('queen')
       expect(board1.contents([0,4]).name).to eql('queen')
       expect(board1.contents([0,4]).color).to eql('white')
@@ -442,9 +444,11 @@ describe "Board-Piece integration" do
 
     it "replaces a white pawn that reaches the other side of the board with a new piece of the player's choice" do
       black_pawn = Pawn.new({:color=>"black"})
-      empty_grid[7][7] = black_pawn
+      empty_grid[6][7] = black_pawn
       board1 = Board.new({:grid=>empty_grid})
       board1.swap_color
+      board1.history << [black_pawn, [5,7], [6,7], nil, nil]
+      board1.move_yx([6,7],[7,7])
       board1.promote('rook')
       expect(board1.contents([7,7]).name).to eql('rook')
       expect(board1.contents([7,7]).color).to eql('black')
