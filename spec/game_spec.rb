@@ -36,4 +36,34 @@ describe Game do
       expect(game1.game_over?).to eql(false)
     end
   end
+
+  context "#result" do
+    it "returns nil if game_over? returns false" do
+      allow(board1).to receive(:checkmate?).and_return(false)
+      allow(board1).to receive(:stalemate?).and_return(false)
+      game1 = Game.new({:board => board1, :console => console1 })
+      expect(game1.result).to eql(nil)
+    end
+
+    it "returns a message indicating that black is the winner if white is in checkmate" do
+      allow(board1).to receive(:checkmate?).and_return(true)
+      allow(board1).to receive(:active_color).and_return('white')
+      game1 = Game.new({:board => board1, :console => console1 })
+      expect(game1.result).to eql('Checkmate! Black wins!')
+    end
+
+    it "returns a message indicating that white is the winner if black is in checkmate" do
+      allow(board1).to receive(:checkmate?).and_return(true)
+      allow(board1).to receive(:active_color).and_return('black')
+      game1 = Game.new({:board => board1, :console => console1 })
+      expect(game1.result).to eql('Checkmate! White wins!')
+    end
+
+    it "returns a message indicating a draw if stalemate is detected" do
+      allow(board1).to receive(:checkmate?).and_return(false)
+      allow(board1).to receive(:stalemate?).and_return(true)
+      game1 = Game.new({:board => board1, :console => console1 })
+      expect(game1.result).to eql('Stalemate! Game is a draw.')
+    end
+  end
 end
