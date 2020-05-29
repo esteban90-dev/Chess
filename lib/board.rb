@@ -313,8 +313,8 @@ class Board
 
   def king_side_castling?(entry)
     #returns true if given history entry was a king moving two spaces to the right
-    return false if history.length < 2
-    return false if history[-1].include?('invalid') || history[-2].include?('invalid')
+    return false if history.empty?
+    return false if entry.include?('invalid')
     return true if entry[0].name == 'king' && entry[2][1] - entry[1][1] == 2 
     false
   end
@@ -322,6 +322,20 @@ class Board
   def king_side_castle_move
     rook_current_position = [history.last[2][0], history.last[2][1] + 1]
     rook_new_position = [history.last[2][0], history.last[2][1] - 1]
+    move_yx(rook_current_position, rook_new_position){ check_test_move_input(rook_current_position, rook_new_position) }
+  end
+
+  def queen_side_castling?(entry)
+    #returns true if given history entry was a king moving three spaces to the left
+    return false if history.empty?
+    return false if entry.include?('invalid')
+    return true if entry[0].name == 'king' && entry[2][1] - entry[1][1] == -3
+    false
+  end
+
+  def queen_side_castle_move
+    rook_current_position = [history.last[2][0], history.last[2][1] - 1]
+    rook_new_position = [history.last[2][0], history.last[2][1] + 1]
     move_yx(rook_current_position, rook_new_position){ check_test_move_input(rook_current_position, rook_new_position) }
   end
 
@@ -339,20 +353,6 @@ class Board
     return false if history.last[3].nil?
     return false if history.last[2] == history.last[4]
     true
-  end
-
-  def queen_side_castling?(entry)
-    #returns true if given history entry was a king moving three spaces to the left
-    return false if history.length < 2
-    return false if history[-1].include?('invalid') || history[-2].include?('invalid')
-    return true if entry[0].name == 'king' && entry[2][1] - entry[1][1] == -3
-    false
-  end
-
-  def queen_side_castle_move
-    rook_current_position = [history.last[2][0], history.last[2][1] - 1]
-    rook_new_position = [history.last[2][0], history.last[2][1] + 1]
-    move_yx(rook_current_position, rook_new_position){ check_test_move_input(rook_current_position, rook_new_position) }
   end
 
   def check_move_input(source, destination)
