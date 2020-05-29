@@ -175,4 +175,11 @@ describe Board do
       expect(board1.an_to_yx('b5')).to eql([3,1])
     end
   end
+
+  context "#yx_to_an" do
+    it "converts a yx coordinate to algebraic notation" do
+      board1 = Board.new
+      expect(board1.yx_to_an([3,1])).to eql('b5')
+    end
+  end
 end
