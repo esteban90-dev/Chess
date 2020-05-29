@@ -64,7 +64,7 @@ class Board
 
   def move_an(input)
     source, destination = translate_coordinates(input)
-    move_yx(source, destination)
+    return move_yx(source, destination)
   end
 
   def move_yx(source, destination)
@@ -77,7 +77,8 @@ class Board
 
     if result
       history << result
-      return
+      #return nil if move unsuccessful
+      return nil
     end
   
     captured_piece = nil
@@ -112,6 +113,9 @@ class Board
     #move rook too if most recent move was castling
     king_side_castle_move if king_side_castling?(history.last)
     queen_side_castle_move if queen_side_castling?(history.last)
+
+    #return 1 if successful move
+    1
   end
 
   def disables_check?(source, destination)
@@ -167,7 +171,7 @@ class Board
     return nil if history.length == 0
     return history.last if history.last.class == String
     result = "#{history.last[0].color} #{history.last[0].name} moved from #{yx_to_an(history.last[1])} to #{yx_to_an(history.last[2])}"
-    result << "and captured #{history.last[3]}" unless history.last[3].nil?
+    result << " and captured #{history.last[3].color} #{history.last[3].name}" unless history.last[3].nil?
     result
   end
 
@@ -309,6 +313,8 @@ class Board
 
   def king_side_castling?(entry)
     #returns true if given history entry was a king moving two spaces to the right
+    return false if history.length < 2
+    return false if history[-1].include?('invalid') || history[-2].include?('invalid')
     return true if entry[0].name == 'king' && entry[2][1] - entry[1][1] == 2 
     false
   end
@@ -337,6 +343,8 @@ class Board
 
   def queen_side_castling?(entry)
     #returns true if given history entry was a king moving three spaces to the left
+    return false if history.length < 2
+    return false if history[-1].include?('invalid') || history[-2].include?('invalid')
     return true if entry[0].name == 'king' && entry[2][1] - entry[1][1] == -3
     false
   end
