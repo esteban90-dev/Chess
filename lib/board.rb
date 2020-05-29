@@ -163,6 +163,14 @@ class Board
     result.join("\n")
   end
 
+  def formatted_history
+    return nil if history.length == 0
+    return history.last if history.last.class == String
+    result = "#{history.last[0].color} #{history.last[0].name} moved from #{yx_to_an(history.last[1])} to #{yx_to_an(history.last[2])}"
+    result << "and captured #{history.last[3]}" unless history.last[3].nil?
+    result
+  end
+
   def undo_last_move
     return nil if history.empty?
 
@@ -262,7 +270,11 @@ class Board
   end
 
   def an_to_yx(input)
-    grid_map(input)
+    grid_map[input]
+  end
+
+  def yx_to_an(input)
+    grid_map.key(input)
   end
 
   private
