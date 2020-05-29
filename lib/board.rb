@@ -64,10 +64,10 @@ class Board
 
   def move_an(input)
     source, destination = translate_coordinates(input)
-    move(source, destination)
+    move_yx(source, destination)
   end
 
-  def move(source, destination)
+  def move_yx(source, destination)
     #allow the usage of a block if you want custom guard logic
     if block_given?
       result = yield(source, destination)
@@ -119,7 +119,7 @@ class Board
     result = false
 
     #make the move
-    move(source, destination){ check_test_move_input(source, destination) }
+    move_yx(source, destination){ check_test_move_input(source, destination) }
 
     #see if check cleared
     result = true unless active_color_in_check?
@@ -135,7 +135,7 @@ class Board
     result = false
     
     #move piece to destination
-    move(source, destination){ check_test_move_input(source, destination) }
+    move_yx(source, destination){ check_test_move_input(source, destination) }
     
     #see if check condition is active
     result = true if active_color_in_check?
@@ -303,7 +303,7 @@ class Board
   def king_side_castle_move
     rook_current_position = [history.last[2][0], history.last[2][1] + 1]
     rook_new_position = [history.last[2][0], history.last[2][1] - 1]
-    move(rook_current_position, rook_new_position){ check_test_move_input(rook_current_position, rook_new_position) }
+    move_yx(rook_current_position, rook_new_position){ check_test_move_input(rook_current_position, rook_new_position) }
   end
 
   def last_moves_castling?
@@ -331,7 +331,7 @@ class Board
   def queen_side_castle_move
     rook_current_position = [history.last[2][0], history.last[2][1] - 1]
     rook_new_position = [history.last[2][0], history.last[2][1] + 1]
-    move(rook_current_position, rook_new_position){ check_test_move_input(rook_current_position, rook_new_position) }
+    move_yx(rook_current_position, rook_new_position){ check_test_move_input(rook_current_position, rook_new_position) }
   end
 
   def check_move_input(source, destination)
