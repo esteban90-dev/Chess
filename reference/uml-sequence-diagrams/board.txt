@@ -3,16 +3,15 @@ participant Game
 participant Board
 participant Piece
 
-Game->Board:move(source, destination)
+Game->Board:move_an(source, destination)
 activate Board
-note over Board:- return 'invalid' if source piece \n  does not match active color or if\n  source cell is empty\n- return 'invalid' if destination \n  is not contained in moveable_destinations\n- store captured opponent piece if destination \n  contains a piece that doesn't match active \n  color\n- set destination cell = source\n- clear source cell\n- store captured pawn if en_passant? returns true\n- move rook if castling? returns true\n- update history\n- Return 'Moved source:destination' successfully or similar\n
+note over Board:- convert AN coordinates to YX\n- return 'invalid' if source piece \n  does not match active color or if\n  source cell is empty\n- return 'invalid' if destination \n  is not contained in moveable_destinations\n- store captured opponent piece if destination \n  contains a piece that doesn't match active \n  color\n- set destination cell = source\n- clear source cell\n- store captured pawn if en_passant? returns true\n- move rook if castling? returns true\n- update history\n- Return 'Moved source:destination' successfully or similar\n
 Board->Piece:moveable_destinations?(self)
 activate Piece
 Board<--Piece:moveable_destinations
 deactivate Piece
 Game<--Board:result(TBD)
 deactivate Board
-
 
 
 space
