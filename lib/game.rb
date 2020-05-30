@@ -9,10 +9,11 @@ class Game
   public
 
   def play
+    console.write(welcome_message)
     loop do
       console.write(board.formatted)
       console.write(board.formatted_history)
-      input = console.prompt("Make a move:")
+      input = console.prompt(move_message)
       board.move_an(input)
       board.swap_color
       break if board.checkmate?
@@ -44,4 +45,21 @@ class Game
 
   private
 
+  def welcome_message
+    str = ''
+    str << "\n"
+    str << " Welcome to Chess! \n"
+    str << " White always goes first. \n"
+    str << " The game is over when one color puts the other in checkmate, \n"
+    str << " or there is a stalemate condition (draw). \n"
+    str << " For detailed rules, see https://en.wikipedia.org/wiki/Rules_of_chess \n"
+    str << "\n"
+    str
+  end
+
+  def move_message
+    str = ''
+    str << " It is #{board.active_color}'s move. Enter a move in the following format: 'a2:b3' \n"
+    str
+  end
 end
