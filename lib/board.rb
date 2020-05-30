@@ -379,15 +379,15 @@ class Board
   def create_piece(selection, color=active_color)
     case selection
     when 'pawn'
-      return Pawn.new({:color=>color})
+      return Pawn.new({:color => color, :symbol=> color == "white" ? "P" : "P*" })
     when 'rook'
-      return Rook.new({:color=>color})
+      return Rook.new({:color => color, :symbol=> color == "white" ? "R" : "R*" })
     when 'knight'
-      return Knight.new({:color=>color})
+      return Knight.new({:color => color, :symbol=> color == "white" ? "N" : "N*" })
     when 'bishop'
-      return Bishop.new({:color=>color})
+      return Bishop.new({:color => color, :symbol=> color == "white" ? "B" : "B*" })
     when 'queen'
-      return Queen.new({:color=>color})
+      return Queen.new({:color => color, :symbol=> color == "white" ? "Q" : "Q*" })
     end
   end
 
