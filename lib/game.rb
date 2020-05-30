@@ -38,6 +38,10 @@ class Game
     input.match?(/^[A-Ha-h][1-8][:][A-Ha-h][1-8]$/)
   end
 
+  def valid_promotion_input?(input)
+    ['rook','bishop','knight','queen'].any?{ |word| input.downcase.match?(word) }
+  end
+
   private
 
 end
