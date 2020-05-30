@@ -18,7 +18,9 @@ class Pawn < Piece
     #if pawn hasn't moved yet, and forward_cell_position_1 is empty - add cell in the +2 y_direction if empty
     if board.history.none?{ |entry| entry[0] == self }
       forward_cell_position_2 = [current_position[0] + (y_direction*2), current_position[1]]
-      destinations << forward_cell_position_2 unless destinations.empty?
+      if board.contents(forward_cell_position_2).nil?
+        destinations << forward_cell_position_2 unless destinations.empty?
+      end
     end
 
     #add adjacent diagonal cell (+x direction) if it is a valid location and contains an enemy, or if empty cell and en_passant is allowed
