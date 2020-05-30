@@ -262,7 +262,7 @@ describe "Board-Piece integration" do
       empty_grid[6][1] = white_pawn
       board1 = Board.new({:grid=>empty_grid})
       board1.move_yx([6,1],[3,1])
-      expect(board1.history.last).to eql("invalid move - white pawn can't move from [6, 1] to [3, 1]")
+      expect(board1.history.last).to eql("invalid move - white pawn can't move from b2 to b5")
     end
 
     it "returns 1 if the move was successful" do
