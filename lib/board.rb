@@ -359,7 +359,7 @@ class Board
     return "invalid move - source cell empty" if contents(source).nil?
     return "invalid move - source cell contains enemy piece" if contents(source).color != active_color
     return "invalid move - source cell matches destination cell" if source == destination
-    return "invalid move - #{contents(source).color} #{contents(source).name} can't move from #{source} to #{destination}" if !contents(source).moveable_destinations(self).include?(destination)
+    return "invalid move - #{contents(source).color} #{contents(source).name} can't move from #{yx_to_an(source)} to #{yx_to_an(destination)}" if !contents(source).moveable_destinations(self).include?(destination)
     nil
   end
 
