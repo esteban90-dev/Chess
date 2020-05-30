@@ -12,13 +12,22 @@ class Game
     console.write(welcome_message)
     loop do
       console.write(board.formatted)
-      console.write(board.formatted_history)
-      input = console.prompt(move_message)
-      board.move_an(input)
+
+      input = ''
+      result = nil
+      while result.nil?
+        input = console.prompt(move_message)
+        if valid_move_input?(input)
+          result = board.move_an(input) 
+          console.write(board.formatted_history)
+        end
+      end
+
       board.swap_color
-      break if board.checkmate?
-      break if board.stalemate?
+      break if game_over?
     end
+    console.write(board.formatted)
+    console.write(result)
   end
 
   def game_over?
