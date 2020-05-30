@@ -83,4 +83,21 @@ describe Game do
       expect(game1.valid_move_input?('A2:B3')).to eql(true)
     end
   end
+
+  context "#valid_promotion_input?" do
+    it "returns true if given input is 'rook'" do
+      game1 = Game.new({:board => board1, :console => console1 })
+      expect(game1.valid_promotion_input?('rook')).to eql(true)
+    end
+
+    it "returns true if given input is 'BISHOP'" do
+      game1 = Game.new({:board => board1, :console => console1 })
+      expect(game1.valid_promotion_input?('BISHOP')).to eql(true)
+    end
+
+    it "returns false if the given input is 'Pawn'" do
+      game1 = Game.new({:board => board1, :console => console1 })
+      expect(game1.valid_promotion_input?('Pawn')).to eql(false)
+    end
+  end
 end
