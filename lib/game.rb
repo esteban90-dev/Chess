@@ -1,6 +1,17 @@
 class Game
   attr_reader :board, :console
 
+  def self.load(fname)
+    file = File.open(fname)
+    load = YAML.load(file)
+    console.write(load_message)
+    self.new(load)
+  end
+
+  def self.welcome 
+    console.write(welcome_message)
+  end
+
   def initialize(input)
     @board = input.fetch(:board)
     @console = input.fetch(:console)
@@ -9,7 +20,6 @@ class Game
   public
 
   def play
-    console.write(welcome_message)
     loop do
       console.write(board.formatted)
 
@@ -69,6 +79,12 @@ class Game
   def move_message
     str = ''
     str << " It is #{board.active_color}'s move. Enter a move in the following format: 'a2:b3' \n"
+    str
+  end
+
+  def load_message
+    str = ''
+    str << " Game loaded. \n"
     str
   end
 end
