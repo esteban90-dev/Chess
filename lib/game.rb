@@ -4,8 +4,9 @@ class Game
   def self.load(fname)
     file = File.open(fname)
     load = YAML.load(file)
-    console.write(load_message)
+    console.write(load_prompt_message)
     self.new(load)
+    console.write(load_done_message)
   end
 
   def self.welcome 
@@ -48,7 +49,7 @@ class Game
       :console => console
     })
     save_file.close
-    console.write(save_message)
+    console.write(save_done_message)
   end
 
   def game_over?
@@ -73,7 +74,7 @@ class Game
     ['rook','bishop','knight','queen'].any?{ |word| input.downcase.match?(word) }
   end
 
-  def valid_save_input?(input)
+  def valid_save_load_input?(input)
     #returns true if input is y,Y,n, or N
     input.match?(/^[yY]|[nN]$/)
   end
@@ -98,13 +99,25 @@ class Game
     str
   end
 
-  def load_message
+  def load_prompt_message
+    str = ''
+    str << " Would you like to load a game? Enter y/n."
+    str
+  end
+
+  def load_done_message
     str = ''
     str << " Game loaded. \n"
     str
   end
 
-  def save_message
+  def save_prompt_message
+    str = ''
+    str << " Would you like to save the game? Enter y/n."
+    str
+  end
+
+  def save_done_message
     str = ''
     str << " Game saved. \n"
     str
