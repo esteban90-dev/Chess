@@ -6,13 +6,23 @@ class Game
   def self.load(fname)
     file = File.open(fname)
     load = YAML.load(file)
-    console.write(load_prompt_message)
     self.new(load)
-    console.write(load_done_message)
   end
 
   def self.welcome 
     welcome_message
+  end
+
+  def self.load_prompt_message
+    str = ''
+    str << " Would you like to load a game? Enter y/n."
+    str
+  end
+
+  def self.load_done_message
+    str = ''
+    str << " Game loaded. \n"
+    str
   end
 
   def initialize(input)
@@ -103,18 +113,6 @@ class Game
   def move_message
     str = ''
     str << " It is #{board.active_color}'s move. Enter a move in the following format: 'a2:b3' \n"
-    str
-  end
-
-  def load_prompt_message
-    str = ''
-    str << " Would you like to load a game? Enter y/n."
-    str
-  end
-
-  def load_done_message
-    str = ''
-    str << " Game loaded. \n"
     str
   end
 
