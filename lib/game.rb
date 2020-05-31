@@ -12,7 +12,7 @@ class Game
   end
 
   def self.welcome 
-    console.write(welcome_message)
+    welcome_message
   end
 
   def initialize(input)
@@ -88,7 +88,7 @@ class Game
 
   private
 
-  def welcome_message
+  def self.welcome_message
     str = ''
     str << "\n"
     str << " Welcome to Chess! \n"
