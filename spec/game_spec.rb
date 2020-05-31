@@ -101,25 +101,25 @@ describe Game do
     end
   end
 
-  context "#valid_save_input?" do
+  context "#valid_save_load_input?" do
     it "returns true when given input is 'y'" do
       game1 = Game.new({:board => board1, :console => console1 })
-      expect(game1.valid_save_input?('y')).to eql(true)
+      expect(game1.valid_save_load_input?('y')).to eql(true)
     end
 
     it "returns true when given input is 'Y'" do
       game1 = Game.new({:board => board1, :console => console1 })
-      expect(game1.valid_save_input?('Y')).to eql(true)
+      expect(game1.valid_save_load_input?('Y')).to eql(true)
     end
 
     it "returns true when given input is 'n'" do
       game1 = Game.new({:board => board1, :console => console1 })
-      expect(game1.valid_save_input?('n')).to eql(true)
+      expect(game1.valid_save_load_input?('n')).to eql(true)
     end
 
     it "returns false when given input is 'z'" do
       game1 = Game.new({:board => board1, :console => console1 })
-      expect(game1.valid_save_input?('z')).to eql(false)
+      expect(game1.valid_save_load_input?('z')).to eql(false)
     end
   end
 end
