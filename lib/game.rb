@@ -73,6 +73,11 @@ class Game
     ['rook','bishop','knight','queen'].any?{ |word| input.downcase.match?(word) }
   end
 
+  def valid_save_input?(input)
+    #returns true if input is y,Y,n, or N
+    input.match?(/^[yY]|[nN]$/)
+  end
+
   private
 
   def welcome_message
