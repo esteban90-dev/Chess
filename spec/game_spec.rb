@@ -100,4 +100,26 @@ describe Game do
       expect(game1.valid_promotion_input?('Pawn')).to eql(false)
     end
   end
+
+  context "#valid_save_input?" do
+    it "returns true when given input is 'y'" do
+      game1 = Game.new({:board => board1, :console => console1 })
+      expect(game1.valid_save_input?('y')).to eql(true)
+    end
+
+    it "returns true when given input is 'Y'" do
+      game1 = Game.new({:board => board1, :console => console1 })
+      expect(game1.valid_save_input?('Y')).to eql(true)
+    end
+
+    it "returns true when given input is 'n'" do
+      game1 = Game.new({:board => board1, :console => console1 })
+      expect(game1.valid_save_input?('n')).to eql(true)
+    end
+
+    it "returns false when given input is 'z'" do
+      game1 = Game.new({:board => board1, :console => console1 })
+      expect(game1.valid_save_input?('z')).to eql(false)
+    end
+  end
 end
