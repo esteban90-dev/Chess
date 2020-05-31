@@ -1,4 +1,6 @@
 class Game
+  SAVE_PATH = './saves/save_file'
+  
   attr_reader :board, :console
 
   def self.load(fname)
@@ -36,6 +38,11 @@ class Game
 
       board.swap_color
       break if game_over?
+
+      until valid_save_load_input?(input)
+        input = console.prompt(save_prompt_message)
+      end
+      save(SAVE_PATH) if input.downcase == 'y'
     end
     console.write(board.formatted)
     console.write(result)
