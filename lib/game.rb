@@ -40,6 +40,17 @@ class Game
     console.write(result)
   end
 
+  def save(fname)
+    #create save file in YAML format
+    save_file = File.open(fname, "w")
+    save_file.puts YAML.dump({
+      :board => board,
+      :console => console
+    })
+    save_file.close
+    console.write(save_message)
+  end
+
   def game_over?
     return true if board.checkmate?
     return true if board.stalemate?
@@ -85,6 +96,12 @@ class Game
   def load_message
     str = ''
     str << " Game loaded. \n"
+    str
+  end
+
+  def save_message
+    str = ''
+    str << " Game saved. \n"
     str
   end
 end
