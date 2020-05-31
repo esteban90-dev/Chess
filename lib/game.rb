@@ -1,12 +1,14 @@
 class Game
   SAVE_PATH = './saves/save_file'
   
-  attr_reader :board, :console
+  attr_reader :board 
 
   def self.load(fname)
     file = File.open(fname)
     load = YAML.load(file)
-    self.new(load)
+    load_obj = self.new(load)
+    puts load_done_message
+    load_obj
   end
 
   def self.welcome 
@@ -27,22 +29,22 @@ class Game
 
   def initialize(input)
     @board = input.fetch(:board)
-    @console = input.fetch(:console)
   end
 
   public
 
   def play
     loop do
-      console.write(board.formatted)
+      puts board.formatted
 
       input = ''
       result = nil
       while result.nil?
-        input = console.prompt(move_message)
+        puts move_message
+        input = gets.chomp
         if valid_move_input?(input)
           result = board.move_an(input) 
-          console.write(board.formatted_history)
+          puts board.formatted_history
         end
       end
 
@@ -50,23 +52,23 @@ class Game
       break if game_over?
 
       until valid_save_load_input?(input)
-        input = console.prompt(save_prompt_message)
+        puts save_prompt_message
+        input = gets.chomp
       end
       save(SAVE_PATH) if input.downcase == 'y'
     end
-    console.write(board.formatted)
-    console.write(result)
+    puts board.formatted
+    puts result
   end
 
   def save(fname)
     #create save file in YAML format
     save_file = File.open(fname, "w")
     save_file.puts YAML.dump({
-      :board => board,
-      :console => console
+      :board => board
     })
     save_file.close
-    console.write(save_done_message)
+    puts save_done_message
   end
 
   def game_over?
