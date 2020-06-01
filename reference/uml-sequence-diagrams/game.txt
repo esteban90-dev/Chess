@@ -1,9 +1,79 @@
+participant Main
 participant Game
 participant Board
 
-Game->Game: play
+Main->Game: load(filename)
 activate Game
-note over Game:- display formatted board\n- loop:\n-    prompt_player\n-    move\n-    promote if promotion?\n-    display formatted board\n-    break if game_over?\n-    swap_active_color\n-    swap_players\n-  end\n-  display result
+note over Game:- loads a game saved for the given filename\n  and path and returns a game object
+Main<--Game:
+deactivate Game
+
+Main->Game: welcome
+activate Game
+note over Game:- returns a string with a welcome message
+Main<--Game:
+deactivate Game
+
+Main->Game: play
+activate Game
+note over Game:- display board\n- Start Loop:\n-   prompt for a move\n-   check if a promotion is allowed\n-   promote, if applicable\n-   swap color\n-   break out of loop if game_over?\n-   prompt for game save\n- End Loop\n- display board\n- display result
+
+Game->Board:formatted
+activate Board
+Game<--Board:
+deactivate Board
+space
+
+Game->Board:move_an(input)
+activate Board
+Game<--Board:result
+deactivate Board
+space
+
+Game->Board:formatted_history
+activate Board
+Game<--Board:
+deactivate Board
+space
+
+Game->Board:promotion?
+activate Board
+Game<--Board:
+deactivate Board
+space
+
+Game->Board:promote(input)
+activate Board
+space
+deactivate Board
+space
+
+Game->Board:swap_color
+activate Board
+space
+deactivate Board
+space
+deactivate Game
 
 
+Game->Game:save(path)
+activate Game
+note over Game:- dump Game object to YAML\n- display 'done' message
+space
+deactivate Game
+space
+
+Game->Game:game_over?
+activate Game
+note over Game:- return true if board.checkmate?\n- or board.stalemate? return true
+space 
+deactivate Game
+space
+
+Game->Game:result
+activate Game
+note over Game:- returns a string that announces checkmate \n  for the proper color, or returns a string\n  announcing stalemate
+space 
+deactivate Game
+space
 

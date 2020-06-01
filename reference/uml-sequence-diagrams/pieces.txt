@@ -65,9 +65,20 @@ deactivate Board
 
 Board->King:moveable_destinations(self)
 activate King
-note over King:- Add all adjacent cells\n- Remove cells that are \n  occupied by allies\n- Remove cells that aren’t \n  on the board\n- If in check: remove destinations for \n  which disables_check? returns false \n- If not in check: removes destinations for \n  which enables_check? returns true\n
-note over King:Queenside castling:\n- Add [-3,0] if not in check, and \n  king nor the queen side \n  rook to the have moved yet, and\n  there is a clear path between\n  king and rook.
-note over King:Kingside castling:\n- Add [2,0] if not in check, and \n  king nor the king side \n  rook to the have moved yet,  and\n  there is a clear path between\n  king and rook.
+note over King:- Add all adjacent cells\n- Remove cells that are \n  occupied by allies\n- Remove cells that aren’t \n  on the board\n- If in check: remove destinations for \n  which disables_check? returns false \n- If not in check: removes destinations for \n  which enables_check? returns true\n- Add [0,-3] if queenside castling is allowed\n- Add [0,2] if kingside castling is allowed\n
+
 Board<--King:moveable_destinations
 deactivate King
 deactivate Board
+
+King->King:queenside_castling_allowed?
+activate King
+note over King:   True if not in check, and \n  king nor the queen side \n  rook to the have moved yet, and\n  there is a clear path between\n  king and rook.
+space
+deactivate King
+
+King->King:kingside_castling_allowed?
+activate King
+note over King:   True if not in check, and \n  king nor the king side \n  rook to the have moved yet,  and\n  there is a clear path between\n  king and rook.
+space
+deactivate King

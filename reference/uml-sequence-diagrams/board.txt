@@ -3,16 +3,53 @@ participant Game
 participant Board
 participant Piece
 
-Game->Board:move_an(source, destination)
+Game->Board:move_an(input)
 activate Board
-note over Board:- convert AN coordinates to YX\n- return 'invalid' if source piece \n  does not match active color or if\n  source cell is empty\n- return 'invalid' if destination \n  is not contained in moveable_destinations\n- store captured opponent piece if destination \n  contains a piece that doesn't match active \n  color\n- set destination cell = source\n- clear source cell\n- store captured pawn if en_passant? returns true\n- move rook if castling? returns true\n- update history\n- Return 'Moved source:destination' successfully or similar\n
+note over Board:- convert AN coordinates to XY\n- call move_yx\n- return whatever move_yx returns
+Game<--Board:result
+deactivate Board
+
+Board->Board:move_yx(source, destination)
+activate Board
+note over Board:- return 'invalid' if source piece \n  does not match active color or if\n  source cell is empty\n- return 'invalid' if destination \n  is not contained in moveable_destinations\n- store captured opponent piece if destination \n  contains a piece that doesn't match active \n  color\n- set destination cell = source\n- clear source cell\n- store captured pawn if en_passant? returns true\n- move rook if castling? returns true\n- update history\n- Return 1 if successful move, nil if otherwise\n
 Board->Piece:moveable_destinations?(self)
 activate Piece
 Board<--Piece:moveable_destinations
 deactivate Piece
-Game<--Board:result(TBD)
 deactivate Board
 
+space
+
+Board->Board:undo_last_move
+activate Board
+note over Board:- undo the last move if it was\n  a castling move\n- undo the last move if it was\n  an en passant move\n- undo the last move if it was\n  a normal move\n- clear the last move in history
+space
+deactivate Board
+
+space
+
+Board->Board:place(location, input)
+activate Board
+note over Board:- set the given grid location\n  to the given input
+space
+
+deactivate Board
+
+space
+
+Board->Board:an_to_yx(input)
+activate Board
+note over Board:- convert the given algebraic\n  coordinates to yx coordinates
+space
+deactivate Board
+
+space
+
+Board->Board:yx_to_an(input)
+activate Board
+note over Board:- convert the given yx coordinates\n  to algebraic coordinates
+space
+deactivate Board
 
 space
 
@@ -50,7 +87,7 @@ space
 
 Piece->Board:disables_check?(source, destination)
 activate Board
-note over Board:- result = false\n- clone the grid\n- call the move function\n- result = true if active_color_in_check? returns false\n- restore the grid\n- return result
+note over Board:- result = false\n- call move_yx\n- result = true if active_color_in_check? returns false\n- call undo_last_move\n- return result
 Piece<--Board:
 deactivate Board
 
@@ -58,7 +95,7 @@ space
 
 Piece->Board:enables_check?(source, destination)
 activate Board
-note over Board:- result = false\n- clone the grid\n- call the move function\n- result = true if active_color_in_check? returns true\n- restore the grid\n- return result
+note over Board:- result = false\n- call move_yx\n- call the move function\n- result = true if active_color_in_check? returns true\n- call undo_last_move\n- return result
 Piece<--Board:
 deactivate Board
 
