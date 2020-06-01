@@ -4,7 +4,11 @@ class Game
   attr_reader :board 
 
   def self.load(fname)
-    file = File.open(fname)
+    begin
+      file = File.open(fname)
+    rescue
+      raise "No save file found."
+    end
     load = YAML.load(file)
     load_obj = self.new(load)
     puts load_done_message
@@ -34,9 +38,8 @@ class Game
   public
 
   def play
+    puts board.formatted
     loop do
-      puts board.formatted
-
       input = ''
       result = nil
 
@@ -61,6 +64,7 @@ class Game
       board.swap_color
       break if game_over?
       puts "#{board.active_color} is in check!" if board.active_color_in_check?
+      puts board.formatted
 
       until valid_save_load_input?(input)
         puts save_prompt_message
