@@ -25,7 +25,7 @@ class Rook < Piece
       end
       i += 1
     end
-
+  
     destinations
   end
 
