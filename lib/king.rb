@@ -65,25 +65,22 @@ class King < Piece
 
   def row_space_between?(board, position_1, position_2)
     return false if position_1 == position_2
-    result = 0
+    result = true
     if position_1[1] < position_2[1]
-      current_position = position_1
       direction = 1
+      current_position = [position_1[0],position_1[1] + direction]
       until current_position == position_2
-        result = true
-        result = false if board.contents(current_position)
+        result = false unless board.contents(current_position).nil?
         current_position = [current_position[0],current_position[1] + direction]
       end
     else
-      current_position = position_2
       direction = -1
+      current_position = [position_1[0],position_1[1] + direction]
       until current_position == position_2
-        result = true
-        result = false if board.contents(current_position)
+        result = false unless board.contents(current_position).nil?
         current_position = [current_position[0],current_position[1] + direction]
       end
     end
     result
   end
-
 end
