@@ -39,6 +39,7 @@ class Game
 
       input = ''
       result = nil
+
       while result.nil?
         puts move_message
         input = gets.chomp
@@ -48,12 +49,23 @@ class Game
         end
       end
 
-      board.swap_color
       break if game_over?
+
+      if board.promotion?
+        until valid_promotion_input?(input)
+          puts "#{board.active_color} pawn has reached the other side of the board and can now be promoted."
+          puts "Type one of the following: bishop, knight, rook, or queen."
+          input = gets.chomp.downcase
+        end
+        board.promote(input)
+      end
+
+      board.swap_color
+      puts "#{board.active_color} is in check!" if board.active_color_in_check?
 
       until valid_save_load_input?(input)
         puts save_prompt_message
-        input = gets.chomp
+        input = gets.chomp.downcase
       end
       save(SAVE_PATH) if input.downcase == 'y'
     end
