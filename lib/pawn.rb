@@ -11,14 +11,16 @@ class Pawn < Piece
     y_direction = -1  if self.color == 'white'
     y_direction = 1 if self.color == 'black'
 
-    #add cell in the +1 y_direction if empty
+    #add cell in the +1 y_direction if valid and empty
     forward_cell_position_1 = [current_position[0] + y_direction, current_position[1]]
-    destinations << forward_cell_position_1 if board.contents(forward_cell_position_1).nil?
+    if board.valid_location?(forward_cell_position_1)
+      destinations << forward_cell_position_1 if board.contents(forward_cell_position_1).nil?
+    end
 
-    #if pawn hasn't moved yet, and forward_cell_position_1 is empty - add cell in the +2 y_direction if empty
+    #if pawn hasn't moved yet, and forward_cell_position_1 is empty - add cell in the +2 y_direction if valid and empty
     if board.history.none?{ |entry| entry[0] == self }
       forward_cell_position_2 = [current_position[0] + (y_direction*2), current_position[1]]
-      if board.contents(forward_cell_position_2).nil?
+      if board.valid_location?(forward_cell_position_2) && board.contents(forward_cell_position_2).nil?
         destinations << forward_cell_position_2 unless destinations.empty?
       end
     end
