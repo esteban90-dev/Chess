@@ -49,8 +49,6 @@ class Game
         end
       end
 
-      break if game_over?
-
       if board.promotion?
         until valid_promotion_input?(input)
           puts "#{board.active_color} pawn has reached the other side of the board and can now be promoted."
@@ -61,6 +59,7 @@ class Game
       end
 
       board.swap_color
+      break if game_over?
       puts "#{board.active_color} is in check!" if board.active_color_in_check?
 
       until valid_save_load_input?(input)
