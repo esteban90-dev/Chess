@@ -17,3 +17,6 @@ To facilitate the design of the various classes in the project I sketched up UML
 In general, a loose TDD approach was followed.  Most classes have test coverage for their public interfaces, especially the Board and Pieces, the classes that contain the most complex logic.  Unit tests were written for object interfaces that did not greatly depend on interaction with other objects, and those tests can be found in the specs that bear the name of the object. For interfaces that did have complex interactions between multiple objects, i.e. moving a Piece on the Board, those 'integration' tests were written in their own 'board-piece' spec. Every type of move is covered by tests. There are tests for checkmate and stalemate too, but more examples of these could be added in the future. The game loop itself was tested manually. By the end of the project, all tests were passing.   
 
 ## How to Play
+
+- You can play live on Repl.it: https://repl.it/@esteban90/Chess#main.rb
+- Alternatively, you can clone this repo to your machine: `git clone https://github.com/esteban90-dev/Chess.git`  Run the game by entering `./ruby main.rb`
