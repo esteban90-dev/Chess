@@ -6,7 +6,7 @@ This is the final project of [The Odin Project's](https://www.theodinproject.com
 
 ## Class Design
 
-To facilitate the design of the various classes in the project I sketched up UML sequece diagrams that can be found in './reference' to explore the messaging between objects.  
+To facilitate the design of the various classes in the project I sketched up UML sequece diagrams that can be found in `./reference` to explore the messaging between objects.  
 
 - Board: The purpose of the Board is to keep track of pieces on an 8x8 grid, move the pieces around, and maintain a history of moves.  The Board also calculates check, checkmate, stalemate, and whether or not a piece is eligible for a promotion. To avoid concerning the Board too much with the logic of the individual pieces, the Board simply sends itself to the pieces, and they determine where on the Board they can move.  
 - Piece: Piece is the class that all the individual pieces (i.e. Pawn, Rook, Bishop, etc.) inherit from.  Each piece is responsible for taking a Board object and determining where it can legally move.
