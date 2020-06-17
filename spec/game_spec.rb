@@ -77,9 +77,9 @@ describe Game do
       expect(game1.valid_move_input?('a2b3')).to eql(false)
     end
 
-    it "accepts capital letters" do
+    it "rejects capital letters" do
       game1 = Game.new({:board => board1})
-      expect(game1.valid_move_input?('A2:B3')).to eql(true)
+      expect(game1.valid_move_input?('A2:B3')).to eql(false)
     end
   end
 
