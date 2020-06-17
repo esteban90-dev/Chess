@@ -101,7 +101,7 @@ class Game
 
   def valid_move_input?(input)
     #returns true if input matches the algebraic notation format 'a2:b3'
-    input.match?(/^[A-Ha-h][1-8][:][A-Ha-h][1-8]$/)
+    input.match?(/^[a-h][1-8][:][a-h][1-8]$/)
   end
 
   def valid_promotion_input?(input)
