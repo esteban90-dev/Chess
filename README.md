@@ -16,7 +16,7 @@ Sandi Metz's [Practical Object Oriented Design](https://www.poodr.com/) was a bi
 
 ## Testing
 
-In general, a loose TDD approach was followed.  Most classes have test coverage for their public interfaces, especially the Board and Pieces, the classes that contain the most complex logic.  Unit tests were written for object interfaces that did not greatly depend on interaction with other objects, and those tests can be found in the specs that bear the name of the object. For interfaces that did have complex interactions between multiple objects, i.e. moving a Piece on the Board, those 'integration' tests were written in their own 'board-piece' spec. Every type of move is covered by tests. There are tests for checkmate and stalemate too, but more examples of these could be added in the future. The game loop itself was tested manually. By the end of the project, all tests were passing.   
+In general, a loose TDD approach was followed.  Most classes have test coverage for their public interfaces, especially the Board and Pieces, the classes that contain the most complex logic.  Unit tests were written for object interfaces that did not greatly depend on interaction with other objects, and those tests can be found in the specs that bear the name of the object. For interfaces that did have complex interactions between multiple objects, i.e. moving a Piece on the Board, those 'integration' tests were written in their own 'board-piece' spec. Every type of move is covered by tests. There are tests for checkmate and stalemate too, but more examples of these could be added in the future. The game loop itself was tested manually. By the end of the project, all tests were passing.  Tests can be found in the /spec folder. 
 
 ## How to Play
 
