@@ -45,10 +45,12 @@ class Game
 
       while result.nil?
         puts move_message
-        input = gets.chomp
+        input = gets.chomp.downcase
         if valid_move_input?(input)
           result = board.move_an(input) 
           puts board.formatted_history
+        else
+          puts "invalid input."
         end
       end
 
@@ -66,9 +68,11 @@ class Game
       puts "#{board.active_color} is in check!" if board.active_color_in_check?
       puts board.formatted
 
-      until valid_save_load_input?(input)
+      loop do 
         puts save_prompt_message
         input = gets.chomp.downcase
+        break if valid_save_load_input?(input)
+        puts "invalid input."
       end
       save(SAVE_PATH) if input.downcase == 'y'
     end
